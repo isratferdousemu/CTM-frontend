@@ -47,7 +47,7 @@
                           )
                         }}
                       </td>
-                      <td>: {{ CustomDateFormat(data.application_date)  }}</td>
+                      <td>: {{ CustomDateFormat(data.application_date) }}</td>
                     </tr>
                     <tr>
                       <td>
@@ -67,53 +67,34 @@
             <v-col cols="12">
               <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.payment_history"
-                      )
-                    }}
+                  <v-expansion-panel-header color="#1c3b68">
+                    <template v-slot:actions>
+                      <v-icon color="white"> $expand </v-icon>
+                    </template>
+                    <h3 class="white--text text-uppercase">
+                      {{ $t("container.beneficiary_management.beneficiary_list.payment_history") }}
+                    </h3>
                   </v-expansion-panel-header>
+
                   <v-expansion-panel-content class="mt-5">
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_installment'
-                            )
-                          "
-                          outlined
-                          readonly
-                          value="8"
-                        >
+                        <v-text-field :label="$t(
+                          'container.beneficiary_management.beneficiary_list.total_installment'
+                        )
+                          " outlined readonly value="8">
                         </v-text-field>
                       </v-col>
 
                       <v-col lg="6" md="6" cols="12">
-                        <v-menu
-                          ref="menu"
-                          v-model="menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
+                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+                          transition="scale-transition" offset-y min-width="auto">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                              v-model="date"
-                              :label="
-                                $t(
-                                  'container.beneficiary_management.beneficiary_list.last_payment_date'
-                                )
-                              "
-                              prepend-inner-icon="mdi-calendar"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              outlined
-                            ></v-text-field>
+                            <v-text-field v-model="date" :label="$t(
+                          'container.beneficiary_management.beneficiary_list.last_payment_date'
+                        )
+                          " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"
+                              outlined></v-text-field>
                           </template>
                           <!-- <v-date-picker v-model="date" no-title scrollable>
                             <v-spacer></v-spacer>
@@ -131,44 +112,24 @@
                         </v-menu>
                       </v-col>
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          value="1000000"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.last_payment_receive'
-                            )
-                          "
-                          outlined
-                          readonly
-                        >
+                        <v-text-field value="1000000" :label="$t(
+                          'container.beneficiary_management.beneficiary_list.last_payment_receive'
+                        )
+                          " outlined readonly>
                         </v-text-field>
                       </v-col>
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          value="10000"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.last_payment_amount'
-                            )
-                          "
-                          outlined
-                          readonly
-                        >
+                        <v-text-field value="10000" :label="$t(
+                          'container.beneficiary_management.beneficiary_list.last_payment_amount'
+                        )
+                          " outlined readonly>
                         </v-text-field>
                       </v-col>
                       <v-col lg="6" md="6" cols="12">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              @click="payment_modal = true"
-                              elevation="0"
-                              class="white--text"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
+                              @click="payment_modal = true" elevation="0" class="white--text">
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
                           </template>
@@ -185,55 +146,36 @@
             <v-col cols="12">
               <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.grievance_history"
-                      )
-                    }}
+                  <v-expansion-panel-header color="#1c3b68">
+                    <template v-slot:actions>
+                      <v-icon color="white"> $expand </v-icon>
+                    </template>
+                    <h3 class="white--text text-uppercase">
+                      {{ $t("container.beneficiary_management.beneficiary_list.grievance_history") }}
+                    </h3>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="mt-5">
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          value="25"
-                          readonly
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_grievance'
-                            )
-                          "
-                          outlined
-                        >
+                        <v-text-field value="25" readonly :label="$t(
+                            'container.beneficiary_management.beneficiary_list.total_grievance'
+                          )
+                          " outlined>
                         </v-text-field>
                       </v-col>
 
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          value="Application"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.last_grievance_type'
-                            )
-                          "
-                          readonly
-                          outlined
-                        >
+                        <v-text-field value="Application" :label="$t(
+                          'container.beneficiary_management.beneficiary_list.last_grievance_type'
+                        )
+                          " readonly outlined>
                         </v-text-field>
                       </v-col>
                       <v-col lg="6" md="6" cols="12">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              @click="grievance_modal = true"
-                              class="white--text"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
+                              @click="grievance_modal = true" class="white--text">
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
                           </template>
@@ -250,42 +192,30 @@
             <v-col cols="12">
               <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.Change_tracking"
-                      )
-                    }}
+                  <v-expansion-panel-header color="#1c3b68">
+                    <template v-slot:actions>
+                      <v-icon color="white"> $expand </v-icon>
+                    </template>
+                    <h3 class="white--text text-uppercase">
+                      {{ $t("container.beneficiary_management.beneficiary_list.Change_tracking") }}
+                    </h3>
                   </v-expansion-panel-header>
+                  
                   <v-expansion-panel-content class="mt-5">
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          value="12"
-                          readonly
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_change'
-                            )
-                          "
-                          outlined
-                        >
+                        <v-text-field value="12" readonly :label="$t(
+                            'container.beneficiary_management.beneficiary_list.total_change'
+                          )
+                          " outlined>
                         </v-text-field>
                       </v-col>
 
                       <v-col lg="6" md="6" cols="12">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              @click="tracking_modal = true"
-                              class="white--text"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
+                              @click="tracking_modal = true" class="white--text">
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
                           </template>
@@ -299,15 +229,8 @@
                 </v-expansion-panel>
               </v-expansion-panels>
               <v-row class="mx-0 my-0 py-2 mt-5" justify="end">
-                <v-btn
-                  type="submit"
-                  flat
-                  router
-                  to="/beneficiary-management/beneficiary-info"
-                  :disabled="invalid"
-                  :loading="loading"
-                  class="custom-btn-width py-2 mr-2"
-                >
+                <v-btn type="submit" flat router to="/beneficiary-management/beneficiary-info" :disabled="invalid"
+                  :loading="loading" class="custom-btn-width py-2 mr-2">
                   {{ $t("container.list.back") }}
                 </v-btn>
               </v-row>
@@ -317,19 +240,16 @@
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.payment_history"
-                    )
-                  }}
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.payment_history"
+                          )
+                        }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text class="mt-7">
                   <v-col cols="12">
-                    <v-data-table
-                      :headers="headers"
-                      :items="payment_histories"
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :headers="headers" :items="payment_histories"
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -339,54 +259,27 @@
                       </template>
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
                   </v-col>
 
                   <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="payment_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
+                    <v-btn flat @click="payment_modal = false" outlined class="custom-btn-width py-2 mr-10">
                       {{ $t("container.list.cancel") }}
                     </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
+                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                      class="custom-btn-width white--text py-2">
                       {{ $t("container.list.print") }}
                     </v-btn>
                   </v-row>
@@ -400,19 +293,16 @@
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.grievance_history"
-                    )
-                  }}
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.grievance_history"
+                          )
+                        }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text class="mt-7">
                   <v-col cols="12">
-                    <v-data-table
-                      :headers="headers_grievance"
-                      :items="grievance_histories"
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :headers="headers_grievance" :items="grievance_histories"
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -422,54 +312,27 @@
                       </template>
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
                   </v-col>
 
                   <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="grievance_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
+                    <v-btn flat @click="grievance_modal = false" outlined class="custom-btn-width py-2 mr-10">
                       {{ $t("container.list.cancel") }}
                     </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
+                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                      class="custom-btn-width white--text py-2">
                       {{ $t("container.list.print") }}
                     </v-btn>
                   </v-row>
@@ -482,19 +345,16 @@
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.Change_tracking"
-                    )
-                  }}
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.Change_tracking"
+                          )
+                        }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text class="mt-7">
                   <v-col cols="12">
-                    <v-data-table
-                      :headers="headers_tracking"
-                      :items="change_tracking"
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :headers="headers_tracking" :items="change_tracking"
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -517,54 +377,27 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
                   </v-col>
 
                   <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="tracking_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
+                    <v-btn flat @click="tracking_modal = false" outlined class="custom-btn-width py-2 mr-10">
                       {{ $t("container.list.cancel") }}
                     </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
+                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                      class="custom-btn-width white--text py-2">
                       {{ $t("container.list.print") }}
                     </v-btn>
                   </v-row>
@@ -698,10 +531,10 @@ export default {
         console.log(e);
       }
     },
-    CustomDateFormat(value){
+    CustomDateFormat(value) {
       if (value) {
         return moment(String(value)).format('DD-MM-YYYY')
-    }
+      }
     }
   },
 
@@ -801,28 +634,28 @@ export default {
             "container.beneficiary_management.beneficiary_list.change_tracking_type"
           ),
           value: "change_tracking_type",
-          align:'center'
+          align: 'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.change_count"
           ),
           value: "change_count",
-          align:'center'
+          align: 'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.successful_change"
           ),
           value: "successful_change",
-          align:'center'
+          align: 'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.unsuccessful_change"
           ),
           value: "unsuccessful_change",
-          align:'center'
+          align: 'center'
         },
       ];
     },
@@ -838,7 +671,7 @@ export default {
   beforeMount() {
     this.updateHeaderTitle();
   },
-  mounted() {},
+  mounted() { },
   created() {
     this.getBeneficiaryDetailsById();
   },

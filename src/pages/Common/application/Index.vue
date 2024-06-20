@@ -1,19 +1,12 @@
 <template>
   <div id="application">
+
     <v-app-bar color="#1c3b68" fixed height="80" class="px-4" dense dark>
       <v-row align="center" no-gutters>
-        <v-img
-          class="p-3 mr-4"
-          max-height="100%"
-          max-width="60px"
-          position="center center"
-          src="/assets/images/logo.png"
-        ></v-img>
-        <v-toolbar-title
-          >{{ $t("container.application_selection.application.title_online_1")
-          }}<br />{{
-            $t("container.application_selection.application.title_online_2")
-          }}
+        <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
+          src="/assets/images/logo.png"></v-img>
+        <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
+          $t('container.application_selection.application.title_online_2') }}
         </v-toolbar-title>
         <v-col>
           <!-- Empty column to create space between title and LocaleSwitcher -->
@@ -45,57 +38,31 @@
       </v-row>
     </v-app-bar>
 
+
     <v-row class="mx-5 my-5 mt-10">
       <v-col class="mt-10" cols="10" offset="1">
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplicationCheck()">
             <v-card class="pa-5 px-10 mb-4">
+
               <!-- <v-btn  flat color="primary" @click="gotocheck()"
                                 class="custom-btn-width black white--text py-2">
                               check
                               </v-btn> -->
               <p class="mt-5" style="font-size: 20px">
-                {{
-                  $t(
-                    "container.application_selection.application.new_applicant"
-                  )
-                }}<span class="red--text">
-                  ({{
-                    $t(
-                      "container.application_selection.application.applicant_alert"
-                    )
-                  }})
+                {{ $t('container.application_selection.application.new_applicant') }}<span class="red--text">
+                  ({{ $t('container.application_selection.application.applicant_alert') }})
+
                 </span>
+
               </p>
 
-              <ValidationProvider
-                name="program"
-                vid="program"
-                rules="required"
-                v-slot="{ errors }"
-              >
-                <label
-                  >{{
-                    $t("container.application_selection.application.program")
-                  }}
-                </label>
+              <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
+                <label>{{ $t('container.application_selection.application.program') }} </label>
                 <span style="margin-left: 4px; color: red">*</span>
-                <v-select
-                  @change="getProgramName()"
-                  outlined
-                  :items="programs"
-                  :item-text="getItemText"
-                  item-value="id"
-                  v-model="data.program_id"
-                  :error="errors[0] ? true : false"
-                  :error-messages="
-                    errors[0]
-                      ? language == 'bn'
-                        ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
-                        : 'Please enter Program'
-                      : ''
-                  "
-                >
+                <v-select @change="getProgramName()" outlined :items="programs" :item-text="getItemText" item-value="id"
+                  v-model="data.program_id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+          : 'Please enter Program') : ''">
                 </v-select>
               </ValidationProvider>
               <div v-if="data.program_id">
@@ -106,111 +73,61 @@
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
-                      <h3 class="white--text">
-                        {{
-                          $t(
-                            "container.application_selection.application.applicant_verification"
-                          )
-                        }}
-                      </h3>
+                      <h3 class="white--text">{{
+                        $t('container.application_selection.application.applicant_verification')
+                        }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
-                      <ValidationProvider
-                        name="program"
-                        vid="verification_type"
-                        rules="required"
-                        v-slot="{ errors }"
-                      >
-                        <div
-                          class="validation-error validation_error_age_limit"
-                        >
+                      <ValidationProvider name="program" vid="verification_type" rules="required" v-slot="{ errors }">
+
+                        <div class="validation-error validation_error_age_limit">
                           <v-radio-group v-model="data.verification_type" row>
-                            {{
-                              $t(
-                                "container.application_selection.application.verification_type"
-                              )
-                            }}
-                            <span
-                              style="
-                                margin-left: 4px;
-                                margin-right: 4px;
-                                color: red;
-                              "
-                              >*</span
-                            >
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.nid'
-                                )
-                              "
-                              :value="1"
-                            ></v-radio>
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.brn'
-                                )
-                              "
-                              :value="2"
-                            ></v-radio>
+                            {{ $t('container.application_selection.application.verification_type') }}
+                            <span style="
+                              margin-left: 4px;
+                              margin-right: 4px;
+                              color: red;
+                            ">*</span>
+                            <v-radio :label="$t('container.application_selection.application.nid')"
+                              :value="1"></v-radio>
+                            <v-radio :label="$t('container.application_selection.application.brn')"
+                              :value="2"></v-radio>
                           </v-radio-group>
                         </div>
                       </ValidationProvider>
 
                       <V-row>
+
                         <v-col cols="4">
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="checkNumber||required"
-                            v-slot="{ errors }"
-                          >
+
+                          <ValidationProvider name="Number" vid="verification_number" rules="checkNumber||required"
+                            v-slot="{ errors }">
                             <label>
                               <span v-if="data.verification_type == 1">
-                                {{
-                                  $t(
-                                    "container.application_selection.application.nid"
-                                  )
-                                }}
+                                {{ $t('container.application_selection.application.nid') }}
                               </span>
                               <span v-else-if="data.verification_type == 2">
-                                {{
-                                  $t(
-                                    "container.application_selection.application.brn"
-                                  )
-                                }}
+                                {{ $t('container.application_selection.application.brn') }}
                               </span>
                               <span v-else>
-                                {{
-                                  $t(
-                                    "container.application_selection.application.nid_brn"
-                                  )
-                                }}
+                                {{ $t('container.application_selection.application.nid_brn') }}
+
                               </span>
+
                             </label>
 
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              @change="checkNum()"
-                              outlined
-                              clearable
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="text"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
-                                    : 'Please enter verification number with either 10 or 17 digit'
-                                  : ''
-                              "
-                            >
+                            <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
+                              class="mr-2" type="text" required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
+          : 'Please enter verification number with either 10 or 17 digit') : ''">
                             </v-text-field>
+
+
                           </ValidationProvider>
+
                         </v-col>
+
+
 
                         <!-- <v-col cols="2">
 
@@ -246,31 +163,29 @@
 
                         </v-col> -->
 
+
                         <!-- Read-only field to display calculated date of birth -->
 
+
                         <v-col cols="4">
-                          <label
-                            >{{
-                              $t(
-                                "container.application_selection.application.date_of_birth"
-                              )
-                            }}
-                          </label>
+
+                          <label>{{ $t('container.application_selection.application.date_of_birth') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider
-                            name="Date of Birth"
-                            vid="date_of_birth"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-text-field
-                              v-model="data.date_of_birth"
-                              type="date"
-                              :value="formattedDate"
-                              outlined
-                            ></v-text-field>
+                          <ValidationProvider name="Date of Birth" vid="date_of_birth" v-slot="{ errors }"
+                            rules="required">
+
+                            <v-text-field v-model="data.date_of_birth" type="date" :value="formattedDate"
+                              outlined></v-text-field>
                           </ValidationProvider>
+
+
+
+
+
                         </v-col>
+
+
+
 
                         <!-- <v-col>
                           <label>Date of Birth </label>
@@ -296,28 +211,19 @@
                           </ValidationProvider> -->
                         <!-- </v-col> -->
 
+
+
                         <v-col cols="4" class="d-flex justify-end">
-                          <v-btn
-                            @click="verifyCard()"
-                            elevation="2"
-                            :disabled="
-                              data.date_of_birth == null ||
-                              data.verification_number == null ||
-                              data.verification_type == null ||
-                              data.verification_type == 2 ||
-                              data.date_of_birth == '' ||
-                              data.verification_number == '' ||
-                              data.verification_type == ''
-                            "
-                            class="btn mt-10"
-                            color="primary"
-                            >{{ $t("container.list.verify") }}</v-btn
-                          >
+                          <v-btn @click="verifyCard()" elevation="2"
+                            :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.verification_type == 2 || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
+                            class="btn mt-10 " color="primary">{{ $t('container.list.verify') }}</v-btn>
                         </v-col>
-                      </V-row>
+                      </v-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- Applicant Verification end -->
+
+
 
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
@@ -327,74 +233,31 @@
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
-                      <h3 class="white--text">
-                        {{
-                          $t(
-                            "container.application_selection.application.personal_info"
-                          )
-                        }}
-                      </h3>
+                      <h3 class="white--text">{{ $t('container.application_selection.application.personal_info') }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="6" lg="6">
-                            <v-img
-                              :src="imageUrl"
-                              style="
-                                width: 200px;
-                                height: 200px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="imageUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/profile.png"
-                              v-if="!imageUrl"
-                              style="
-                                width: 150px;
-                                height: 150px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
+                            <v-img :src="imageUrl" style="
+                                    width: 200px;
+                                    height: 200px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="imageUrl"></v-img>
+                            <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
+                                    width: 150px;
+                                    height: 150px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
 
-                            <label
-                              >{{
-                                $t(
-                                  "container.application_selection.application.image"
-                                )
-                              }}
-                              ({{
-                                $t(
-                                  "container.application_selection.application.image_alert"
-                                )
-                              }})</label
-                            >
+                            <label>{{ $t('container.application_selection.application.image') }} ({{
+                              $t('container.application_selection.application.image_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Image"
-                              rules="required"
-                              vid="image"
-                            >
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                :placeholder="
-                                  language == 'bn'
-                                    ? 'ফাইল নির্বাচন করুন'
-                                    : 'Choose File'
-                                "
-                                prepend-outer-icon="mdi-camera"
-                                v-model="data.image"
-                                accept="image/*"
-                                @change="previewImage"
-                                prepend-icon=""
-                                id="image"
-                              >
+                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
+                              <v-file-input outlined show-size counter
+                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন' : 'Choose File'"
+                                prepend-outer-icon="mdi-camera" v-model="data.image" accept="image/*"
+                                @change="previewImage" prepend-icon="" id="image">
                               </v-file-input>
                             </ValidationProvider>
                             <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
@@ -405,616 +268,231 @@
                                 </template>
                               </v-file-input>
                             </ValidationProvider> -->
+
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
-                            <v-img
-                              :src="signUrl"
-                              style="
-                                width: 200px;
-                                height: 80px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="signUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/sign.png"
-                              v-if="!signUrl"
-                              style="
-                                width: 200px;
-                                height: 80px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Signature"
-                              rules="required"
-                              vid="signature"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.signature"
-                                  )
-                                }}
-                                ({{
-                                  $t(
-                                    "container.application_selection.application.signature_alert"
-                                  )
-                                }})</label
-                              >
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-file-input
-                                :placeholder="
-                                  language == 'bn'
-                                    ? 'ফাইল নির্বাচন করুন '
-                                    : 'Choose File'
-                                "
-                                outlined
-                                show-size
-                                counter
-                                prepend-outer-icon="mdi-camera"
-                                v-model="data.signature"
-                                accept="image/*"
-                                @change="previewSign"
-                                id="signature"
-                                prepend-icon=""
-                              ></v-file-input>
+                            <v-img :src="signUrl" style="
+                                    width: 200px;
+                                    height: 80px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="signUrl"></v-img>
+                            <v-img src="/assets/images/sign.png" v-if="!signUrl" style="
+                                    width: 200px;
+                                    height: 80px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
+                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="required" vid="signature">
+                              <label>{{ $t('container.application_selection.application.signature') }} ({{
+                                $t('container.application_selection.application.signature_alert') }})</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-file-input :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
+          : 'Choose File'" outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.signature"
+                                accept="image/*" @change="previewSign" id="signature" prepend-icon=""></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Name in Bangla"
-                              vid="name_bn"
-                              rules="required||bangla"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.name_bn"
-                                  )
-                                }}
-                              </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.name_bn"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
-                                      : 'Please enter Full Name (Bangla)'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required||bangla_character"
+                              v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.name_bn') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
+          : 'Please enter Full Name (Bangla)') : ''"></v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="Name in English" vid="name_en" rules="required||english"
+                              v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
+          : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Name in English"
-                              vid="name_en"
-                              rules="required||english"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.name_en"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.name_en"
-                                outlined
-                                clearable
+                            <ValidationProvider name="Father Name in Bangla" vid="father_name_bn"
+                              rules="required||bangla_character" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.father_name_bn') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.father_name_bn" outlined clearable
                                 :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Full Name (English)'
-                                    : ''
-                                "
-                              >
+                                :error-messages="errors[0] ?  (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (বাংলায়) প্রদান করুন' : 'Please enter Father Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Father Name in Bangla"
-                              vid="father_name_bn"
-                              rules="required||bangla"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.father_name_bn"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.father_name_bn"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (বাংলায়) প্রদান করুন '
-                                      : 'Please enter Father Name (Bangla)'
-                                    : ''
-                                "
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Father Name in English"
-                              vid="father_name_en"
-                              rules="required||english"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.father_name_en"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.father_name_en"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Father Name (English)'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Father Name in English" vid="father_name_en"
+                              rules="required||english" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.father_name_en') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.father_name_en" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (ইংরেজীতে) প্রদান করুন '
+          : 'Please enter Father Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
-                              <ValidationProvider
-                                name="Mother Name in Bangla"
-                                vid="mother_name_bn"
-                                v-slot="{ errors }"
-                                rules="required||bangla"
-                              >
-                                <label>{{
-                                  $t(
-                                    "container.application_selection.application.mother_name_bn"
-                                  )
-                                }}</label>
-                                <span style="margin-left: 4px; color: red"
-                                  >*</span
-                                >
-                                <v-text-field
-                                  v-model="data.mother_name_bn"
-                                  outlined
-                                  clearable
+                              <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn"
+                                rules="required||bangla_character" v-slot="{ errors }">
+                                <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-text-field v-model="data.mother_name_bn" outlined clearable
                                   :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0]
-                                      ? language == 'bn'
-                                        ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম (বাংলায়) প্রদান করুন '
-                                        : 'Please enter Mother Name (Bangla)'
-                                      : ''
-                                  "
-                                >
+                                  :error-messages="errors[0] ?  (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম (বাংলায়) প্রদান করুন' : 'Please enter Mother Name (Bangla)') : ''">
                                 </v-text-field>
                               </ValidationProvider>
                             </div>
                           </v-col>
+
 
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
-                              <ValidationProvider
-                                name="Mother Name in English"
-                                vid="mother_name_en"
-                                v-slot="{ errors }"
-                                rules="required||english"
-                              >
-                                <label>{{
-                                  $t(
-                                    "container.application_selection.application.mother_name_en"
-                                  )
-                                }}</label>
-                                <span style="margin-left: 4px; color: red"
-                                  >*</span
-                                >
-                                <v-text-field
-                                  v-model="data.mother_name_en"
-                                  outlined
-                                  clearable
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0]
-                                      ? language == 'bn'
-                                        ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম(ইংরেজীতে) প্রদান করুন '
-                                        : 'Please enter Mother Name (English)'
-                                      : ''
-                                  "
-                                >
+
+                              <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }"
+                                rules="required||english">
+                                <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-text-field v-model="data.mother_name_en" outlined clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম(ইংরেজীতে) প্রদান করুন '
+          : 'Please enter Mother Name (English)') : ''">
                                 </v-text-field>
                               </ValidationProvider>
                             </div>
                           </v-col>
 
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              rules="checkNumberMobile||required"
-                              name="Mobile Number"
-                              vid="mobile"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.mobile"
-                                  )
-                                }} </label
-                              ><span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
 
-                              <v-text-field
-                                v-model="data.mobile"
-                                outlined
-                                type="number"
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নাম্বার প্রদান করুন '
-                                      : 'Please enter valid Mobile Number'
-                                    : ''
-                                "
-                              >
+
+                            <ValidationProvider rules="checkNumberMobile||required" name="Mobile Number" vid="mobile"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.application_selection.application.mobile') }} </label><span
+                                style="margin-left: 4px; color: red">*</span>
+
+                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নাম্বার প্রদান করুন '
+          : 'Please enter valid Mobile Number') : ''">
                               </v-text-field>
                             </ValidationProvider>
+
+
                           </v-col>
+
 
                           <v-col cols="6" lg="6">
                             <!-- <div class="validation-error_marital"> -->
-                            <ValidationProvider
-                              name="Marital Status"
-                              rules="required"
-                              vid="marital_status"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.system_config.allowance_program.marital_status"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-select
-                                v-model="data.marital_status"
-                                outlined
-                                clearable
-                                :items="marital_status"
-                                item-value="name_en"
-                                :item-text="getItemText"
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক বৈবাহিক অবস্থা প্রদান করুন '
-                                      : 'Please enter Marital Status'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Marital Status" rules="required" vid="marital_status"
+                              v-slot="{ errors }">
+
+                              <label>{{ $t('container.system_config.allowance_program.marital_status') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                item-value="name_en" :item-text="getItemText" :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বৈবাহিক অবস্থা প্রদান করুন '
+          : 'Please enter Marital Status') : ''">
                               </v-select>
                             </ValidationProvider>
                             <!-- </div> -->
                           </v-col>
-                          <v-col
-                            cols="6"
-                            lg="6"
-                            v-if="data.marital_status == 'Married'"
-                          >
-                            <ValidationProvider
-                              name="Spouse Name in Bangla"
-                              vid="spouse_name_bn"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.spouse_name_bn"
-                                )
-                              }}</label>
-                              <v-text-field
-                                v-model="data.spouse_name_bn"
-                                outlined
-                                clearable
+                          <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
+                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn"
+                              rules="required||bangla_character" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.spouse_name_bn') }}</label>
+                              <v-text-field v-model="data.spouse_name_bn" outlined clearable
                                 :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী(বাংলায়) প্রদান করুন '
-                                      : 'Please enter Spouse Name (Bangla)'
-                                    : ''
-                                "
-                              >
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী(বাংলায়) প্রদান করুন' : 'Please enter Spouse Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
-                          <v-col
-                            cols="6"
-                            lg="6"
-                            v-if="data.marital_status == 'Married'"
-                          >
-                            <ValidationProvider
-                              name="Spouse Name in English"
-                              vid="spouse_name_en"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.spouse_name_en"
-                                )
-                              }}</label>
-                              <v-text-field
-                                v-model="data.spouse_name_en"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী নাম(ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Spouse Name (English)'
-                                    : ''
-                                "
-                              >
+                          <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
+                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.spouse_name_en') }}</label>
+                              <v-text-field v-model="data.spouse_name_en" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী নাম(ইংরেজীতে) প্রদান করুন '
+          : 'Please enter Spouse Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
 
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Religion"
-                              vid="religion"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.religion"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
+                            <ValidationProvider name="Religion" vid="religion" v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.application_selection.application.religion') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
 
-                              <v-select
-                                v-model="data.religion"
-                                outlined
-                                :items="religion"
-                                item-value="name_en"
-                                :item-text="getItemText"
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক ধর্ম প্রদান করুন '
-                                      : 'Please enter Religion'
-                                    : ''
-                                "
-                              >
+                              <v-select v-model="data.religion" outlined :items="religion" item-value="name_en"
+                                :item-text="getItemText" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ধর্ম প্রদান করুন '
+          : 'Please enter Religion') : ''">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
 
+
                           <v-col cols="6" lg="6">
                             <div class="validation_error_gender_type">
-                              <ValidationProvider
-                                name="Nationality"
-                                vid="nationality"
-                                readonly
-                                v-slot="{ errors }"
-                                rules="required"
-                              >
-                                <label>{{
-                                  $t(
-                                    "container.application_selection.application.nationality"
-                                  )
-                                }}</label>
-                                <span style="margin-left: 4px; color: red"
-                                  >*</span
-                                >
-                                <v-text-field
-                                  readonly
-                                  v-model="data.nationality"
-                                  outlined
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0]
-                                      ? language == 'bn'
-                                        ? 'অনুগ্রহ পূর্বক জাতীয়তা প্রদান করুন '
-                                        : 'Please enter Nationality'
-                                      : ''
-                                  "
-                                >
+                              <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }"
+                                rules="required">
+                                <label>{{ $t('container.application_selection.application.nationality') }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-text-field readonly v-model="data.nationality" outlined
+                                  :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জাতীয়তা প্রদান করুন '
+          : 'Please enter Nationality') : ''">
                                 </v-text-field>
                               </ValidationProvider>
                             </div>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <!-- <div class="validation_error_age_limit"> -->
-                            <ValidationProvider
-                              name="Age"
-                              vid="age"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.age"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.age"
-                                outlined
-                                type="number"
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক বয়স প্রদান করুন '
-                                      : 'Please enter Age'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.application_selection.application.age') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.age" outlined type="number" readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বয়স প্রদান করুন '
+          : 'Please enter Age') : ''">
                               </v-text-field>
                             </ValidationProvider>
                             <!-- </div> -->
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Gender"
-                              vid="gender"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.system_config.allowance_program.gender"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-select
-                                v-model="data.gender_id"
-                                item-value="id"
-                                outlined
-                                :items="genders"
-                                :item-text="getItemValue"
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক লিঙ্গ প্রদান করুন '
-                                      : 'Please enter Gender'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select v-model="data.gender_id" item-value="id" outlined :items="genders"
+                                :item-text="getItemValue" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক লিঙ্গ প্রদান করুন '
+          : 'Please enter Gender') : ''">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Education Status"
-                              vid="education_status"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.education_status"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-select
-                                v-model="data.education_status"
-                                :item-text="getItemText"
-                                item-value="name_en"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক শিক্ষাগত অবস্থা প্রদান করুন '
-                                      : 'Please enter Educational Status'
-                                    : ''
-                                "
-                                :items="education_status"
-                              >
+                            <ValidationProvider name="Education Status" vid="education_status" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.education_status') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en"
+                                outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক শিক্ষাগত অবস্থা প্রদান করুন '
+          : 'Please enter Educational Status') : ''" :items="education_status">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Profession"
-                              vid="profession"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.profession"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-select
-                                v-model="data.profession"
-                                outlined
-                                clearable
-                                :items="professionType"
-                                :item-text="getItemText"
-                                item-value="name_en"
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক পেশা প্রদান করুন '
-                                      : 'Please enter Profession'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.application_selection.application.profession') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select v-model="data.profession" outlined clearable :items="professionType"
+                                :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পেশা প্রদান করুন '
+          : 'Please enter Profession') : ''">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Identification Mark"
-                              vid="identification_mark"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.identification_mark"
-                                )
-                              }}</label>
-                              <v-text-field
-                                v-model="data.identification_mark"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                            <ValidationProvider name="Identification Mark" vid="identification_mark"
+                              v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.identification_mark') }}</label>
+                              <v-text-field v-model="data.identification_mark" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1025,1243 +503,469 @@
                   <!-- Personal Information end-->
                   <!-- 2nd Expansion panel -->
 
+
                   <!-- 3rd Expansion panel -->
                   <!-- Contact Information -->
                   <v-expansion-panel class="mt-4" v-if="status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
-                      <h3 class="white--text">
-                        {{
-                          $t(
-                            "container.application_selection.application.contact_info"
-                          )
-                        }}
-                      </h3>
+                      <h3 class="white--text">{{ $t('container.application_selection.application.contact_info') }}</h3>
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
+
+
                       <v-row>
                         <v-col cols="12" class="text-center">
-                          <v-chip
-                            color="success"
-                            class="text-uppercase"
-                            label
-                            >{{
-                              $t(
-                                "container.application_selection.application.present_address"
-                              )
-                            }}</v-chip
-                          >
+                          <v-chip color="success" class="text-uppercase" label>{{
+                            $t('container.application_selection.application.present_address') }}</v-chip>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Division"
-                            vid="division"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">
-                              {{
-                                $t(
-                                  "container.system_config.demo_graphic.division.division"
-                                )
-                              }}
+                          <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block"> {{
+                              $t('container.system_config.demo_graphic.division.division') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              @input="onChangeDivision($event)"
-                              v-model="data.division_id"
-                              outlined
-                              :items="divisions"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
-                                    : 'Please enter Division'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
+                              v-model="data.division_id" outlined :items="divisions" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
+          : 'Please enter Division') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="District"
-                            vid="district"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.district.district"
-                                )
-                              }}
+                          <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              v-model="data.district_id"
-                              @input="onChangeDistrict($event)"
-                              :items="districts"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
-                                    : 'Please enter District'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                              @input="onChangeDistrict($event)" :items="districts" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
+          : 'Please enter District') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="location_type"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{ $t("container.list.location_type") }}
+                          <ValidationProvider name="Location Type" vid="location_type" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              @input="LocationType($event)"
-                              v-model="data.location_type"
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              :items="locationType"
-                              :item-text="getItemValue"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
-                                    : 'Please enter Location Type'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select @input="LocationType($event)" v-model="data.location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType"
+                              :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
+          : 'Please enter Location Type') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Upazila"
-                            vid="thana_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.upazila"
-                                )
-                              }}
+                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.thana_id"
-                              outlined
-                              @change="onChangeUpazila($event)"
-                              :items="thanas"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
-                                    : 'Please enter Upazila'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
+                              @change="onChangeUpazila($event)" :items="thanas" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
+          : 'Please enter Upazila') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <label style="display: inline-block"
-                            >{{
-                              $t(
-                                "container.system_config.demo_graphic.ward.subLocation_type"
-                              )
-                            }}
+                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
+                          <label style="display: inline-block">{{
+                            $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider
-                            name="Sub Location"
-                            vid="subLocationType"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-select
-                              @input="onChangeSubLocationType($event)"
-                              v-model="data.sub_location_type"
-                              outlined
-                              :items="subLocationType"
-                              :item-text="getItemValue"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
-                                    : 'Please enter Sub Location'
-                                  : ''
-                              "
-                            ></v-select>
+                          <ValidationProvider name="Sub Location" vid="subLocationType" v-slot="{ errors }"
+                            rules="required">
+                            <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type" outlined
+                              :items="subLocationType" :item-text="getItemValue" item-value="id"
+                              :error="errors[0] ? true : false" :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
+          : 'Please enter Sub Location') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            data.location_type == 2 &&
-                            data.sub_location_type === 2
-                          "
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Union"
-                            vid="union_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.union"
-                                )
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type === 2" cols="6">
+                          <ValidationProvider name="Union" vid="union_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.union')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.union_id"
-                              outlined
-                              @input="onChangeUnion($event)"
-                              :items="unions"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
-                                    : 'Please enter Union'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
+                              @input="onChangeUnion($event)" :items="unions" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
+          : 'Please enter Union') : ''"></v-select>
+
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            data.location_type == 2 &&
-                            data.sub_location_type === 1
-                          "
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Pouroshava"
-                            vid="pouro_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.pouro"
-                                )
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type === 1" cols="6">
+                          <ValidationProvider name="Pouroshava" vid="pouro_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.pouro')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.pouro_id"
-                              @input="onChangePouro($event)"
-                              outlined
-                              :items="pouros"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
-                                    : 'Please enter Pourashava'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
+                              @input="onChangePouro($event)" outlined :items="pouros" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
+          : 'Please enter Pourashava') : ''"></v-select>
                           </ValidationProvider>
+
+
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="City"
-                            vid="city_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.city"
-                                )
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
+                          <ValidationProvider name="City" vid="city_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.city')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.city_id"
-                              @change="onChangeCity($event)"
-                              outlined
-                              :items="cities"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
-                                    : 'Please enter City Corporation'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                              @change="onChangeCity($event)" outlined :items="cities" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
+          : 'Please enter City Corporation') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Thana"
-                            vid="city_thana_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.thana"
-                                )
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.thana')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.city_thana_id"
-                              outlined
-                              @input="OnChangeCityThana($event)"
-                              :items="city_thanas"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
-                                    : 'Please enter Thana'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                              @input="OnChangeCityThana($event)" :items="city_thanas" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
+          : 'Please enter Thana') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Thana"
-                            vid="district_pouro_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.dist_pouro"
-                                )
+                        <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.dist_pouro') }}
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
+                              @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
+          : 'Please enter District Pourashava') : ''"></v-select>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Ward" vid="ward_id_city" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.district_pouro_id"
-                              @input="onChangeDistrictPouro"
-                              outlined
-                              :items="district_poros"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
-                                    : 'Please enter District Pourashava'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
+                              :items="wards_city" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="ward_id_city"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Ward" vid="ward_id_union" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.ward_id_city"
-                              outlined
-                              :items="wards_city"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
+                              :items="wards_upazila_union" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="
-                            data.location_type == 2 &&
-                            data.sub_location_type == 2
-                          "
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="ward_id_union"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Ward" vid="ward_id_union" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
+                              :items="wards_upazila_pouro" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
+                          <ValidationProvider name="Ward" vid="ward_id_dist" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.ward_id_union"
-                              outlined
-                              :items="wards_upazila_union"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col
-                          v-if="
-                            data.location_type == 2 &&
-                            data.sub_location_type == 1
-                          "
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="ward_id_union"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">Ward </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.ward_id_pouro"
-                              outlined
-                              :items="wards_upazila_pouro"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col
-                          v-if="data.location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="6"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="ward_id_dist"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
-                              }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.ward_id_dist"
-                              outlined
-                              :items="wards_dist"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            >
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
+                              :items="wards_dist" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Post Code"
-                            vid="post_code"
-                            rules="CheckPost||required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.post_code"
-                                )
-                              }}
+                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPost||required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.post_code"
-                              type="number"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
-                                    : 'Please enter valid Post Code'
-                                  : ''
-                              "
-                            >
+                            <v-text-field v-model="data.post_code" type="number" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
+          : 'Please enter valid Post Code') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
 
+
+
+
                         <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Village/House No.,
-                                                        Road No., Block No, Section"
-                            vid="address"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.address"
-                                )
-                              }}
+                          <ValidationProvider name="Village/House No.,
+                                                        Road No., Block No, Section" vid="address" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.address') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.address"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              handleCheckboxChangsa
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
-                                    : 'Please enter Village/House No., Road No., Block No, Section'
-                                  : ''
-                              "
-                            >
+                            <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
+                              handleCheckboxChangsa :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
+          : 'Please enter Village/House No., Road No., Block No, Section') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
 
+
                       <v-row>
                         <v-col cols="12" class="text-center">
-                          <v-chip
-                            color="success"
-                            class="text-uppercase"
-                            label
-                            >{{
-                              $t(
-                                "container.application_selection.application.permanent_address"
-                              )
-                            }}</v-chip
-                          >
+                          <v-chip color="success" class="text-uppercase" label>{{
+                            $t('container.application_selection.application.permanent_address') }}</v-chip>
                         </v-col>
                         <v-col cols="12">
-                          <v-checkbox
-                            v-model="checkbox"
-                            :label="
-                              $t(
-                                'container.application_selection.application.same_address'
-                              )
-                            "
-                            @change="handleCheckboxChange"
-                          ></v-checkbox>
+                          <v-checkbox v-model="checkbox"
+                            :label="$t('container.application_selection.application.same_address')"
+                            @change="handleCheckboxChange"></v-checkbox>
                         </v-col>
 
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Division"
-                            vid="permanent_division"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.division.division"
-                                )
-                              }}
+                          <ValidationProvider name="Division" vid="permanent_division" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.division.division') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              @input="permanent_onChangeDivision($event)"
-                              v-model="data.permanent_division_id"
-                              outlined
-                              :items="permanent_divisions"
-                              :item-text="getItemText"
-                              item-value="id"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
-                                    : 'Please enter Division'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true"
+                              @input="permanent_onChangeDivision($event)" v-model="data.permanent_division_id" outlined
+                              :items="permanent_divisions" :item-text="getItemText" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
+          : 'Please enter Division') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="District"
-                            vid="permanent_district"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.district.district"
-                                )
-                              }}
+                          <ValidationProvider name="District" vid="permanent_district" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              v-model="data.permanent_district_id"
-                              @input="permanent_onChangeDistrict($event)"
-                              :items="permanent_districts"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
-                                    : 'Please enter District'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" outlined
+                              v-model="data.permanent_district_id" @input="permanent_onChangeDistrict($event)"
+                              :items="permanent_districts" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
+          : 'Please enter District') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="permanent_location_type"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{ $t("container.list.location_type") }}
+                          <ValidationProvider name="Location Type" vid="permanent_location_type" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              @input="permanent_LocationType($event)"
-                              v-model="data.permanent_location_type"
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              :items="locationType"
-                              :item-text="getItemValue"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
-                                    : 'Please enter Location Type'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType"
+                              :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
+          : 'Please enter Location Type') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Upazila"
-                            vid="permanent_thana_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.upazila"
-                                )
-                              }}
+                        <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Upazila" vid="permanent_thana_id" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_thana_id"
-                              outlined
-                              @change="permanent_onChangeUpazila($event)"
-                              :items="permanent_thanas"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
-                                    : 'Please enter Upazila'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
+                              outlined @change="permanent_onChangeUpazila($event)" :items="permanent_thanas"
+                              :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
+          : 'Please enter Upazila') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 2"
-                          cols="6"
-                        >
-                          <label style="display: inline-block">
-                            {{
-                              $t(
-                                "container.system_config.demo_graphic.ward.subLocation_type"
-                              )
-                            }}
+                        <v-col v-if="data.permanent_location_type == 2" cols="6">
+                          <label style="display: inline-block"> {{
+                            $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider
-                            name="Sub Location"
-                            vid="subLocationTypePermanent"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-select
-                              @input="onChangeSubLocationTypePermanent($event)"
-                              v-model="data.permanent_sub_location_type"
-                              outlined
-                              :items="subLocationType"
-                              :item-text="getItemValue"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
-                                    : 'Please enter Sub Location'
-                                  : ''
-                              "
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                            ></v-select>
+                          <ValidationProvider name="Sub Location" vid="subLocationTypePermanent" v-slot="{ errors }"
+                            rules="required">
+                            <v-select @input="onChangeSubLocationTypePermanent($event)"
+                              v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
+                              :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
+          : 'Please enter Sub Location') : ''" :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            data.permanent_location_type === 2 &&
-                            data.permanent_sub_location_type === 2
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Union"
-                            vid="permanent_union_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.union"
-                                )
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2"
+                          lg="6" md="6" cols="12">
+                          <ValidationProvider name="Union" vid="permanent_union_id" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.union')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_union_id"
-                              @input="permanent_onChangeUnion($event)"
-                              outlined
-                              :items="permanent_unions"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
-                                    : 'Please enter Union'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
+                              @input="permanent_onChangeUnion($event)" outlined :items="permanent_unions"
+                              :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
+          : 'Please enter Union') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="
-                            data.permanent_location_type === 2 &&
-                            data.permanent_sub_location_type === 1
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Pouroshava"
-                            vid="permanent_pouro_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.pouro"
-                                )
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1"
+                          lg="6" md="6" cols="12">
+                          <ValidationProvider name="Pouroshava" vid="permanent_pouro_id" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.pouro')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_pouro_id"
-                              @input="Permanent_onChangePouro($event)"
-                              outlined
-                              :items="permanent_pouros"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
-                                    : 'Please enter Pourashava'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
+                              @input="Permanent_onChangePouro($event)" outlined :items="permanent_pouros"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
+          : 'Please enter Pourashava') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="City"
-                            vid="permanent_city_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">City </label>
+                        <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="City" vid="permanent_city_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">City
+                            </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_city_id"
-                              @change="permanent_onChangeCity($event)"
-                              outlined
-                              :items="permanent_cities"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
-                                    : 'Please enter City Corporation'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
+                              @change="permanent_onChangeCity($event)" outlined :items="permanent_cities"
+                              :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
+          : 'Please enter City Corporation') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Thana"
-                            vid="permanent_city_thana_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.thana"
-                                )
+                        <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Thana" vid="permanent_city_thana_id" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.thana')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              @input="Permanent_OnChangeCityThana($event)"
-                              v-model="data.permanent_city_thana_id"
-                              outlined
-                              :items="permanent_city_thanas"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
-                                    : 'Please enter Thana'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true"
+                              @input="Permanent_OnChangeCityThana($event)" v-model="data.permanent_city_thana_id"
+                              outlined :items="permanent_city_thanas" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
+          : 'Please enter Thana') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="District Pourashava"
-                            vid="permanent_district_pouro_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.dist_pouro"
-                                )
+                        <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
+                          <ValidationProvider name="District Pourashava" vid="permanent_district_pouro_id"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.dist_pouro') }}
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select :hide-details="errors[0] ? false : true" @input="Permanent_onChangeDistrictPouro"
+                              v-model="data.permanent_district_pouro_id" outlined :items="permanent_district_poros"
+                              :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
+          : 'Please enter District Pourashava') : ''"></v-select>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_city" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
+                              outlined :items="permanent_wards_city" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_dist" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              @input="Permanent_onChangeDistrictPouro"
-                              v-model="data.permanent_district_pouro_id"
-                              outlined
-                              :items="permanent_district_poros"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
-                                    : 'Please enter District Pourashava'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
+                              outlined :items="permanent_wards_dist" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="permanent_ward_id_city"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">Ward </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_ward_id_city"
-                              outlined
-                              :items="permanent_wards_city"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="permanent_ward_id_dist"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2"
+                          lg="6" md="6" cols="12">
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_upazila" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_ward_id_dist"
-                              outlined
-                              :items="permanent_wards_dist"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_union"
+                              outlined :items="permanent_wards_upazila_union" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="
-                            data.permanent_location_type === 2 &&
-                            data.permanent_sub_location_type === 2
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="permanent_ward_id_upazila"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1"
+                          lg="6" md="6" cols="12">
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_upazila" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_ward_id_union"
-                              outlined
-                              :items="permanent_wards_upazila_union"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col
-                          v-if="
-                            data.permanent_location_type === 2 &&
-                            data.permanent_sub_location_type === 1
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Ward"
-                            vid="permanent_ward_id_upazila"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.ward"
-                                )
-                              }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              :hide-details="errors[0] ? false : true"
-                              v-model="data.permanent_ward_id_pouro"
-                              outlined
-                              :items="permanent_wards_upazila_pouro"
-                              :item-text="getItemText"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
-                                    : 'Please enter Ward'
-                                  : ''
-                              "
-                            ></v-select>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_pouro"
+                              outlined :items="permanent_wards_upazila_pouro" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Post Code"
-                            vid="permanent_post_code"
-                            rules="CheckPost||required"
-                            type="number"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.post_code"
-                                )
-                              }}
+                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost||required"
+                            type="number" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.permanent_post_code"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
-                                    : 'Please enter valid Post Code'
-                                  : ''
-                              "
-                            >
+                            <v-text-field v-model="data.permanent_post_code" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
+          : 'Please enter valid Post Code') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Village/House No.,
-                                                Road No., Block No, Section"
-                            vid="permanent_address"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.system_config.demo_graphic.ward.address"
-                                )
-                              }}
+                          <ValidationProvider name="Village/House No.,
+                                                Road No., Block No, Section" vid="permanent_address" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.system_config.demo_graphic.ward.address') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.permanent_address"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
-                                    : 'Please enter Village/House No., Road No., Block No, Section'
-                                  : ''
-                              "
-                            >
+                            <v-text-field v-model="data.permanent_address" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
+          : 'Please enter Village/House No., Road No., Block No, Section') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -2277,14 +981,8 @@
                         <v-icon color="white">$expand</v-icon>
                       </template>
                       <h3 class="white--text">
-                        {{
-                          language == "bn"
-                            ? programName.name_bn
-                            : programName.name_en
-                        }}
-                        {{
-                          $t("container.application_selection.application.info")
-                        }}
+                        {{ language == 'bn' ? programName.name_bn : programName.name_en }} {{
+                        $t('container.application_selection.application.info') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -2339,346 +1037,165 @@
                               </div>
                             </v-col>
                           </template> -->
-                          <v-col
-                            v-for="(
+                          <v-col v-for="(
                               fields, index
-                            ) in programDetails.additional_field"
-                            :key="index"
-                            cols="6"
-                            lg="6"
-                          >
+                            ) in programDetails.additional_field" :key="index" cols="6" lg="6">
+
+
                             <template v-if="fields.type == 'number'">
                               <v-row v-if="fields.verified === 1">
                                 <v-col cols="8" lg="8">
-                                  <label>
-                                    {{
-                                      language == "bn"
-                                        ? fields.name_bn
-                                        : fields.name_en
-                                    }}
-                                    <span
-                                      style="
-                                        margin-left: 4px;
-                                        margin-right: 4px;
-                                        color: red;
-                                      "
-                                      >*</span
-                                    ></label
-                                  >
-                                  <ValidationProvider
-                                    :name="fields.name_en"
-                                    :vid="
-                                      'application_allowance_values' + index
-                                    "
-                                    rules="required"
-                                    v-slot="{ errors }"
-                                  >
-                                    <v-text-field
-                                      v-model="
-                                        data.application_allowance_values[index]
-                                          .value
-                                      "
-                                      :hide-details="errors[0] ? false : true"
-                                      :error="errors[0] ? true : false"
-                                      :error-messages="
-                                        errors[0] ? getErrorMessage(fields) : ''
-                                      "
-                                      type="number"
-                                      outlined
-                                    >
-                                    </v-text-field>
-                                  </ValidationProvider>
-                                </v-col>
-                                <v-col cols="4" lg="4" class="text-right">
-                                  <v-btn
-                                    class="btn mt-5"
-                                    color="primary"
-                                    style="height: 56px"
-                                    :disabled="
-                                      data.application_allowance_values[index]
-                                        .value == null
-                                    "
-                                    >{{ $t("container.list.verify") }}</v-btn
-                                  >
-                                </v-col>
-                              </v-row>
-                              <template v-if="fields.verified === 0">
-                                <label>
-                                  {{
-                                    language == "bn"
-                                      ? fields.name_bn
-                                      : fields.name_en
-                                  }}
-                                  <span
-                                    style="
-                                      margin-left: 4px;
-                                      margin-right: 4px;
-                                      color: red;
-                                    "
-                                    >*</span
-                                  ></label
-                                >
-                                <ValidationProvider
-                                  :name="fields.name_en"
-                                  :vid="'application_allowance_values' + index"
-                                  rules="required"
-                                  v-slot="{ errors }"
-                                >
-                                  <v-text-field
-                                    v-model="
-                                      data.application_allowance_values[index]
-                                        .value
-                                    "
-                                    :hide-details="errors[0] ? false : true"
-                                    :error="errors[0] ? true : false"
-                                    :error-messages="
-                                      errors[0] ? getErrorMessage(fields) : ''
-                                    "
-                                    type="number"
-                                    outlined
-                                  >
-                                  </v-text-field>
-                                </ValidationProvider>
-                              </template>
-                            </template>
-                            <template v-if="fields.type == 'dropdown'">
-                              <label>
-                                {{
-                                  language == "bn"
-                                    ? fields.name_bn
-                                    : fields.name_en
-                                }}
-                                <span
-                                  style="
+                                  <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}
+                                    <span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  outlined
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .allowance_program_additional_field_values_id
-                                  "
-                                  :items="
-                                    fields.name_en == 'Class'
-                                      ? classes
-                                      : fields.additional_field_value
-                                  "
-                                  item-value="id"
-                                  :item-text="
-                                    fields.name_en == 'Class'
-                                      ? 'value_en'
-                                      : 'value'
-                                  "
-                                >
+                                  ">*</span></label>
+                                  <ValidationProvider :name="fields.name_en"
+                                    :vid="'application_allowance_values' + index" rules="required" v-slot="{ errors }">
+                                    <v-text-field v-model="data.application_allowance_values[index]
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                      :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
+                                    </v-text-field>
+                                  </ValidationProvider>
+
+                                </v-col>
+                                <v-col cols="4" lg="4" class="text-right">
+                                  <v-btn class="btn mt-5" color="primary" style="height: 56px;" :disabled="data.application_allowance_values[index]
+          .value == null">{{ $t('container.list.verify') }}</v-btn>
+
+                                </v-col>
+                              </v-row>
+                              <template v-if="fields.verified === 0">
+                                <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}
+                                  <span style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  ">*</span></label>
+                                <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                  rules="required" v-slot="{ errors }">
+                                  <v-text-field v-model="data.application_allowance_values[index]
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                    :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
+                                  </v-text-field>
+                                </ValidationProvider>
+
+                              </template>
+
+
+
+
+                            </template>
+                            <template v-if="fields.type == 'dropdown'">
+                              <label>
+
+                                {{ language == 'bn' ? fields.name_bn : fields.name_en }}
+                                <span style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
+          .allowance_program_additional_field_values_id
+          " :items="fields.name_en == 'Class'
+          ? classes
+          : fields.additional_field_value
+          " item-value="id" :item-text="fields.name_en == 'Class'
+          ? 'value_en'
+          : 'value'
+          ">
                                 </v-select>
                               </ValidationProvider>
                             </template>
 
                             <template v-if="fields.type == 'checkbox'">
-                              <label>
-                                {{
-                                  language == "bn"
-                                    ? fields.name_bn
-                                    : fields.name_en
-                                }}<span
-                                  style="
+                              <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  multiple
-                                  :hide-details="errors[0] ? false : true"
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
+                                <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  outlined
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .allowance_program_additional_field_values_id
-                                  "
-                                  :items="fields.additional_field_value"
-                                  item-value="id"
-                                  item-text="value"
-                                >
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
+          .allowance_program_additional_field_values_id
+          " :items="fields.additional_field_value" item-value="id" item-text="value">
                                 </v-select>
                               </ValidationProvider>
                             </template>
                             <template v-if="fields.type == 'file'">
-                              <label>
-                                {{
-                                  language == "bn"
-                                    ? fields.name_bn
-                                    : fields.name_en
-                                }}<span
-                                  style="
+
+                              <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                v-slot="{ errors }"
-                              >
-                                <v-file-input
-                                  :placeholder="
-                                    language == 'bn'
-                                      ? 'ফাইল নির্বাচন করুন '
-                                      : 'Choose File'
-                                  "
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .value
-                                  "
-                                  @change="addPreviewFile($event, index)"
-                                  placeholder="Select your files"
-                                  prepend-icon
-                                  prepend-outer-icon="mdi-paperclip"
-                                  outlined
-                                  :hide-details="errors[0] ? false : true"
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                v-slot="{ errors }">
+                                <v-file-input :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
+          : 'Choose File'" v-model="data.application_allowance_values[index]
+          .value
+          " @change="addPreviewFile($event, index)" placeholder="Select your files" prepend-icon
+                                  prepend-outer-icon="mdi-paperclip" outlined :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  :show-size="1000"
-                                >
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" :show-size="1000">
                                 </v-file-input>
                               </ValidationProvider>
                             </template>
 
+
                             <template v-if="fields.type == 'date'">
-                              <label>
-                                {{
-                                  language == "bn"
-                                    ? fields.name_bn
-                                    : fields.name_en
-                                }}<span
-                                  style="
+                              <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .value
-                                  "
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  type="date"
-                                  outlined
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
+                                <v-text-field v-model="data.application_allowance_values[index]
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="date" outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
                             <template v-if="fields.type == 'disabled'">
-                              <label
-                                >{{ fields.name_en
-                                }}<span
-                                  style="
+                              <label>{{ fields.name_en
+                                }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .value
-                                  "
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  disabled
-                                  type="text"
-                                  outlined
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
+                                <v-text-field v-model="data.application_allowance_values[index]
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" disabled type="text"
+                                  outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
                             <template v-if="fields.type == 'text'">
-                              <label
-                                >{{ fields.name_en
-                                }}<span
-                                  style="
+                              <label>{{ fields.name_en
+                                }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="fields.name_en"
-                                :vid="'application_allowance_values' + index"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  v-model="
-                                    data.application_allowance_values[index]
-                                      .value
-                                  "
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(fields) : ''
-                                  "
-                                  type="text"
-                                  outlined
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
+                                <v-text-field v-model="data.application_allowance_values[index]
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="text" outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
@@ -2695,141 +1212,58 @@
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
-                      <h3 class="white--text">
-                        {{
-                          $t("container.application_selection.application.bank")
-                        }}
-                      </h3>
+                      <h3 class="white--text">{{ $t('container.application_selection.application.bank') }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Account Name"
-                            :vid="'application_allowance_values' + index"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">
-                              {{
-                                $t(
-                                  "container.application_selection.application.account_name"
-                                )
-                              }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.account_name"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="6" lg="6">
-                          <v-radio-group v-model="data.account_type" row>
-                            {{
-                              $t(
-                                "container.application_selection.application.account_type"
-                              )
-                            }}
 
-                            <span
-                              style="
-                                margin-left: 4px;
-                                margin-right: 4px;
-                                color: red;
-                              "
-                              >*</span
-                            >
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.bank_account'
-                                )
-                              "
-                              :value="1"
-                            ></v-radio>
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.mobile_account'
-                                )
-                              "
-                              :value="2"
-                            ></v-radio>
-                          </v-radio-group>
+                        <v-col cols="6" lg="6">
+                          <!-- <ValidationProvider name="Account_type" vid="account_type" rules="required"
+                            v-slot="{ errors }"> -->
+                            <v-radio-group v-model="data.account_type" row  id="account_type">
+                              {{ $t('container.application_selection.application.account_type') }}
+
+                              <span style="
+                              margin-left: 4px;
+                              margin-right: 4px;
+                              color: red;
+                            ">*</span>
+                              <v-radio :label="$t('container.application_selection.application.bank_account')"
+                                :value="1"></v-radio>
+                              <v-radio :label="$t('container.application_selection.application.mobile_account')"
+                                :value="2"></v-radio>
+                            </v-radio-group>
+                            <!-- <span v-if="errors[0]" style="color: red;">{{ errors[0] }}</span> -->
+                          <!-- </ValidationProvider> -->
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider
-                            name="Mobile Number Ownership"
-                            vid="account_owner"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block">
-                              {{
-                                $t(
-                                  "container.application_selection.application.mobile_ownership"
-                                )
-                              }}
+                          <ValidationProvider name="Mobile Number Ownership" vid="account_owner" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block"> {{
+  $t('container.application_selection.application.mobile_ownership') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
 
-                            <v-select
-                              v-model="data.account_owner"
-                              outlined
-                              clearable
-                              :items="mobile_ownership"
-                              :item-text="getItemText"
-                              item-value="name_en"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক মোবাইল নম্বরের মালিকানা প্রদান করুন '
-                                    : 'Please enter Mobile Number ownership'
-                                  : ''
-                              "
-                            >
+                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মোবাইল নম্বরের মালিকানা প্রদান করুন '
+          : 'Please enter Mobile Number ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider
-                            name=" Bank Account Ownership"
-                            vid="bank_account_owner"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.application_selection.application.account_ownership"
-                                )
-                              }}
+                          <ValidationProvider name=" Bank Account Ownership" vid="bank_account_owner" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.account_ownership') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
 
-                            <v-select
-                              v-model="data.account_owner"
-                              outlined
-                              clearable
-                              :items="mobile_ownership"
-                              :item-text="getItemText"
-                              item-value="name_en"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্টের মালিকানা প্রদান করুন '
-                                    : 'Please enter Bank Account ownership'
-                                  : ''
-                              "
-                            >
+                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্টের মালিকানা প্রদান করুন '
+          : 'Please enter Bank Account ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -2844,179 +1278,106 @@
 
                           </v-select>
                         </v-col> -->
+                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
+                          <ValidationProvider rules="required" name="MFS name" vid="mfs_name" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.mfs_name') }} </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-select v-model="data.mfs_name" @change="changeMfs" outlined clearable
+                              :error="errors[0] ? true : false" :items="mfs_names" :item-text="getItemText"
+                              item-value="name_en" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এমএফএস নাম প্রদান করুন'
+          : 'Please enter MFS Name') : ''">
+                            </v-select>
+                          </ValidationProvider>
+                        </v-col>
+
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider
-                            rules="checkNumberMobile||required"
-                            name="Mobile Number"
-                            vid="account_number"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.application_selection.application.mobile"
-                                )
-                              }} </label
-                            ><span style="margin-left: 4px; color: red">*</span>
-
-                            <v-text-field
-                              v-model="data.account_number"
-                              outlined
-                              type="number"
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক মোবাইল নম্বর প্রদান করুন '
-                                    : 'Please enter Mobile Number'
-                                  : ''
-                              "
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider
-                            rules="required"
-                            name="Bank name"
-                            vid="bank_name"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.application_selection.application.bank_name"
-                                )
-                              }} </label
-                            ><span style="margin-left: 4px; color: red">*</span>
-
-                            <v-text-field
-                              v-model="data.bank_name"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
-                                    : 'Please enter Bank Name'
-                                  : ''
-                              "
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-
-                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider
-                            rules="required"
-                            name="Branch name"
-                            vid="branch_name"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider rules="checkNumberMobile||required" name="Mobile Number"
+                            vid="account_number" v-slot="{ errors }">
                             <label style="display: inline-block">{{
-                              $t(
-                                "container.application_selection.application.branch_name"
-                              )
-                            }}</label
-                            ><span style="margin-left: 4px; color: red">*</span>
+                              $t('container.application_selection.application.mobile') }} </label><span
+                              style="margin-left: 4px; color: red">*</span>
 
-                            <v-text-field
-                              v-model="data.branch_name"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক শাখার নাম প্রদান করুন '
-                                    : 'Please enter Branch Name'
-                                  : ''
-                              "
-                            >
+                            <v-text-field v-model="data.account_number" outlined type="number" clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মোবাইল নম্বর প্রদান করুন '
+          : 'Please enter Mobile Number') : ''">
+                            </v-text-field>
+                          </ValidationProvider>
+
+                        </v-col>
+
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.bank_name') }} </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-select v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
+                              :items="bank_names" @change="changeBank" :item-text="getItemText" item-value="name_en"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন' : 'Please enter Bank Name') : ''">
+                            </v-select>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider rules="required" name="Branch name" vid="branch_name" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.branch_name') }}</label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-text-field v-model="data.branch_name" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক শাখার নাম প্রদান করুন '
+          : 'Please enter Branch Name') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider
-                            rules="required"
-                            name="Bank Account number"
-                            vid="bank_account_number"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.application_selection.application.bank_account_number"
-                                )
-                              }} </label
-                            ><span style="margin-left: 4px; color: red">*</span>
+                          <ValidationProvider rules="required" name="Bank Account number" vid="bank_account_number"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.bank_account_number') }} </label><span
+                              style="margin-left: 4px; color: red">*</span>
 
-                            <v-text-field
-                              v-model="data.account_number"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্ট নম্বর প্রদান করুন '
-                                    : 'Please enter Bank Account Number'
-                                  : ''
-                              "
-                              type="number"
-                            >
+                            <v-text-field v-model="data.account_number" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্ট নম্বর প্রদান করুন '
+          : 'Please enter Bank Account Number') : ''" type="number">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block"> {{
+                              $t('container.application_selection.application.account_name') }}
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field v-model="data.account_name" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Email"
-                            vid="Email"
-                            rules="email"
-                            v-slot="{ errors }"
-                          >
-                            <label style="display: inline-block"
-                              >{{
-                                $t(
-                                  "container.application_selection.application.email"
-                                )
-                              }}
-                            </label>
+                          <ValidationProvider name="Email" vid="Email" rules="email" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.email') }} </label>
 
-                            <v-text-field
-                              v-model="data.email"
-                              outlined
-                              clearable
-                              type="email"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language == 'bn'
-                                    ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
-                                    : 'Please valid enter Email'
-                                  : ''
-                              "
-                            >
+
+                            <v-text-field v-model="data.email" outlined clearable type="email"
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+          : 'Please valid enter Email') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
                       <p class="red--text mt-2" v-if="data.account_type == 2">
-                        {{
-                          $t(
-                            "container.application_selection.application.mobile_alert"
-                          )
-                        }}
+                        {{ $t('container.application_selection.application.mobile_alert') }}
+
                       </p>
                       <p class="red--text mt-2" v-if="data.account_type == 1">
-                        {{
-                          $t(
-                            "container.application_selection.application.bank_alert"
-                          )
-                        }}
+                        {{ $t('container.application_selection.application.bank_alert') }}
+
                       </p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -3024,17 +1385,12 @@
                   <!-- Expansion panel 5 End -->
                   <!-- Nominee Information -->
                   <v-expansion-panel class="mb-4" v-if="status_code == 200">
+
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
-                      <h3 class="white--text">
-                        {{
-                          $t(
-                            "container.application_selection.application.nominee_info"
-                          )
-                        }}
-                      </h3>
+                      <h3 class="white--text"> {{ $t('container.application_selection.application.nominee_info') }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
@@ -3042,43 +1398,23 @@
                           <v-col cols="12" lg="12">
                             <v-card class="validation_error_nominee">
                               <v-card-text>
+
+
                                 <v-row>
                                   <v-col cols="4" lg="4">
-                                    <ValidationProvider
-                                      name="National Identity (NID) / Birth Registration Number"
-                                      rules="checkNumberNominee||required"
-                                      vid="nominee_verification_number"
-                                      v-slot="{ errors }"
-                                    >
-                                      <label>{{
-                                        $t(
-                                          "container.application_selection.application.nid_brn"
-                                        )
-                                      }}</label>
-                                      <span style="margin-left: 4px; color: red"
-                                        >*</span
-                                      >
-                                      <v-text-field
-                                        v-model="
-                                          data.nominee_verification_number
-                                        "
-                                        outlined
-                                        @keyup="checkLengthAndVerify()"
-                                        @change="checkNum()"
-                                        clearable
-                                        type="text"
-                                        :error="errors[0] ? true : false"
-                                        :error-messages="
-                                          errors[0]
-                                            ? language == 'bn'
-                                              ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
-                                              : 'Please enter verification number with either 10 or 17 digit'
-                                            : ''
-                                        "
-                                      >
+                                    <ValidationProvider name="National Identity (NID) / Birth Registration Number"
+                                      rules="checkNumberNominee||required" vid="nominee_verification_number"
+                                      v-slot="{ errors }">
+                                      <label>{{ $t('container.application_selection.application.nid_brn') }}</label>
+                                      <span style="margin-left: 4px; color: red">*</span>
+                                      <v-text-field v-model="data.nominee_verification_number" outlined
+                                        @keyup="checkLengthAndVerify()" @change="checkNum()" clearable type="text"
+                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
+          : 'Please enter verification number with either 10 or 17 digit') : ''">
                                       </v-text-field>
                                     </ValidationProvider>
                                   </v-col>
+
 
                                   <!-- 
                                   <v-col cols="2">
@@ -3116,336 +1452,147 @@
 
                                   </v-col> -->
                                   <v-col cols="4">
-                                    <label
-                                      >{{
-                                        $t(
-                                          "container.application_selection.application.date_of_birth"
-                                        )
-                                      }}
+
+                                    <label>{{ $t('container.application_selection.application.date_of_birth') }}
                                     </label>
-                                    <span style="margin-left: 4px; color: red"
-                                      >*</span
-                                    >
-                                    <ValidationProvider
-                                      name=" Nominee Date of Birth"
-                                      vid="nominee_date_of_birth"
-                                      v-slot="{ errors }"
-                                      rules="required"
-                                    >
-                                      <v-text-field
-                                        v-model="data.nominee_date_of_birth"
-                                        type="date"
-                                        :value="formattedDateNominee"
-                                        outlined
-                                      ></v-text-field>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <ValidationProvider name=" Nominee Date of Birth" vid="nominee_date_of_birth"
+                                      v-slot="{ errors }" rules="required">
+
+                                      <v-text-field v-model="data.nominee_date_of_birth" type="date"
+                                        :value="formattedDateNominee" outlined></v-text-field>
                                     </ValidationProvider>
+
+
+
+
                                   </v-col>
+
+
+
 
                                   <v-col cols="4" class="d-flex justify-end">
-                                    <v-btn
-                                      @click="verifyNomineeCard()"
-                                      elevation="2"
-                                      id="verify-button"
-                                      :disabled="
-                                        data.nominee_verification_number ==
-                                          null ||
-                                        data.nominee_date_of_birth == ''
-                                      "
-                                      class="btn mt-10 text-right"
-                                      color="primary"
-                                      >{{ $t("container.list.verify") }}</v-btn
-                                    >
+
+                                    <v-btn @click="verifyNomineeCard()" elevation="2" id="verify-button"
+                                      :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
+                                      class="btn mt-10 text-right" color="primary">{{ $t('container.list.verify')
+                                      }}</v-btn>
+
                                   </v-col>
                                 </v-row>
+
                               </v-card-text>
                             </v-card>
+
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (BN)"
-                              vid="nominee_bn"
-                              rules="required||bangla"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.name_bn"
-                                  )
-                                }}
-                              </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_bn"
-                                outlined
-                                clearable
+                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn"
+                              rules="required||bangla_character" v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.application_selection.application.name_bn') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_bn" outlined clearable
                                 :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন' : 'Please enter Full Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (EN)"
-                              vid="nominee_en"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Nominee Name (EN)" vid="nominee_en" rules="required"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.application_selection.application.name_en') }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_en"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
-                                      : 'Please enter Full Name (Bangla)'
-                                    : ''
-                                "
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_en" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
+          : 'Please enter Full Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
 
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Natinality"
-                              readonly
-                              vid="nominee_nationality"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.application_selection.application.nationality"
-                                  )
-                                }}
-                              </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_nationality"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Full Name (English)'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Nominee Natinality" readonly vid="nominee_nationality"
+                              v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.application_selection.application.nationality') }} </label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_nationality" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
+          : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation_error_gender_type">
-                              <ValidationProvider
-                                name="Relationship with beneficiary"
-                                vid="nominee_relation_with_beneficiary"
-                                v-slot="{ errors }"
-                                rules="required"
-                              >
-                                <label>{{
-                                  $t(
-                                    "container.application_selection.application.relationship"
-                                  )
-                                }}</label>
-                                <span style="margin-left: 4px; color: red"
-                                  >*</span
-                                >
-                                <v-select
-                                  v-model="
-                                    data.nominee_relation_with_beneficiary
-                                  "
-                                  outlined
-                                  item-value="name_en"
-                                  :items="relations_with_bef"
-                                  :item-text="getItemText"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0]
-                                      ? language == 'bn'
-                                        ? 'অনুগ্রহ পূর্বক নমিনীর সাথে সম্পর্ক প্রদান করুন '
-                                        : 'Please enter Relationship with Nominee'
-                                      : ''
-                                  "
-                                >
+                              <ValidationProvider name="Relationship with beneficiary"
+                                vid="nominee_relation_with_beneficiary" v-slot="{ errors }" rules="required">
+                                <label>{{ $t('container.application_selection.application.relationship') }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-select v-model="data.nominee_relation_with_beneficiary" outlined item-value="name_en"
+                                  :items="relations_with_bef" :item-text="getItemText" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক নমিনীর সাথে সম্পর্ক প্রদান করুন '
+          : 'Please enter Relationship with Nominee') : ''">
                                 </v-select>
                               </ValidationProvider>
                             </div>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <v-img
-                              :src="nomineeImageUrl"
-                              style="
-                                width: 150px;
-                                height: 150px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="nomineeImageUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/profile.png"
-                              v-if="!nomineeImageUrl"
-                              style="
-                                width: 200px;
-                                height: 200px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
+                            <v-img :src="nomineeImageUrl" style="
+                                    width: 150px;
+                                    height: 150px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="nomineeImageUrl"></v-img>
+                            <v-img src="/assets/images/profile.png" v-if="!nomineeImageUrl" style="
+                                    width: 200px;
+                                    height: 200px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
 
-                            <label
-                              >{{
-                                $t(
-                                  "container.application_selection.application.image"
-                                )
-                              }}
-                              ({{
-                                $t(
-                                  "container.application_selection.application.image_alert"
-                                )
-                              }})</label
-                            >
+                            <label>{{ $t('container.application_selection.application.image') }} ({{
+                              $t('container.application_selection.application.image_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Image"
-                              rules="required"
-                              vid="nominee_image"
-                            >
-                              <v-file-input
-                                :placeholder="
-                                  language == 'bn'
-                                    ? 'ফাইল নির্বাচন করুন '
-                                    : 'Choose File'
-                                "
-                                outlined
-                                show-size
-                                counter
-                                prepend-outer-icon="mdi-camera"
-                                v-model="data.nominee_image"
-                                accept="image/*"
-                                @change="previewImageNominee"
-                                prepend-icon=""
-                                id="nominee_image"
-                              ></v-file-input>
+                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="nominee_image">
+                              <v-file-input :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
+          : 'Choose File'" outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.nominee_image"
+                                accept="image/*" @change="previewImageNominee" prepend-icon=""
+                                id="nominee_image"></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
-                            <v-img
-                              :src="nomineeSignUrl"
-                              style="
-                                width: 150px;
-                                height: 80px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="nomineeSignUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/sign.png"
-                              v-if="!nomineeSignUrl"
-                              style="
-                                width: 200px;
-                                height: 80px;
-                                border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
+                            <v-img :src="nomineeSignUrl" style="
+                                    width: 150px;
+                                    height: 80px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="nomineeSignUrl"></v-img>
+                            <v-img src="/assets/images/sign.png" v-if="!nomineeSignUrl" style="
+                                    width: 200px;
+                                    height: 80px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
 
-                            <label
-                              >{{
-                                $t(
-                                  "container.application_selection.application.signature"
-                                )
-                              }}
-                              ({{
-                                $t(
-                                  "container.application_selection.application.signature_alert"
-                                )
-                              }})</label
-                            >
+                            <label>{{ $t('container.application_selection.application.signature') }} ({{
+                              $t('container.application_selection.application.signature_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Signature"
-                              rules="required"
-                              vid="nominee_signature"
-                            >
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-outer-icon="mdi-camera"
-                                v-model="data.nominee_signature"
-                                accept="image/*"
-                                @change="previewSignNominee"
-                                :placeholder="
-                                  language == 'bn'
-                                    ? 'ফাইল নির্বাচন করুন'
-                                    : 'Choose File'
-                                "
-                                prepend-icon=""
-                                id="nominee_signature"
-                              ></v-file-input>
+                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="required"
+                              vid="nominee_signature">
+
+                              <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
+                                v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
+                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন' : 'Choose File'" prepend-icon=""
+                                id="nominee_signature"></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="12" lg="12">
-                            <v-checkbox
-                              v-model="checkboxNomineeAddress"
-                              @change="handleNomineeCheckboxChange"
-                              :label="
-                                $t(
-                                  'container.application_selection.application.same_address'
-                                )
-                              "
-                            ></v-checkbox>
+                            <v-checkbox v-model="checkboxNomineeAddress" @change="handleNomineeCheckboxChange"
+                              :label="$t('container.application_selection.application.same_address')"></v-checkbox>
                           </v-col>
                           <v-col cols="12" lg="12">
-                            <ValidationProvider
-                              name="Address of Nominee"
-                              vid="nominee_address"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.nominee_address"
-                                )
-                              }}</label>
-                              <v-textarea
-                                v-model="data.nominee_address"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
-                                      : 'Please enter Address'
-                                    : ''
-                                "
-                              ></v-textarea>
+                            <ValidationProvider name="Address of Nominee" vid="nominee_address" v-slot="{ errors }"
+                              rules="required">
+                              <label>{{ $t('container.application_selection.application.nominee_address') }}</label>
+                              <v-textarea v-model="data.nominee_address" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
+          : 'Please enter Address') : ''"></v-textarea>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -3455,251 +1602,140 @@
                   <!-- Nominee Information End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel
-                    class="mb-4"
-                    v-if="pmt_status == 1 && status_code == 200"
-                  >
+                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1 && status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
                       </template>
                       <h3 class="white--text">
-                        {{
-                          $t(
-                            "container.application_selection.application.eligiblity_info"
-                          )
-                        }}
+                        {{ $t('container.application_selection.application.eligiblity_info') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
-                          <v-col
-                            v-for="(variables, indexPMT) in PMTVariables"
-                            cols="6"
-                            lg="6"
-                            :key="indexPMT"
-                          >
+                          <v-col v-for="(variables, indexPMT) in PMTVariables" cols="6" lg="6" :key='indexPMT'>
                             <template v-if="variables.children.length == 0">
                               <label>
                                 <!-- {{ variables.name_en }} -->
-                                {{
-                                  language === "bn"
-                                    ? variables.name_bn
-                                    : variables.name_en
-                                }}
-                                <span
-                                  style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                :vid="'application_pmt_' + indexPMT"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(variables) : ''
-                                  "
-                                  outlined
-                                  required
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="[
-                                    {
-                                      id: variables.id,
-                                      name_en: 'Yes',
-                                      name_bn: 'হ্যাঁ',
-                                    },
-                                    {
-                                      id: 0,
-                                      name_en: 'No',
-                                      name_bn: 'না',
-                                    },
-                                  ]"
-                                  item-value="id"
-                                  :item-text="getItemText"
-                                >
+                                {{ language === 'bn' ? variables.name_bn : variables.name_en }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined required
+                                  v-model="data.application_pmt[indexPMT].sub_variables" :items="[
+          {
+            id: variables.id,
+            name_en: 'Yes',
+            name_bn: 'হ্যাঁ',
+          },
+          {
+            id: 0,
+            name_en: 'No',
+            name_bn: 'না',
+          },
+        ]" item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
                             <template v-else-if="variables.field_type == 1">
-                              <label>
-                                {{
-                                  language === "bn"
-                                    ? variables.name_bn
-                                    : variables.name_en
-                                }}
-                                <span
-                                  style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                :vid="'application_pmt_' + indexPMT"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(variables) : ''
-                                  "
-                                  outlined
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="variables.children"
-                                  item-value="id"
-                                  :item-text="getItemText"
-                                  @change="onChangeHouse($event, variables)"
-                                >
+                              <label> {{ language === 'bn' ? variables.name_bn : variables.name_en }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined
+                                  v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
+                                  item-value="id" :item-text="getItemText" @change="onChangeHouse($event, variables)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
 
                             <template v-else-if="variables.field_type == 2">
-                              <label>
-                                {{
-                                  language === "bn"
-                                    ? variables.name_bn
-                                    : variables.name_en
-                                }}
-                                <span
-                                  style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                :vid="'application_pmt_' + indexPMT"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  multiple
-                                  :hide-details="errors[0] ? false : true"
+                              <label> {{ language === 'bn' ? variables.name_bn : variables.name_en }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
+                                <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0] ? getErrorMessage(variables) : ''
-                                  "
-                                  outlined
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="variables.children"
-                                  item-value="id"
-                                  :item-text="getItemText"
-                                >
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined
+                                  v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
+                                  item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
+
                           </v-col>
                           <v-col cols="6">
                             <template>
-                              <label>
-                                {{
-                                  language === "bn"
-                                    ? "ঘরের সংখ্যা"
-                                    : "No of Room"
-                                }}
-                                <span
-                                  style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                name="No of Room"
-                                vid="no_of_room"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="
-                                    errors[0]
-                                      ? language == 'bn'
-                                        ? 'অনুগ্রহ পূর্বক ঘরের সংখ্যা প্রদান করুন '
-                                        : 'Please enter No of Room'
-                                      : ''
-                                  "
-                                  outlined
-                                  v-model="data.no_of_room"
-                                  :items="no_of_rooms"
-                                  item-value="name_en"
-                                  :item-text="getItemText"
-                                  @change="onChange($event)"
-                                >
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' : 'No of Room' }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider name="No of Room" vid="no_of_room" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঘরের সংখ্যা প্রদান করুন '
+          : 'Please enter No of Room') : ''" outlined v-model="data.no_of_room" :items="no_of_rooms"
+                                  item-value="name_en" :item-text="getItemText" @change="onChange($event)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
+
                           </v-col>
+
+
                         </v-row>
+
+
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- Other Information of Eligibility end-->
+
                 </v-expansion-panels>
               </div>
-              <br />
+              <br>
               <div class="d-inline d-flex justify-end">
                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
                 }}</v-btn> -->
                 <!-- old one -->
 
-                <v-btn
-                  @click="resetForm()"
-                  elevation="2"
-                  class="btn mr-2"
-                  outlined
-                  color="red"
-                  dark
-                  >{{ $t("container.list.cancel") }}</v-btn
-                >
-                <v-btn
-                  @click="submitApplicationCheck()"
-                  flat
-                  color="primary"
-                  :loading="loading"
-                  class="custom-btn-width black white--text py-2"
-                >
-                  {{ $t("container.list.submit") }}
+                <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
+                  $t('container.list.cancel') }}</v-btn>
+                <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
+                  class="custom-btn-width black white--text py-2">
+                  {{ $t('container.list.submit') }}
                 </v-btn>
                 <!--:disabled="invalid"  -->
                 <!-- <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.preview') }}
                 </v-btn> -->
+
+
               </div>
               <p class="red--text mt-5">
-                {{ $t("container.application_selection.application.alert") }}
+                {{ $t('container.application_selection.application.alert') }}
                 *
               </p>
             </v-card>
+
           </form>
         </ValidationObserver>
         <!-- confirm modal  -->
@@ -3728,52 +1764,38 @@
           <v-dialog v-model="confirmDialog" max-width="700" max-height="500">
             <v-card>
               <v-card-title class="font-weight-bold justify-center">
-                {{
-                  $t(
-                    "container.application_selection.application.form_submission"
-                  )
-                }}
+
+                {{ $t('container.application_selection.application.form_submission') }}
               </v-card-title>
+
 
               <!-- Add a divider after the title -->
               <v-divider></v-divider>
 
               <v-card-text class="text-center">
                 <div class="subtitle-1 font-weight-medium mt-5">
-                  {{
-                    $t("container.application_selection.application.question")
-                  }}
+                  {{ $t('container.application_selection.application.question') }}
                 </div>
               </v-card-text>
 
               <v-card-actions class="d-flex justify-center">
-                <v-btn
-                  text
-                  @click="confirmDialog = false"
-                  outlined
-                  class="custom-btn-width"
-                >
+                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
                 <!-- <v-btn text flat color="primary" :loading="loading" type="submit"
                   class="custom-btn-width success white--text py-2">
                   {{ $t("container.list.confirm") }}
                 </v-btn> -->
-                <v-btn
-                  @click="submitApplication()"
-                  flat
-                  color="primary"
-                  :loading="loading"
-                  type="submit"
-                  class="custom-btn-width black white--text py-2"
-                >
-                  {{ $t("container.list.confirm") }}
+                <v-btn @click="submitApplication()" flat color="primary" :loading="loading" type="submit"
+                  class="custom-btn-width black white--text py-2">
+                  {{ $t('container.list.confirm') }}
                 </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
         </template>
         <!-- delete modal  -->
+
       </v-col>
     </v-row>
 
@@ -3783,45 +1805,42 @@
 
 <script>
 import FooterBar from "@/components/Common/FooterBar.vue";
-import LocaleSwitcher from "@/components/Common/LocaleSwitcher";
+import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
 import axios from "axios";
-import { required, numeric } from "vee-validate/dist/rules";
+import { required, numeric } from 'vee-validate/dist/rules';
 
 extend("numeric", {
   ...numeric,
-  message: "This field must be a number",
+  message: "This field must be a number"
 });
-extend("email", {
-  validate: (value) => {
+extend('email', {
+  validate: value => {
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
   },
-  message: "Please enter a valid email address",
+  message: 'Please enter a valid email address'
 });
-extend("english", {
-  validate: (value) => {
+extend('english', {
+  validate: value => {
     // Regular expression to match English characters, spaces, and specific additional characters
     const englishRegex = /^[a-zA-Z\s\.\:\(\)\-]+$/;
 
     // Check if value matches English characters, spaces, and specific additional characters
     return englishRegex.test(value);
   },
-  message:
-    "Only English characters, spaces, and ( . : () - ) are allowed in this field",
+  message: 'Only English characters, spaces, and ( . : () - ) are allowed in this field'
 });
-extend("bangla", {
-  validate: (value) => {
-    // Update the regular expression to accept Bangla letters, English letters, spaces, and specified additional characters, but not Bangla numbers
-    const banglaRegex =
-      /^[\u0980-\u09DF\u09E0-\u09E5\u09F0-\u09FFa-zA-Z\s\.\:\(\)\-]+$/;
 
+extend('bangla_character', {
+  validate: (value) => {
+    // Updated regex to allow only Bangla letters, spaces, dots, colons, hyphens, or parentheses
+    const banglaRegex = /^[\u0980-\u09FF\s\.\:\(\)\-]+$/;
     return banglaRegex.test(value);
   },
-  message:
-    "Please enter Bangla letters, spaces, commas, dots, colons, hyphens, or parentheses in this field. Bangla numbers are not allowed.",
+  message: "Please enter Bangla letters, spaces, dots, colons, hyphens, or parentheses in this field. English letters and Bangla numbers are not allowed.",
 });
 extend("checkNumber", {
   validate: (value) => {
@@ -3837,8 +1856,7 @@ extend("checkNumber", {
     // Return true if both conditions are met
     return isNumeric && isCorrectLength;
   },
-  message:
-    "This is required field and field must be a number with either 10 or 17 characters",
+  message: "This is required field and field must be a number with either 10 or 17 characters",
 });
 extend("checkNumberNominee", {
   validate: (value) => {
@@ -3851,13 +1869,13 @@ extend("checkNumberNominee", {
     // Check if the length is either 10 or 17 characters
     const isCorrectLength = value.length === 10 || value.length === 17;
 
+
     // Return false if value is the same as data.verfication_number
 
     // Return true if both conditions are met
     return isNumeric && isCorrectLength;
   },
-  message:
-    "This is required field and field must be a number with either 10 or 17 characters",
+  message: "This is required field and field must be a number with either 10 or 17 characters",
 });
 extend("CheckPost", {
   validate: (value) => {
@@ -3898,8 +1916,7 @@ extend("checkNumberMobile", {
 
     return isNumeric && hasCorrectLength && startsWith01;
   },
-  message:
-    "This field must be an 11-digit number starting with 'correct format'",
+  message: "This field must be an 11-digit number starting with 'correct format'",
 });
 
 export default {
@@ -3911,6 +1928,8 @@ export default {
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
       mobile_operators: [],
+      processors: [],
+      processors_name: [],
       classes: [],
       loading: false,
       divisions: [],
@@ -3924,6 +1943,8 @@ export default {
       wards_upazila: [],
       wards_dist: [],
       locationType: [],
+      bank_names: [],
+      mfs_names: [],
       subLocationType: [
         {
           id: 1,
@@ -3953,13 +1974,13 @@ export default {
       permanent_wards_dist: [],
 
       education_status: [
-        { name_en: "Illiterate", name_bn: "অশিক্ষিত" },
-        { name_en: "JSC", name_bn: "জেএসসি" },
-        { name_en: "SSC", name_bn: "এসএসসি" },
-        { name_en: "HSC", name_bn: "এইচএসসি" },
-        { name_en: "Graduate", name_bn: "গ্রাজুয়েট" },
-        { name_en: "Post Graduate", name_bn: "পোস্ট গ্রাজুয়েট" },
-        { name_en: "Other", name_bn: "অন্যান্য" },
+        { name_en: 'Illiterate', name_bn: 'অশিক্ষিত' },
+        { name_en: 'JSC', name_bn: 'জেএসসি' },
+        { name_en: 'SSC', name_bn: 'এসএসসি' },
+        { name_en: 'HSC', name_bn: 'এইচএসসি' },
+        { name_en: 'Graduate', name_bn: 'গ্রাজুয়েট' },
+        { name_en: 'Post Graduate', name_bn: 'পোস্ট গ্রাজুয়েট' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }
       ],
       govt_programs: [
         "Old Age Allowance Program",
@@ -3969,11 +1990,11 @@ export default {
         "No Allowance",
         "Other (specify)",
       ],
-      marital_status: [
-        { name_en: "Married", name_bn: "বিবাহিত" },
-        { name_en: "Unmarried", name_bn: "অবিবাহিত" },
-        { name_en: "Widow", name_bn: "বিধবা" },
-        { name_en: "Other", name_bn: "অন্যান্য" },
+      marital_status: [{ name_en: 'Married', name_bn: 'বিবাহিত' },
+      { name_en: 'Unmarried', name_bn: 'অবিবাহিত' },
+      { name_en: 'Widow', name_bn: 'বিধবা' },
+      { name_en: 'Other', name_bn: 'অন্যান্য' }
+
       ],
       health_status: [
         "Totally Disabled",
@@ -3995,26 +2016,24 @@ export default {
         "Other (specify)",
       ],
 
-      mobile_ownership: [
-        { name_en: "Myself", name_bn: "নিজ" },
-        { name_en: "Family Member", name_bn: "পরিবারের সদস্য" },
-        { name_en: "Other", name_bn: "অন্যান্য" },
-      ],
-      religion: [
-        { name_en: "Islam", name_bn: "ইসলাম" },
-        { name_en: "Hindu", name_bn: "হিন্দু" },
-        { name_en: "Buddhist", name_bn: "বৌদ্ধ" },
-        { name_en: "Christian", name_bn: "খ্রিষ্টান" },
-        { name_en: "Other", name_bn: "অন্যান্য" },
-      ],
+      mobile_ownership:
+        [{ name_en: 'Myself', name_bn: 'নিজ' },
+        { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }],
+      religion: [{ name_en: 'Islam', name_bn: 'ইসলাম' },
+      { name_en: 'Hindu', name_bn: 'হিন্দু' },
+      { name_en: 'Buddhist', name_bn: 'বৌদ্ধ' },
+      { name_en: 'Christian', name_bn: 'খ্রিষ্টান' },
+      { name_en: 'Other', name_bn: 'অন্যান্য' }],
+
 
       yes_no: ["Yes ", "No"],
 
       relations_with_bef: [
-        { name_en: "Spouse", name_bn: "স্বামী/স্ত্রী" },
-        { name_en: "Family member", name_bn: "পরিবারের সদস্য" },
-        { name_en: "Close relative", name_bn: "নিকট আত্মীয়" },
-        { name_en: "Parent", name_bn: "পিতা/মাতা" },
+        { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
+        { name_en: 'Family member', name_bn: 'পরিবারের সদস্য' },
+        { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
+        { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
       ],
       status_code: null,
       status_code_nominee: null,
@@ -4025,28 +2044,29 @@ export default {
       deleteDialog: false,
       confirmDialog: false,
       showAlert: false,
-      no_of_rooms: [
-        { name_en: 1, name_bn: "১" },
-        { name_en: 2, name_bn: "২" },
-        { name_en: 3, name_bn: "৩" },
-        { name_en: 4, name_bn: "৪" },
-        { name_en: 5, name_bn: "৫" },
-        { name_en: 6, name_bn: "৬" },
-        { name_en: 7, name_bn: "৭" },
-        { name_en: 8, name_bn: "৮" },
-        { name_en: 9, name_bn: "৯" },
-        { name_en: 10, name_bn: "১০" },
-        { name_en: 11, name_bn: "১১" },
-        { name_en: 12, name_bn: "১২" },
-        { name_en: 13, name_bn: "১৩" },
-        { name_en: 14, name_bn: "১৪" },
-        { name_en: 15, name_bn: "১৫" },
-        { name_en: 16, name_bn: "১৬" },
-        { name_en: 17, name_bn: "১৭" },
-        { name_en: 18, name_bn: "১৮" },
-        { name_en: 19, name_bn: "১৯" },
-        { name_en: 20, name_bn: "২০" },
-      ],
+      no_of_rooms: [{ name_en: 1, name_bn: '১' },
+      { name_en: 2, name_bn: '২' },
+      { name_en: 3, name_bn: '৩' },
+      { name_en: 4, name_bn: '৪' },
+      { name_en: 5, name_bn: '৫' },
+      { name_en: 6, name_bn: '৬' },
+      { name_en: 7, name_bn: '৭' },
+      { name_en: 8, name_bn: '৮' },
+      { name_en: 9, name_bn: '৯' },
+      { name_en: 10, name_bn: '১০' },
+      { name_en: 11, name_bn: '১১' },
+      { name_en: 12, name_bn: '১২' },
+      { name_en: 13, name_bn: '১৩' },
+      { name_en: 14, name_bn: '১৪' },
+      { name_en: 15, name_bn: '১৫' },
+      { name_en: 16, name_bn: '১৬' },
+      { name_en: 17, name_bn: '১৭' },
+      { name_en: 18, name_bn: '১৮' },
+      { name_en: 19, name_bn: '১৯' },
+      { name_en: 20, name_bn: '২০' }],
+      bank_status:null,
+      mfs_status:null,
+      mfs_names_processor:[],
 
       data: {
         house_size: null,
@@ -4057,7 +2077,7 @@ export default {
         program_id: null,
         verification_type: 1,
         verification_number: null,
-        account_type: 1,
+        account_type: null,
         age: null,
         date_of_birth: null,
         name_en: null,
@@ -4112,6 +2132,8 @@ export default {
         permanent_ward_id_pouro: null,
         permanent_ward_id_dist: null,
         permanent_mobile: null,
+          mfs_name: null,
+            bank_name: null,
         nominee_en: null,
         nominee_bn: null,
         nominee_verification_number: null,
@@ -4129,25 +2151,26 @@ export default {
         marital_status: null,
         email: null,
         mobile_operator: null,
-        pmt_status: null,
+        pmt_status: null
       },
       professionType: [
-        { name_en: "Farmer", name_bn: "কৃষক" },
-        { name_en: "Rickshaw Puller", name_bn: "রিকশাচালক" },
-        { name_en: "Day Laborer", name_bn: "দিন মজুর" },
-        { name_en: "Street Vendor", name_bn: "রাস্তার দোকানদার" },
-        { name_en: "Fisherman", name_bn: "জেলে" },
-        { name_en: "Construction Worker", name_bn: "নির্মাণ কর্মী" },
-        { name_en: "Domestic Worker", name_bn: "পরিবারিক কর্মচারী" },
-        { name_en: "Tea Garden Laborer", name_bn: "চা বাগানের শ্রমিক" },
-        { name_en: "Auto Rickshaw Driver", name_bn: "অটো রিকশা চালক" },
-        { name_en: "Handicraftsman", name_bn: "হাস্তশিল্পী" },
-        { name_en: "Plumber", name_bn: "প্লাম্বার" },
-        { name_en: "Carpenter", name_bn: "কার্পেন্টার" },
-        { name_en: "Street Sweeper", name_bn: "রাস্তা পরিষ্কারক" },
-        { name_en: "Security Guard", name_bn: "নিরাপত্তা গার্ড" },
-        { name_en: "Rural Artisan", name_bn: "গ্রামীণ শিল্পী" },
-        { name_en: "Other", name_bn: "অন্যান্য" },
+
+        { name_en: 'Farmer', name_bn: 'কৃষক' },
+        { name_en: 'Rickshaw Puller', name_bn: 'রিকশাচালক' },
+        { name_en: 'Day Laborer', name_bn: 'দিন মজুর' },
+        { name_en: 'Street Vendor', name_bn: 'রাস্তার দোকানদার' },
+        { name_en: 'Fisherman', name_bn: 'জেলে' },
+        { name_en: 'Construction Worker', name_bn: 'নির্মাণ কর্মী' },
+        { name_en: 'Domestic Worker', name_bn: 'পরিবারিক কর্মচারী' },
+        { name_en: 'Tea Garden Laborer', name_bn: 'চা বাগানের শ্রমিক' },
+        { name_en: 'Auto Rickshaw Driver', name_bn: 'অটো রিকশা চালক' },
+        { name_en: 'Handicraftsman', name_bn: 'হাস্তশিল্পী' },
+        { name_en: 'Plumber', name_bn: 'প্লাম্বার' },
+        { name_en: 'Carpenter', name_bn: 'কার্পেন্টার' },
+        { name_en: 'Street Sweeper', name_bn: 'রাস্তা পরিষ্কারক' },
+        { name_en: 'Security Guard', name_bn: 'নিরাপত্তা গার্ড' },
+        { name_en: 'Rural Artisan', name_bn: 'গ্রামীণ শিল্পী' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }
       ],
       checkbox: false,
       checkboxNomineeAddress: false,
@@ -4165,28 +2188,16 @@ export default {
       selectedDayNominee: null,
       selectedMonthNominee: null,
       selectedYearNominee: null,
-      twoDigitDays: Array.from({ length: 32 }, (_, i) =>
-        String(i).padStart(2, "0")
-      ).slice(1),
+      twoDigitDays: Array.from({ length: 32 }, (_, i) => String(i).padStart(2, '0')).slice(1),
 
+      coverage_area: [],
       months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
       ],
-      years: Array.from(
-        { length: 100 },
-        (_, i) => new Date().getFullYear() - i
-      ),
+      years: Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i),
+
     };
   },
 
@@ -4194,7 +2205,7 @@ export default {
     ValidationProvider,
     ValidationObserver,
     FooterBar,
-    LocaleSwitcher,
+    LocaleSwitcher
   },
   watch: {
     menu(val) {
@@ -4203,6 +2214,9 @@ export default {
     formattedDate(newDate) {
       this.$emit("update:model", newDate);
     },
+
+
+
   },
   computed: {
     language: {
@@ -4220,73 +2234,76 @@ export default {
     formattedDate() {
       if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-        const formattedMonth =
-          monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
+        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
         return `${this.selectedYear}-${formattedMonth}-${this.selectedDay}`;
       }
       return null;
     },
     formattedDateNominee() {
-      if (
-        this.selectedDayNominee &&
-        this.selectedMonthNominee &&
-        this.selectedYearNominee
-      ) {
+      if (this.selectedDayNominee && this.selectedMonthNominee && this.selectedYearNominee) {
         const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
-        const formattedMonth =
-          monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
+        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
         return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
+
       }
       return null;
     },
+
   },
 
   methods: {
     getErrorMessage(fields) {
-      return this.language === "bn"
+      return this.language === 'bn'
         ? `অনুগ্রহ পূর্বক ${fields.name_bn} প্রদান করুন`
         : `Please enter ${fields.name_en}`;
     },
 
     onChange($event) {
       this.data.per_room_score = (this.data.house_size / $event) * -0.05;
-      this.data.per_room_score = parseFloat(
-        this.data.per_room_score.toFixed(3)
-      );
-      this.data.no_of_people_score =
-        (this.data.house_size / $event) * this.data.per_room_score;
-      this.data.no_of_people_score = parseFloat(
-        this.data.no_of_people_score.toFixed(3)
-      );
+      this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
+      this.data.no_of_people_score = (this.data.house_size / $event) * this.data.per_room_score
+      this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
       // Do something with the input value
+
+
+    },
+       changeBank(selectedBankName) {
+      // Find the selected bank object from the bank_names array
+      const selectedBank = this.bank_names.find(bank => bank.name_en === selectedBankName || bank.name_bn === selectedBankName);
+         console.log(selectedBank, "selectedBank")
+      
+      // Set the bank_branch_name to the corresponding bank_branch_name
+      if (selectedBank) {
+        this.data.branch_name = selectedBank.bank_branch_name;
+        console.log(selectedBank,"selectedBank")
+      } else {
+        this.data.branch_name = null; // Clear the field if no bank is selected
+      }
+      this.data.mfs_name=null;
+    },
+    changeMfs(){
+        this.data.bank_name=null;
+
     },
     onChangeHouse($event, selected_value) {
       console.log("selected_event", $event);
       console.log("selected_value", selected_value);
       if (selected_value.id == 1) {
-        const childWithId210 = selected_value.children.find(
-          (child) => child.id == $event
-        );
+        const childWithId210 = selected_value.children.find(child => child.id == $event);
 
         // Get the name_en property if the child exists
         const name_en = childWithId210 ? childWithId210.name_en : null;
 
         // Do something with the name_en value
-        console.log("Name (English):", name_en);
-        this.data.house_size = name_en;
+        console.log('Name (English):', name_en);
+        this.data.house_size = name_en
       }
       if (this.data.house_size) {
-        this.data.per_room_score =
-          (this.data.house_size / this.data.no_of_room) * -0.05;
-        this.data.per_room_score = parseFloat(
-          this.data.per_room_score.toFixed(3)
-        );
-        this.data.no_of_people_score =
-          (this.data.house_size / this.data.no_of_room) *
-          this.data.per_room_score;
-        this.data.no_of_people_score = parseFloat(
-          this.data.no_of_people_score.toFixed(3)
-        );
+        this.data.per_room_score = (this.data.house_size / this.data.no_of_room) * -0.05;
+        this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
+        this.data.no_of_people_score = (this.data.house_size / this.data.no_of_room) * this.data.per_room_score
+        this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
+
       }
       // Do something with the input value
     },
@@ -4302,17 +2319,13 @@ export default {
         })
         .then((result) => {
           console.log(result, "ActivityLog");
+
         });
     },
 
     checkLengthAndVerify() {
-      if (
-        this.data.nominee_verification_number.length === 10 ||
-        this.data.nominee_verification_number.length === 17
-      ) {
-        if (
-          this.data.verification_number == this.data.nominee_verification_number
-        ) {
+      if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
+        if (this.data.verification_number == this.data.nominee_verification_number) {
           this.data.nominee_verification_number = null;
           this.$toast.error("Nominee cannot be the same as the applicant");
         }
@@ -4320,56 +2333,61 @@ export default {
     },
 
     scrollToVerifyButton() {
-      const verifyButton = document.getElementById("verify-button");
+      const verifyButton = document.getElementById('verify-button');
       if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
     scrollToImage() {
-      const verifyButton = document.getElementById("image");
+      const verifyButton = document.getElementById('image');
       if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
     scrollToSignature() {
-      const verifyButton = document.getElementById("signature");
+      const verifyButton = document.getElementById('signature');
       if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
     scrollToNomineeImage() {
-      const verifyButton = document.getElementById("nominee_image");
+      const verifyButton = document.getElementById('nominee_image');
       if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
     scrollToNomineeSignature() {
-      const verifyButton = document.getElementById("nominee_signature");
+      const verifyButton = document.getElementById('nominee_signature');
       if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: "smooth", block: "center" });
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+      scrollToAccountType() {
+      const verifyButton = document.getElementById('account_type');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
     getItemTextYear(item) {
-      return this.language === "bn"
-        ? this.$helpers.englishToBangla(item.years)
-        : item.years;
+      return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
+
     },
 
     getItemText(item) {
-      return this.language === "bn" ? item.name_bn : item.name_en;
+      return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemValue(item) {
-      return this.language === "bn" ? item.value_bn : item.value_en;
+      return this.language === 'bn' ? item.value_bn : item.value_en;
     },
 
     getItemDivision(item) {
-      return this.language === "bn" ? item.name_bn : item.name_en;
+      return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemDistrict(item) {
-      return this.language === "bn" ? item.name_bn : item.name_en;
+      return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemLocation(item) {
-      return this.language === "bn" ? item.value_bn : item.value_bn;
+      return this.language === 'bn' ? item.value_bn : item.value_bn;
     },
     //   getItemText(item) {
     //   return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -4391,23 +2409,24 @@ export default {
     //     this.data.account_number = this.data.mobile
     //   }
 
+
     // },
     gotocheck() {
-      this.$axios
-        .get("/global/online-application/check", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-          },
-        })
+      this.$axios.get("/global/online-application/check", {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
         .then((res) => {
-          console.log(res);
+          console.log(res)
           // this.$toast.success(res.data.data);
+
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           // this.$toast.error(err.response.data.message);
-        });
+        })
       // triggers watch and emits the updated date
     },
     // Update the formatted date when any dropdown changes
@@ -4456,7 +2475,7 @@ export default {
       this.data.permanent_district_id = null;
       this.data.permanent_upazila = null;
       this.data.permanent_post_code = null;
-      this.data.permanent_address = "";
+      this.data.permanent_address = '';
       this.data.permanent_location_type = null;
       this.data.permanent_thana_id = null;
       this.data.permanent_union_id = null;
@@ -4487,21 +2506,20 @@ export default {
       if (this.programDetails != null) {
         let check = this.programDetails.additional_field.filter((item) => {
           return item.id == 11;
-        });
+        })
         if (check.length == 0) {
-          return false;
+          return false
         } else {
-          return true;
+          return true
         }
       }
+
     },
 
     keyGetByName(name) {
       if (this.programDetails != null) {
-        let key = this.programDetails.additional_field.findIndex(
-          (field) => field.name_en == name
-        );
-        return key;
+        let key = this.programDetails.additional_field.findIndex(field => field.name_en == name);
+        return key
       }
     },
 
@@ -4511,216 +2529,156 @@ export default {
           // if( this.data.permanent_division_id ==null && this.data.permanent_division_id ==null &&  this.data.permanent_city_id == null && this.data.permanent_city_thana_id == null && this.data.permanent_ward_id_city == null){
           //   deleteDialog=true;
 
+
           // }
-          // else{
-          const selectedDivisionObj = this.permanent_divisions.find(
-            (div) => div.id === this.data.permanent_division_id
-          );
-          const selectedDistrictObj = this.permanent_districts.find(
-            (dis) => dis.id === this.data.permanent_district_id
-          );
-          const selectedCityObj = this.permanent_cities.find(
-            (city) => city.id === this.data.permanent_city_id
-          );
-          const selectedThanaObj = this.permanent_city_thanas.find(
-            (thana) => thana.id === this.data.permanent_city_thana_id
-          );
-          const selectedWardsCityObj = this.permanent_wards_city.find(
-            (ward_city) => ward_city.id === this.data.permanent_ward_id_city
-          );
+          // else{ 
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
+          const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
+          const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
 
           // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
-          this.data.nominee_address =
-            this.data.permanent_address +
-            "," +
-            (selectedThanaObj ? selectedThanaObj.name_en : "") +
-            "," +
-            (selectedCityObj ? selectedCityObj.name_en : "") +
-            "," +
-            (selectedDistrictObj ? selectedDistrictObj.name_en : "") +
-            "," +
-            (selectedDivisionObj ? selectedDivisionObj.name_en : "") +
-            "-" +
-            this.data.permanent_post_code;
+          this.data.nominee_address = this.data.permanent_address + ',' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
+
 
           // }
+
+
         }
         if (this.data.permanent_location_type == 2) {
-          const selectedDivisionObj = this.permanent_divisions.find(
-            (div) => div.id === this.data.permanent_division_id
-          );
-          const selectedDistrictObj = this.permanent_districts.find(
-            (dis) => dis.id === this.data.permanent_district_id
-          );
-          const selectedUpazilaObj = this.permanent_thanas.find(
-            (upazila) => upazila.id === this.data.permanent_thana_id
-          );
-          var selectedUnionObj = this.permanent_unions.find(
-            (union) => union.id === this.data.permanent_union_id
-          );
-          var selectedPouroObj = this.permanent_pouros.find(
-            (pouro) => pouro.id === this.data.permanent_pouro_id
-          );
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedUpazilaObj = this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id);
+          var selectedUnionObj = this.permanent_unions.find(union => union.id === this.data.permanent_union_id);
+          var selectedPouroObj = this.permanent_pouros.find(pouro => pouro.id === this.data.permanent_pouro_id);
           if (this.permanent_wards_upazila_union) {
-            var selectedWardUnionObj = this.permanent_wards_upazila_union.find(
-              (ward_union) =>
-                ward_union.id === this.data.permanent_ward_id_union
-            );
+            var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
           }
 
           if (this.permanent_wards_upazila_pouro) {
-            var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(
-              (ward_pouro) =>
-                ward_pouro.id === this.data.permanent_ward_id_pouro
-            );
+            var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
           }
           // var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
           // var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
 
-          this.data.nominee_address =
-            this.data.permanent_address +
-            "," +
-            (selectedWardUnionObj ? selectedWardUnionObj.name_en : "") +
-            "" +
-            (selectedWardPouroObj ? selectedWardPouroObj.name_en : "") +
-            "," +
-            (selectedUnionObj ? selectedUnionObj.name_en : "") +
-            "" +
-            (selectedPouroObj ? selectedPouroObj.name_en : "") +
-            "," +
-            (selectedUpazilaObj ? selectedUpazilaObj.name_en : "") +
-            "," +
-            (selectedDistrictObj ? selectedDistrictObj.name_en : "") +
-            "," +
-            (selectedDivisionObj ? selectedDivisionObj.name_en : "") +
-            "-" +
-            this.data.permanent_post_code;
+          this.data.nominee_address = this.data.permanent_address + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
 
-          selectedUnionObj = "";
-          selectedPouroObj = "";
-          selectedWardUnionObj = "";
-          selectedWardPouroObj = "";
-          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward");
+          selectedUnionObj = '';
+          selectedPouroObj = '';
+          selectedWardUnionObj = '';
+          selectedWardPouroObj = '';
+          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward")
+
+
         }
         if (this.data.permanent_location_type == 1) {
-          const selectedDivisionObj = this.permanent_divisions.find(
-            (div) => div.id === this.data.permanent_division_id
-          );
-          const selectedDistrictObj = this.permanent_districts.find(
-            (dis) => dis.id === this.data.permanent_district_id
-          );
-          const selectedDistObj = this.permanent_district_poros.find(
-            (dist) => dist.id === this.data.permanent_district_pouro_id
-          );
-          const selectedDistWardObj = this.permanent_wards_dist.find(
-            (ward_dist) => ward_dist.id === this.data.permanent_ward_id_dist
-          );
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
+          const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
           // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
-          this.data.nominee_address =
-            this.data.permanent_address +
-            "," +
-            (selectedDistWardObj ? selectedDistWardObj.name_en : "") +
-            "," +
-            (selectedDistObj ? selectedDistObj.name_en : "") +
-            "," +
-            (selectedDistrictObj ? selectedDistrictObj.name_en : "") +
-            "," +
-            (selectedDivisionObj ? selectedDivisionObj.name_en : "") +
-            "-" +
-            this.data.permanent_post_code;
+          this.data.nominee_address = this.data.permanent_address + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
+
         }
+
+
+
+
+
+
 
         // this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
         // this.data.nominee_address=this.data.permanent_address;
         //  this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ' District: ' + this.data.permanent_district_id;
       } else {
         this.data.nominee_address = null;
+
       }
     },
     handleCheckboxChange(event) {
-      console.log(event);
+      console.log(event)
       if (event) {
-        this.data.permanent_post_code = this.data.post_code;
-        this.data.permanent_address = this.data.address;
-        this.data.permanent_division_id = this.data.division_id;
-        this.permanent_onChangeDivision(this.data.division_id);
-        this.data.permanent_district_id = this.data.district_id;
+        this.data.permanent_post_code = this.data.post_code
+        this.data.permanent_address = this.data.address
+        this.data.permanent_division_id = this.data.division_id
+        this.permanent_onChangeDivision(this.data.division_id)
+        this.data.permanent_district_id = this.data.district_id
         this.permanent_onChangeDistrict(this.data.district_id);
-        this.data.permanent_location_type = this.data.location_type;
+        this.data.permanent_location_type = this.data.location_type
 
         this.permanent_LocationType(this.data.location_type);
-        this.data.permanent_union_id = this.data.union_id;
-        this.data.permanent_pouro_id = this.data.pouro_id;
+        this.data.permanent_union_id = this.data.union_id
+        this.data.permanent_pouro_id = this.data.pouro_id
 
-        this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null;
-        console.log(
-          this.data.union_id,
-          "union_id",
-          this.data.pouro_id,
-          "pouro_id",
-          this.data.permanent_ward_id_pouro
-        );
+        this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
+        console.log(this.data.union_id, "union_id", this.data.pouro_id, "pouro_id", this.data.permanent_ward_id_pouro)
 
         if (this.data.thana_id) {
-          this.data.permanent_thana_id = this.data.thana_id;
-          this.data.permanent_sub_location_type = this.data.sub_location_type;
-          this.onChangeSubLocationTypePermanent(this.data.sub_location_type);
+          this.data.permanent_thana_id = this.data.thana_id
+          this.data.permanent_sub_location_type = this.data.sub_location_type
+          this.onChangeSubLocationTypePermanent(this.data.sub_location_type)
+
+
+
+
         }
         if (this.data.city_id) {
-          this.data.permanent_city_id = this.data.city_id;
-          this.permanent_onChangeCity(this.data.permanent_city_id);
-          this.data.permanent_city_thana_id = this.data.city_thana_id;
+          this.data.permanent_city_id = this.data.city_id
+          this.permanent_onChangeCity(this.data.permanent_city_id)
+          this.data.permanent_city_thana_id = this.data.city_thana_id
           this.Permanent_OnChangeCityThana(this.data.permanent_city_thana_id);
-          this.data.permanent_ward_id_city = this.data.ward_id_city;
+          this.data.permanent_ward_id_city = this.data.ward_id_city
         }
         if (this.data.district_pouro_id) {
-          this.data.permanent_district_pouro_id = this.data.district_pouro_id;
-          this.Permanent_onChangeDistrictPouro(
-            this.data.permanent_district_pouro_id
-          );
+          this.data.permanent_district_pouro_id = this.data.district_pouro_id
+          this.Permanent_onChangeDistrictPouro(this.data.permanent_district_pouro_id)
 
-          this.data.permanent_ward_id_dist = this.data.ward_id_dist;
+          this.data.permanent_ward_id_dist = this.data.ward_id_dist
         }
 
         if (this.data.union_id) {
           this.permanent_onChangeUnion(this.data.union_id);
           setTimeout(() => {
-            this.data.permanent_ward_id_union = this.data.ward_id_union ?? null;
-            console.log(
-              this.data.permanent_ward_id_union,
-              this.data.ward_id_union,
-              "su"
-            );
+            this.data.permanent_ward_id_union = this.data.ward_id_union ?? null
+            console.log(this.data.permanent_ward_id_union, this.data.ward_id_union, "su")
           }, 4000);
+
+
+
+
         }
         if (this.data.pouro_id) {
+
           this.Permanent_onChangePouro(this.data.permanent_pouro_id);
 
-          this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null;
+          this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
 
-          console.log(
-            this.data.permanent_ward_id_pouro,
-            this.data.ward_id_pouro,
-            "sp"
-          );
+          console.log(this.data.permanent_ward_id_pouro, this.data.ward_id_pouro, "sp")
+
         }
-      } else {
-        this.data.permanent_division_id = null;
-        this.data.permanent_district_id = null;
-        this.data.permanent_upazila = null;
-        this.data.permanent_post_code = null;
-        this.data.permanent_address = null;
-        this.data.permanent_location_type = null;
-        this.data.permanent_thana_id = null;
-        this.data.permanent_union_id = null;
-        this.data.permanent_city_id = null;
-        this.data.permanent_city_thana_id = null;
-        this.data.permanent_district_pouro_id = null;
+
+
+      }
+      else {
+        this.data.permanent_division_id = null
+        this.data.permanent_district_id = null
+        this.data.permanent_upazila = null
+        this.data.permanent_post_code = null
+        this.data.permanent_address = null
+        this.data.permanent_location_type = null
+        this.data.permanent_thana_id = null
+        this.data.permanent_union_id = null
+        this.data.permanent_city_id = null
+        this.data.permanent_city_thana_id = null
+        this.data.permanent_district_pouro_id = null
+
       }
     },
     verifyCard() {
+
       // this.status_code= null;
       let data = {
         program_id: this.data.program_id,
@@ -4730,26 +2688,35 @@ export default {
         date_of_birth: this.data.date_of_birth,
       };
 
-      this.$axios
-        .post("/global/online-application/card-verification", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-          },
-        })
+      this.$axios.post("/global/online-application/card-verification", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
         .then((res) => {
-          console.log(res, "responseVerify");
+          console.log(res, "responseVerify")
+
+
 
           this.status_code = res.status;
 
+
+
+
+
+
+
           this.$toast.success(res.data.message);
-          this.data.age = res.data.data.age;
-          this.data.name_en = res.data.data.nameEn;
-          this.data.name_bn = res.data.data.name;
-          this.data.account_name = res.data.data.nameEn;
+          this.data.age = res.data.data.age
+          this.data.name_en = res.data.data.nameEn
+          this.data.name_bn = res.data.data.name
+          this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
           this.status_code = null;
+
+
 
           //  this.data.age = null;
           // this.data.name_en =null;
@@ -4757,17 +2724,11 @@ export default {
           // this.data.account_name = null;
           // console.log(err)
           // this.$toast.error(err.response.data.message);
-          if (
-            err?.response?.data?.errors &&
-            err?.response?.data?.errors?.verification_number
-          ) {
-            const verificationErrors =
-              err.response.data.errors.verification_number;
-            const beneficiaryMessageIndex = verificationErrors.indexOf(
-              "You are already a beneficiary"
-            );
+          if (err?.response?.data?.errors && err?.response?.data?.errors?.verification_number) {
+            const verificationErrors = err.response.data.errors.verification_number;
+            const beneficiaryMessageIndex = verificationErrors.indexOf('You are already a beneficiary');
             if (beneficiaryMessageIndex !== -1) {
-              this.$toast.error("You are already a beneficiary");
+              this.$toast.error('You are already a beneficiary');
             } else {
               // If "You are already a beneficiary" message not found, display the first error message
               this.$toast.error(verificationErrors[0]);
@@ -4775,13 +2736,11 @@ export default {
           } else if (err.response.data.message) {
             this.$toast.error(err.response.data.message);
           } else {
-            this.$toast.error(
-              err.response.data.message ||
-                err.response.data.error_code ||
-                "Unknown error"
-            );
+            this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
           }
-        });
+
+        })
+
     },
 
     verifyNomineeCard() {
@@ -4791,48 +2750,44 @@ export default {
         date_of_birth: this.data.nominee_date_of_birth,
       };
 
-      this.$axios
-        .post("/global/online-application/nominee-card-verification", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-          },
-        })
+      this.$axios.post("/global/online-application/nominee-card-verification", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
         .then((res) => {
-          console.log(res);
+          console.log(res)
           this.status_code_nominee = res.status;
           this.$toast.success(res.data.message);
 
-          this.data.nominee_en = res.data.data.nameEn;
-          this.data.nominee_bn = res.data.data.name;
+          this.data.nominee_en = res.data.data.nameEn
+          this.data.nominee_bn = res.data.data.name
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           this.$toast.error(err.response.data.message);
-        });
+        })
     },
     verifyDISCard() {
       let data = {
-        dis_no:
-          this.data.application_allowance_values[
-            `${this.keyGetByName("DIS No.")}`
-          ].value,
+        dis_no: this.data.application_allowance_values[`${this.keyGetByName('DIS No.')}`].value,
       };
 
-      this.$axios
-        .post("/global/online-application/dis-card-verification", data, {
-          headers: {
-            Accept: "application/json",
-          },
-        })
+      this.$axios.post("/global/online-application/dis-card-verification", data, {
+        headers: {
+          Accept: "application/json",
+        },
+      })
         .then((res) => {
-          console.log(res);
+          console.log(res)
           this.$toast.success(res.data.data);
+
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err)
           this.$toast.error(err.response.data.message);
-        });
+        })
     },
     // async submitApplicationCheck() {
 
@@ -4853,128 +2808,125 @@ export default {
     // }
     async submitApplicationCheck() {
       if (this.status_code != 200) {
-        this.language === "en"
-          ? this.$toast.error("Verify First")
-          : this.$toast.error("প্রথমে  যাচাই সম্পূর্ণ করুন");
+
+        this.language === 'en' ? this.$toast.error("Verify First") : this.$toast.error("প্রথমে  যাচাই সম্পূর্ণ করুন");
         return false;
       }
-      if (this.data.image === null || this.data.image == "") {
-        this.language === "en"
-          ? this.$toast.error("Image is required")
-          : this.$toast.error("ছবি আবশ্যক");
+      if (this.data.image === null || this.data.image == '') {
+        this.language === 'en' ? this.$toast.error("Image is required") : this.$toast.error("ছবি আবশ্যক");
         this.scrollToImage();
         return false;
       }
-      if (this.data.signature === null || this.data.signature == "") {
-        this.language === "en"
-          ? this.$toast.error("Signature is required")
-          : this.$toast.error("স্বাক্ষর আবশ্যক");
+      if (this.data.signature === null || this.data.signature == '') {
+        this.language === 'en' ? this.$toast.error("Signature is required") : this.$toast.error("স্বাক্ষর আবশ্যক");
         this.scrollToSignature();
         return false;
       }
       if (this.status_code_nominee != 200) {
-        this.language === "en"
-          ? this.$toast.error("Nominee Verify First")
-          : this.$toast.error("প্রথমে  নমিনি যাচাই সম্পূর্ণ করুন");
+        this.language === 'en' ? this.$toast.error("Nominee Verify First") : this.$toast.error("প্রথমে  নমিনি যাচাই সম্পূর্ণ করুন");
         this.scrollToVerifyButton();
         return false;
       }
-      if (this.data.nominee_image === null || this.data.nominee_image == "") {
-        this.language === "en"
-          ? this.$toast.error(" Nominee Image is required")
-          : this.$toast.error("নমিনীর ছবি আবশ্যক");
+      if (this.data.nominee_image === null || this.data.nominee_image == '') {
+        this.language === 'en' ? this.$toast.error(" Nominee Image is required") : this.$toast.error("নমিনীর ছবি আবশ্যক");
         this.scrollToNomineeImage();
         return false;
       }
-      if (
-        this.data.nominee_signature === null ||
-        this.data.nominee_signature == ""
-      ) {
-        this.language === "en"
-          ? this.$toast.error("Nominee Signature is required")
-          : this.$toast.error("নমিনীর স্বাক্ষর আবশ্যক");
+      if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
+        this.language === 'en' ? this.$toast.error("Nominee Signature is required") : this.$toast.error("নমিনীর স্বাক্ষর আবশ্যক");
         this.scrollToNomineeSignature();
         return false;
       }
+
+
 
       const isValid = await this.$refs.form.validate();
 
       if (!isValid) {
         // Find the first element with an error and scroll to it
-        const firstErrorElement = document.querySelector(
-          ".v-messages.error--text"
-        );
+        const firstErrorElement = document.querySelector('.v-messages.error--text');
         if (firstErrorElement) {
           const windowHeight = window.innerHeight;
           const elementTop = firstErrorElement.getBoundingClientRect().top;
-          const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
           const offset = elementTop + scrollTop - windowHeight / 2; // Adjust scroll position
 
           window.scrollTo({
             top: offset,
-            behavior: "smooth",
+            behavior: 'smooth'
           });
+          if (this.data.account_type === null) {
+          this.language === 'en' ? this.$toast.error("Select Account Type and Enter Related Data") : this.$toast.error("অ্যাকাউন্টের ধরন নির্বাচন করুন এবং সম্পর্কিত ডেটা প্রদান করুন");
+            this.scrollToAccountType();
+          return false;
         }
+        }
+
+
       } else {
         console.log("submit Application Successfully");
         this.confirmDialog = true;
       }
-    },
+    }
+    ,
+
+
     submitApplication() {
-      if (
-        this.data.mobile_operator !== null &&
-        this.data.mobile_operator !== undefined
-      ) {
+
+
+      if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
         // Convert this.data.account_number to string before concatenation
-        this.data.account_number =
-          this.data.mobile_operator + String(this.data.account_number);
+        this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
       }
-      this.confirmDialog = false;
-      console.log(this.data, "All data");
+      this.confirmDialog = false
+      console.log(this.data, "All data")
+
+
+
+
 
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
-          if (key == "application_allowance_values") {
-            console.log(value);
+          if (key == 'application_allowance_values') {
+            console.log(value)
             fd.append("application_allowance_values", JSON.stringify(value));
+
           }
-          if (key == "application_pmt") {
+          if (key == 'application_pmt') {
             fd.append("application_pmt", JSON.stringify(value));
+
           }
-          if (
-            key != "application_pmt" &&
-            key != "application_allowance_values"
-          ) {
+          if (key != 'application_pmt' && key != 'application_allowance_values') {
+
             console.log(key, value);
             fd.append(key, value);
           }
           console.log(key, value, "z");
+
         }
       }
 
       this.loading = true;
-      this.$axios
-        .post("/global/online-application/registration", fd, {
-          headers: {
-            Application: "application/json",
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          // this.$toast.success("Your Application submitted Successfully");
-          this.$refs.form.reset();
-          this.loading = false;
-          // console.log(res.data.data, "data")
-          // console.log(res.data.id, "id")
-          this.$store.commit("ApplicationSelection/setSuccessId", res.data.id);
-          // console.log(res.data.id, " after store id")
+      this.$axios.post("/global/online-application/registration", fd, {
+        headers: {
+          "Application": "application/json",
+          "Content-Type": "multipart/form-data",
+        }
+      }).then((res) => {
+        // this.$toast.success("Your Application submitted Successfully");
+        this.$refs.form.reset();
+        this.loading = false;
+        // console.log(res.data.data, "data")
+        // console.log(res.data.id, "id")
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+        // console.log(res.data.id, " after store id")
 
-          this.$router.push("/submitted-application");
-          // console.log(res.data.id, " after pushing id")
-          // this.$router.push(`/online-application-preview/${res.data.application_id}`);
-        })
+        this.$router.push("/submitted-application");
+        // console.log(res.data.id, " after pushing id")
+        // this.$router.push(`/online-application-preview/${res.data.application_id}`);
+
+      })
         .catch((err) => {
           this.loading = false;
           console.log(err);
@@ -4985,14 +2937,12 @@ export default {
               // this.$toast.error(err.response.data.message);
               if (err.response.data.error_code == "applicant_marital_status") {
                 let errs = {
-                  marital_status: [err.response.data.message],
-                };
+                  "marital_status": [err.response.data.message]
+                }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
                 //scroll to first error filed
-                const firstErrorField = document.querySelector(
-                  ".validation-error_marital"
-                );
+                const firstErrorField = document.querySelector(".validation-error_marital");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -5002,17 +2952,16 @@ export default {
                 }
 
                 // end of scroll to first error filed
-              } else if (
-                err.response.data.error_code == "applicant_gender_type"
-              ) {
+
+
+              }
+              else if (err.response.data.error_code == "applicant_gender_type") {
                 let errs = {
-                  gender_id: [err.response.data.message],
-                };
+                  "gender_id": [err.response.data.message]
+                }
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
-                const firstErrorField = document.querySelector(
-                  ".validation_error_gender_type"
-                );
+                const firstErrorField = document.querySelector(".validation_error_gender_type");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -5023,14 +2972,14 @@ export default {
 
                 // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
-              } else if (
-                err.response.data.error_code == "applicant_age_limit"
-              ) {
+
+
+
+              }
+              else if (err.response.data.error_code == "applicant_age_limit") {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
-                const firstErrorField = document.querySelector(
-                  ".validation_error_age_limit"
-                );
+                const firstErrorField = document.querySelector(".validation_error_age_limit");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -5041,12 +2990,12 @@ export default {
 
                 // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
-              } else if (err.response.data.error_code == "invalid_nid") {
+
+              }
+              else if (err.response.data.error_code == "invalid_nid") {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
-                const firstErrorField = document.querySelector(
-                  ".validation_error_age_limit"
-                );
+                const firstErrorField = document.querySelector(".validation_error_age_limit");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -5057,14 +3006,12 @@ export default {
 
                 // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
-              } else if (
-                err.response.data.error_code == "invalid_nominee_nid"
-              ) {
+
+              }
+              else if (err.response.data.error_code == "invalid_nominee_nid") {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
-                const firstErrorField = document.querySelector(
-                  ".validation_error_nominee"
-                );
+                const firstErrorField = document.querySelector(".validation_error_nominee");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -5075,26 +3022,26 @@ export default {
 
                 // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
+
               }
             } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
 
               // this.$toast.error(err.response.data.message);
               this.$toast.error(
-                (err?.response?.data?.errors?.verification_number?.[0] ?? "") +
-                  "\n" +
-                  (err?.response?.data?.errors?.mobile?.[0] ?? "")
+                (err?.response?.data?.errors?.verification_number?.[0] ?? '') +
+                '\n' +
+                (err?.response?.data?.errors?.mobile?.[0] ?? '')
               );
 
-              this.errors = err.response.data.errors;
+              this.errors = err.response.data.errors
+
 
               // if (err.response.data.error_code === "verification_number") {
               if (err?.response?.data?.errors?.mobile?.[0]) {
                 //scroll to first error filed
                 this.$nextTick(() => {
-                  const firstErrorField2 = document.querySelector(
-                    ".validation-error-mobile"
-                  );
+                  const firstErrorField2 = document.querySelector(".validation-error-mobile");
                   if (firstErrorField2) {
                     firstErrorField2.scrollIntoView({
                       behavior: "smooth",
@@ -5104,13 +3051,13 @@ export default {
                   }
                 });
                 // end of scroll to first error filed
+
               }
 
               if (err?.response?.data?.errors?.verification_number?.[0]) {
                 //scroll to first error filed
                 this.$nextTick(() => {
-                  const firstErrorField1 =
-                    document.querySelector(".validation-error");
+                  const firstErrorField1 = document.querySelector(".validation-error");
                   if (firstErrorField1) {
                     firstErrorField1.scrollIntoView({
                       behavior: "smooth",
@@ -5120,7 +3067,9 @@ export default {
                   }
                 });
                 // end of scroll to first error filed
+
               }
+
 
               // }
               // else if (err.response.data.error_code === "mobile") {
@@ -5138,6 +3087,9 @@ export default {
               //   // end of scroll to first error filed
 
               // }
+
+
+
             }
           }
         });
@@ -5169,7 +3121,7 @@ export default {
       }
 
       if (this.PMTVariables) {
-        this.data.application_pmt = [];
+        this.data.application_pmt = []
         this.PMTVariables.forEach((item) => {
           let obj = {
             variable_id: item.id,
@@ -5194,6 +3146,7 @@ export default {
     getAllMobileOperator() {
       this.$axios.get("global/mobile-operator").then((res) => {
         this.mobile_operators = res.data;
+
       });
     },
     getAllDivision() {
@@ -5232,7 +3185,7 @@ export default {
       // alert(event);
 
       if ($event == 1) {
-        console.log(this.data.thana_id, "this.data.thana_id");
+        console.log(this.data.thana_id, "this.data.thana_id")
         await this.$axios
           .get(`/global/union/pouro/get/${this.data.thana_id}`, {
             headers: {
@@ -5269,7 +3222,7 @@ export default {
       if (event == 2) {
         this.permanent_onChangeUpazila(this.data.permanent_thana_id);
         this.data.permanent_pouro_id = null;
-        console.log("its calling always,onChangeSubLocationTypePermanent ");
+        console.log("its calling always,onChangeSubLocationTypePermanent ")
       }
     },
     async onChangeUpazila(event) {
@@ -5282,6 +3235,7 @@ export default {
         .then((result) => {
           this.unions = result.data.data;
           // this.onChangeSubLocationType(this.data.sub_location_type)
+
         });
     },
     async permanent_onChangeUpazila(event) {
@@ -5294,7 +3248,8 @@ export default {
         .then((result) => {
           this.permanent_unions = result.data.data;
           // this.onChangeSubLocationTypePermanent(this.data.permanent_sub_location_type)
-          console.log("its calling always,permanent_onChangeUpazila ");
+          console.log("its calling always,permanent_onChangeUpazila ")
+
         });
     },
     async onChangeDistrict(event) {
@@ -5382,9 +3337,13 @@ export default {
           this.wards_dist = [];
           this.ward_id_dist = null;
           this.ward_id_upazila = null;
+
         });
+
     },
     async Permanent_OnChangeCityThana($event) {
+
+
       await this.$axios
         .get(`/global/ward/get/thana/${this.data.permanent_city_thana_id}`, {
           headers: {
@@ -5393,15 +3352,283 @@ export default {
         })
         .then((result) => {
           this.permanent_wards_city = result.data.data;
-          console.log(this.permanent_wards_city, "hi called thana properly");
+          console.log(this.permanent_wards_city, "hi called thana properly")
           this.permanent_wards_upazila = [];
           this.permanent_wards_dist = [];
           this.permanent_ward_id_dist = null;
           this.permanent_ward_id_upazila = null;
+          this.getArea();
+        });
+
+    },
+    async getArea() {
+
+    this.data.account_type=null;
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_city_thana_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+
+    },
+    async getArea_2() {
+
+this.data.account_type=null;
+     await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_district_pouro_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+    },
+    async getArea_3() {
+
+      this.data.account_type = null;
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_sub_location_type}/${this.data.permanent_pouro_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+       .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+          else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+          else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+    },
+     async getArea_4() {
+      this.data.account_type=null;
+
+
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_sub_location_type}/${this.data.permanent_union_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0) {
+            this.mfs_status = 1;
+
+
+          }
+           else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names = [];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+          if (this.processors && this.processors.length > 0) {
+            this.bank_status = 1;
+
+
+          }
+          else {
+            this.bank_status = 0;
+          }
+          this.processors_name = [];
+          this.bank_names = [];
+          this.data.bank_name = null;
+
+          // Iterate over the processors array
+          this.processors?.forEach(item => {
+            if (item.payment_processor) {
+              this.processors_name?.push(item.payment_processor);
+
+              // Iterate over the processors_name array to find bank information
+              this.processors_name?.forEach(paymentProcessor => {
+                if (paymentProcessor.bank) {
+                  // Add bank_branch_name property to the bank object
+                  paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                  // Push the modified bank object into bank_names array
+                  this.bank_names.push(paymentProcessor.bank);
+                }
+              });
+            }
+          });
+
+
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
         });
     },
     async onChangeDistrictPouro($event) {
-      console.log("hi district pourashava called");
+      console.log("hi district pourashava called")
       await this.$axios
         .get(`/global/ward/get/district_pouro/${this.data.district_pouro_id}`, {
           headers: {
@@ -5416,17 +3643,15 @@ export default {
           this.ward_id_city = null;
           this.ward_id_union = null;
         });
+
     },
     async Permanent_onChangeDistrictPouro($event) {
       await this.$axios
-        .get(
-          `/global/ward/get/district_pouro/${this.data.permanent_district_pouro_id}`,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .get(`/global/ward/get/district_pouro/${this.data.permanent_district_pouro_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((result) => {
           this.permanent_wards_dist = result.data.data;
           this.permanent_wards_upazila_union = [];
@@ -5434,7 +3659,9 @@ export default {
           this.permanent_wards_city = [];
           this.permanent_ward_id_city = null;
           this.permanent_ward_id_union = null;
+          this.getArea_2();
         });
+
     },
 
     async LocationType($event) {
@@ -5475,10 +3702,7 @@ export default {
       }
     },
     async permanent_LocationType($event) {
-      if (
-        this.data.permanent_district_id != null &&
-        this.data.permanent_location_type != null
-      ) {
+      if (this.data.permanent_district_id != null && this.data.permanent_location_type != null) {
         if ($event === 2) {
           await this.$axios
             .get(`/global/thana/get/${this.data.permanent_district_id}`, {
@@ -5488,39 +3712,27 @@ export default {
             })
             .then((result) => {
               this.permanent_thanas = result.data.data;
-              console.log("its calling always");
+              console.log("its calling always")
             });
         }
         if ($event === 3) {
           await this.$axios
-            .get(
-              "/global/city/get/" +
-                this.data.permanent_district_id +
-                "/" +
-                $event,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            )
+            .get("/global/city/get/" + this.data.permanent_district_id + "/" + $event, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
             .then((result) => {
               this.permanent_cities = result.data.data;
             });
         }
         if ($event === 1) {
           await this.$axios
-            .get(
-              "/global/city/get/" +
-                this.data.permanent_district_id +
-                "/" +
-                $event,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            )
+            .get("/global/city/get/" + this.data.permanent_district_id + "/" + $event, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
             .then((result) => {
               this.permanent_district_poros = result.data.data;
             });
@@ -5533,31 +3745,33 @@ export default {
     },
     previewImage() {
       if (this.data.image) {
+
         const maxFileSize = 200 * 1024; // 200 KB in bytes
 
         if (this.data.image.size > maxFileSize) {
           // alert("file size must be 200kb")
           // this.confirmDialog =true;
-          if (this.language == "en") {
+          if (this.language == 'en') {
             this.$toast.error("File size must be under 200 KB");
-          } else {
+          }
+          else {
             this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
-          } // Show the alert
-          this.data.image = "";
+
+          }// Show the alert
+          this.data.image = '';
 
           return false;
         }
-        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"]; // Allowed file types
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.image.type)) {
-          this.language === "en"
-            ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed")
-            : this.$toast.error(
-                "শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত"
-              );
-          this.data.image = "";
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.data.image = '';
           return false;
         }
         // return true;
+
+
+
 
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -5568,13 +3782,13 @@ export default {
         // Clear the preview if no file is selected
         this.imageUrl = null;
       }
+
     },
     addPreviewFile(event, index) {
-      console.log(event, index);
+      console.log(event, index)
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.data.application_allowance_values[index].file_value =
-          e.target.result;
+        this.data.application_allowance_values[index].file_value = e.target.result;
       };
       reader.readAsDataURL(event);
     },
@@ -5582,23 +3796,23 @@ export default {
       if (this.data.signature) {
         const maxFileSize = 200 * 1024;
         if (this.data.signature.size > maxFileSize) {
-          if (this.language == "en") {
+
+          if (this.language == 'en') {
             this.$toast.error("File size must be under 200 KB");
-          } else {
+          }
+          else {
             this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
-          } // Show the alert
-          this.data.signature = "";
+
+          }// Show the alert
+          this.data.signature = '';
 
           return false;
+
         }
-        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"]; // Allowed file types
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.signature.type)) {
-          this.language === "en"
-            ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed")
-            : this.$toast.error(
-                "শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত"
-              );
-          this.data.signature = "";
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.data.signature = '';
           return false;
         }
         const reader = new FileReader();
@@ -5612,27 +3826,28 @@ export default {
       }
     },
     previewImageNominee() {
+
       if (this.data.nominee_image) {
         const maxFileSize = 200 * 1024;
         // Read the selected file and generate a preview URL
         if (this.data.nominee_image.size > maxFileSize) {
-          if (this.language == "en") {
+
+          if (this.language == 'en') {
             this.$toast.error("File size must be under 200 KB");
-          } else {
+          }
+          else {
             this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
-          } // Show the alert
-          this.data.nominee_image = "";
+
+          }// Show the alert
+          this.data.nominee_image = '';
 
           return false;
+
         }
-        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"]; // Allowed file types
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.nominee_image.type)) {
-          this.language === "en"
-            ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed")
-            : this.$toast.error(
-                "শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত"
-              );
-          this.data.nominee_image = "";
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.data.nominee_image = '';
           return false;
         }
         const reader = new FileReader();
@@ -5650,23 +3865,23 @@ export default {
         // Read the selected file and gener
         const maxFileSize = 200 * 1024;
         if (this.data.nominee_signature.size > maxFileSize) {
-          if (this.language == "en") {
+
+          if (this.language == 'en') {
             this.$toast.error("File size must be under 200 KB");
-          } else {
+          }
+          else {
             this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
-          } // Show the alert
-          this.data.nominee_signature = "";
+
+          }// Show the alert
+          this.data.nominee_signature = '';
 
           return false;
+
         }
-        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"]; // Allowed file types
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.nominee_signature.type)) {
-          this.language === "en"
-            ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed")
-            : this.$toast.error(
-                "শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত"
-              );
-          this.data.nominee_signature = "";
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.data.nominee_signature = '';
           return false;
         }
         const reader = new FileReader();
@@ -5680,6 +3895,9 @@ export default {
       }
     },
     async onChangeUnion($event) {
+
+
+
       await this.$axios
         .get(`/global/ward/get/${$event}`, {
           headers: {
@@ -5688,6 +3906,7 @@ export default {
           },
         })
         .then((result) => {
+
           this.wards_upazila_union = result.data.data;
           console.log(this.wards_upazila_union, "union");
           this.wards_upazila_pouro = [];
@@ -5696,7 +3915,10 @@ export default {
           this.data.ward_id_dist = null;
           this.data.ward_id_city = null;
           this.data.ward_id_pouro = null;
+          // this.getArea_4();
+
         });
+
     },
     async permanent_onChangeUnion($event) {
       await this.$axios
@@ -5707,17 +3929,21 @@ export default {
           },
         })
         .then((result) => {
+
           this.permanent_wards_upazila_union = result.data.data;
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
           this.data.permanent_ward_id_dist = null;
           this.data.permanent_ward_id_city = null;
           this.data.permanent_ward_id_pouro = null;
-          console.log(this.permanent_wards_upazila_union, "called union ward");
+          console.log(this.permanent_wards_upazila_union, "called union ward")
+            this.getArea_4();
+
         });
+
     },
     async onChangePouro($event) {
-      console.log("hi pouro called");
+      console.log("hi pouro called")
 
       await this.$axios
         .get(`/global/ward/get/pouro/${$event}`, {
@@ -5727,6 +3953,7 @@ export default {
           },
         })
         .then((result) => {
+
           this.wards_upazila_pouro = result.data.data;
           this.wards_upazila_union = [];
           this.wards_dist = [];
@@ -5734,10 +3961,13 @@ export default {
           this.data.ward_id_dist = null;
           this.data.ward_id_city = null;
           this.data.ward_id_union = null;
+          this.getArea_3();
+
         });
+
     },
     async Permanent_onChangePouro($event) {
-      console.log($event, "pouro called");
+      console.log($event, "pouro called")
       await this.$axios
         .get(`/global/ward/get/pouro/${$event}`, {
           headers: {
@@ -5746,18 +3976,18 @@ export default {
           },
         })
         .then((result) => {
+
           this.permanent_wards_upazila_pouro = result.data.data;
-          console.log(
-            this.permanent_wards_upazila_pouro,
-            "pouro called properly"
-          );
+          console.log(this.permanent_wards_upazila_pouro, "pouro called properly")
           this.permanent_wards_upazila_union = [];
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
           this.data.permanent_ward_id_dist = null;
           this.data.permanent_ward_id_city = null;
           this.data.permanent_ward_id_union = null;
+
         });
+
     },
   },
   mounted() {
@@ -5781,9 +4011,10 @@ export default {
     this.$store
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
-    this.getAllMobileOperator();
-    console.log(this.$el, "el");
+    // this.getAllMobileOperator();
+    // console.log(this.$el, "el");
   },
+
 };
 </script>
 

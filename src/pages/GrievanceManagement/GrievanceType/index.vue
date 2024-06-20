@@ -6,14 +6,16 @@
           <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{ $t("container.grievance_management.grievanceType") }}
-                </h3>
-              </v-card-title>
+            
+                    <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                  <h3 class="white--text">
+                   {{ $t("container.grievance_management.grievanceType") }}
+                  </h3>
+                </v-card-title>
               <v-card-text>
 
                 <v-row justify="space-between" align="center" class="mx-5">
+                  
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
                     <v-text-field @keyup.native="GetGrievanceType" outlined dense v-model="search"

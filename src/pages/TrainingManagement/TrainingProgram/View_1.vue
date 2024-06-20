@@ -254,13 +254,13 @@ export default {
                             <b>:</b> <span class="ml-2" v-html="sanitizedDescription"></span>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                            <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.start_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
                             <b>:</b> <span class="ml-2">{{ data?.start_date }}</span>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                            <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.end_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
                             <b>:</b> <span class="ml-2">{{ data?.end_date }}</span>

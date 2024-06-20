@@ -80,10 +80,10 @@ export default {
             return [
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
                 { text: this.$t('container.api_manager.api_generate.api_name'), value: "name", width: "20%" },
-                { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "45%"  },
+                { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "30%"  },
          
 
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%"  },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "35%"  },
             ];
         },
 
@@ -475,6 +475,7 @@ export default {
 
                                     <!-- Action Button -->
                                     <template v-slot:item.actions="{ item }">
+                                        <div style="width:130px;">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
@@ -510,6 +511,7 @@ export default {
                                             </template>
                                             <span> {{ $t("container.list.delete") }}</span>
                                         </v-tooltip>
+                                        </div>
                                     </template>
                                     <!-- End Action Button -->
 

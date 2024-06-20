@@ -934,7 +934,6 @@ export default {
         .then((res) => {
 
           if (res.status == 201) {
-            console.log(res, "responseVerify11")
             this.status_code = res.status;
             this.$toast.success(res.data.message);
             this.data.gender_id = res.data.data.gender_id
@@ -953,7 +952,6 @@ export default {
             this.data.address = res.data.data.current_address
             this.data.post_code = res.data.data.current_post_code
           } else if (res.status == 200) {
-            console.log(res, "responseVerify2222")
             this.status_code = res.status;
             this.$toast.success(res.data.message);
             this.data.gender_id = res.data.data.gender
@@ -965,7 +963,6 @@ export default {
 
         })
         .catch((err) => {
-          console.log(err, "responseVerify66666")
           this.data.status_code = null;
           this.data.verification_number = null;
           this.data.date_of_birth = null;

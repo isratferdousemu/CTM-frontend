@@ -23,6 +23,8 @@
       "copy": "লিংক কপি করুন",
       "banned": "নিষিদ্ধ",
       "action": "অ্যাকশন ",
+      "trainer_rating": "প্রশিক্ষক রেটিং",
+      "rating": "রেটিং",
       "submit": "সাবমিট করুন",
       "cancel": "বাতিল করুন",
       "edit": "এডিট করুন",
@@ -87,7 +89,15 @@
       "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
       "sync": "সিঙ্ক",
       "close": "বন্ধ করুন",
-      "addToList": "তালিকায় যুক্ত করুন"
+      "addToList": "তালিকায় যুক্ত করুন",
+      "gradeExam": "গ্রেড প্রশিক্ষণ",
+      "trainerRating": "প্রশিক্ষক রেটিং",
+      "exam": "প্রশিক্ষণ মূল্যায়ন",
+      "trainerAssessment": "প্রশিক্ষক মূল্যায়ন",
+      "certificate": "সনদপত্র",
+      "accept": "গ্রহণ করুন",
+      "decline": "প্রত্যাখ্যান করুন",
+      "accept_invitation": "পরীক্ষার আমন্ত্রণ"
     },
     "system_config": {
       "demo_graphic": {
@@ -430,7 +440,8 @@
           "unapproved": "অননুমোদিত",
           "active": "সক্রিয়",
           "inactive": "নিষ্ক্রিয়",
-          "banned": "নিষিদ্ধ"
+          "banned": "নিষিদ্ধ",
+          "program": "কার্যক্রম"
         },
         "financial_year": {
           "financial_year": "আর্থিক বর্ষ",
@@ -565,6 +576,7 @@
     "application_selection": {
       "application": {
         "select": "সিলেক্ট",
+        "mfs_name": "এমএফএস নাম",
         "select_all": "সব সিলেক্ট করুন",
         "application": "আবেদন",
         "list": "আবেদনের তালিকা ",
@@ -988,14 +1000,13 @@
       "calculation_type": "গণনার ধরন",
       "financial_year": "আর্থিক বর্ষ",
       "action": "অ্যাকশন",
-
       "budget_basic_info": "বাজেটের মৌলিক তথ্য",
       "budget_details_info": "বাজেটের তথ্য",
       "budget_create": "বাজেট তৈরি",
-
-      "budget_verification": "বাজেট যাচাইকরণ",
+      "budget_verification": "বাজেট অনুমোদন",
       "approved_by": "অনুমোদনকারী",
       "approved_date": "অনুমোদিত তারিখ",
+      "attachment": "সংযুক্তি",
       "remark": "মন্তব্য",
       "delete_title": "বাজেট মুছুন!!!",
       "delete_message": "আপনি এই বাজেট মুছে ফেলার বিষয়ে নিশ্চিত?",
@@ -1015,9 +1026,14 @@
       "program": "প্রোগ্রাম",
       "no_of_previous_year": "আগের বছরের সংখ্যা",
       "calculation_value": "গণনার মান",
-      "approval_status": "স্ট্যাটাস"
+      "approval_status": "স্ট্যাটাস",
+      "Draft": "খসড়া",
+      "Approved": "অনুমোদিত",
+      "Failed": "অসফল"
     },
     "payroll_management": {
+      "mfs_name_en": "MFS নাম (ইংরেজি)",
+      "mfs_name_bn": "MFS নাম (বাংলায়)",
       "view": "দেখুন",
       "add_new_processor": "নতুন প্রসেসর যোগ করুন",
       "list": "পেমেন্ট প্রসেসর",
@@ -1044,13 +1060,23 @@
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
       "payroll_create": "পেরোল তৈরি",
       "allotment_distribution": "বরাদ্দ বিতরণ",
+      "emergency_dashboard": {
+        "program_wise_payroll": "যোগ্য সুবিধাভোগীর সংখ্যা",
+        "program_wise_payment_cycle": "সুবিধাভোগী বিতরণ করা হয়েছে",
+        "payment_cycle_disbursment_status": "পেমেন্ট সাইকেল বিতরণের অবস্থা",
+        "header": "জরুরী পেমেন্ট ড্যাশবোর্ড",
+        "emergency_allotment": "জরুরী বরাদ্দের সংখ্যা",
+        "existing_beneficiary": "বিদ্যমান সুবিধাভোগীদের সংখ্যা",
+        "emergency_beneficiary": "জরুরী সুবিধাভোগীদের মোট সংখ্যা"
+      },
       "dashboard": {
         "header": "পেরোল ড্যাশবোর্ড",
+        "enter_start_end_date": "শুরু শেষের তারিখ লিখুন",
         "approved_payroll": "মোট অনুমোদিত পেরোল",
         "rejected_payroll": "মোট প্রত্যাখ্যাত পেরোল",
         "total_payment_cycle": "মোট অর্থপ্রদান চক্র",
         "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে",
-        "program_wise_payroll": "প্রোগ্রাম অনুযায়ী পেরোল",
+        "program_wise_payroll": "প্রোগ্রাম অনুযায়ী পেরোল সুবিধাভোগী",
         "total_approve_payroll": "মোট অনুমোদিত পেরোল",
         "total_payment_processor": "মোট পেমেন্ট প্রসেসর",
         "available_balance": "পর্যাপ্ত টাকা",
@@ -1062,7 +1088,7 @@
       "payroll_create": "পেরোল তৈরি",
       "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
       "allotment_area_wise_ben": "এলাকাভিত্তিক উপকারভোগী বরাদ্দ",
-      "monthly_allowance_amount": "প্রতি উপকারভোগী প্রতি মাসিক ভাতার পরিমাণ",
+      "monthly_allowance_amount": "প্রতি উপকারভোগী প্রতি মাসিক ভাতার পরিমাণ: ",
       "distribution_medium": "বিতরণের মাধ্যম",
       "bank_account": "ব্যাংক হিসাব",
       "program": "প্রোগ্রাম",
@@ -1112,7 +1138,9 @@
         "cash_out_charge": "ক্যাশ আউট চার্জ",
         "total_amount": "সর্বমোট পরিমাণ",
         "financial_account_status": "আর্থিক অ্যাকাউন্টের অবস্থা",
-        "status": "অবস্থা"
+        "status": "অবস্থা",
+        "total_allocated_ben": "মোট বরাদ্দকৃত উপকারভোগী",
+        "amount": "পরিমাণ"
       },
       "payroll_approval": {
         "title": "বেতনের অনুমোদন",
@@ -1148,6 +1176,12 @@
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
       "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_supplementary_payroll": {
+        "header": "জরুরী পরিপূরক বেতন",
+        "awaiting_correction": "সংশোধনের অপেক্ষায়",
+        "revised_beneficiary": "সংশোধিত সুবিধাভোগী",
+        "total": "মোট"
+      },
       "emergency_beneficiary": {
         "slNo": "ক্রমিক নং",
         "list": "জরুরী সুবিধাভোগী",
@@ -1173,7 +1207,20 @@
         "total_beneficiary": "মোট সুবিধাভোগী",
         "amount_of_money": "টাকার পরিমান",
         "charge": "চার্জ",
-        "total_amount": "সর্বমোট পরিমাণ"
+        "total_amount": "সর্বমোট পরিমাণ",
+        "send_finance_cycle": "ফাইন্যান্স সাইকেলে পাঠান",
+        "already_send": "অলরেডি পাঠানো হয়েছে",
+        "reject": "প্রত্যাখ্যান"
+      },
+      "emergency_payment_reconciliation": {
+        "title": "বেতন (সমন্বয়)",
+        "program": "কার্যক্রম",
+        "nid": "এনআইডি",
+        "account_no": "হিসাব নাম্বার",
+        "bank": "ব্যাংক",
+        "branch": "শাখা",
+        "routing_no": "রাউটিং নং",
+        "scheme_code": "স্কিম কোড"
       }
     },
     "training_management": {
@@ -1210,12 +1257,12 @@
         "add": "নতুন সার্কুলার যোগ করুন",
         "edit": "প্রশিক্ষণ সার্কুলার এডিট করুন",
         "training_type": "প্রশিক্ষণের ধরন",
-        "start_date": "শুরুর তারিখ",
-        "end_date": "শেষের তারিখ",
+        "start_date": "সার্কুলার শুরুর তারিখ",
+        "end_date": "সার্কুলার শেষের তারিখ",
         "name": "সার্কুলারের নাম",
         "type": "সার্কুলারের ধরন",
         "module": "মডিউল",
-        "class_duration": "ক্লাসের সময়কাল ঘন্টা/দিন",
+        "class_duration": "ক্লাসের সময়কাল দিন",
         "description": "বিবরণ",
         "date": "তারিখ",
         "no_of_participant_open": "অংশগ্রহণকারীদের সংখ্যা (ওপেন)",
@@ -1240,16 +1287,16 @@
         "add": "নতুন প্রোগ্রাম যোগ করুন",
         "edit": "প্রোগ্রাম এডিট করুন",
         "program_name": "প্রোগ্রামের নাম",
-        "exam_link": "পরীক্ষার লিঙ্ক",
+        "exam_link": "প্রশিক্ষণ লিঙ্ক",
         "rating_link": "রেটিং লিঙ্ক",
-        "exam": "পরীক্ষা",
+        "exam": "প্রশিক্ষণ",
         "rating": "রেটিং",
         "trainer_rating_status": "প্রশিক্ষক রেটিং ",
-        "exam_status": "পরীক্ষা",
+        "exam_status": "প্রশিক্ষণ অবস্থা",
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
-        "form_id": "পরীক্ষার ফর্ম আইডি",
+        "form_id": "প্রশিক্ষণ ফর্ম আইডি",
         "training_form_id": "প্রশিক্ষণ ফর্ম আইডি",
         "employee_id": "এমপ্লয়ী আইডি",
         "passcode": "পাসকোড",
@@ -1258,17 +1305,24 @@
         "training_circular": "প্রশিক্ষণ সার্কুলার",
         "class_schedule": "প্রশিক্ষণের সময়সূচী",
         "delete_header": "প্রোগ্রাম মুছুন",
-        "delete_alert": "আপনি এই প্রোগ্রাম মুছে ফেলার বিষয়ে নিশ্চিত? প্রোগ্রামের সমস্ত তথ্য মুছে ফেলা হবে।"
+        "accept_header": "পরীক্ষার আমন্ত্রণ",
+        "delete_alert": "আপনি এই প্রোগ্রাম মুছে ফেলার বিষয়ে নিশ্চিত? প্রোগ্রামের সমস্ত তথ্য মুছে ফেলা হবে।",
+        "accept_alert": "",
+        "accept_program": "এই প্রোগ্রামের পরীক্ষায় অংশগ্রহণের জন্য আপনাকে আমন্ত্রণ জানানো হচ্ছে । ",
+        "start_date": "প্রশিক্ষণ শুরুর তারিখ",
+        "end_date": "প্রশিক্ষণ শেষের তারিখ",
+        "certificate": "সনদপত্র"
       },
       "training_registration": {
         "list_1": "অংশগ্রহণকারীদের তালিকা",
+        "exam_response": "পরীক্ষার প্রতিবেদন ",
         "list_2": "অংশগ্রহণকারী",
         "by_poll": "পোল",
         "search": "অংশগ্রহণকারী অনুসন্ধান করুন",
         "view": "অংশগ্রহণকারীর বিবরণ",
         "add_1": "অংশগ্রহণকারী যোগ করুন",
         "add_2": "বহিরাগত নিবন্ধন",
-        "add_3": "প্রশিক্ষণ নিবন্ধন",
+        "add_3": "অংশগ্রহণকারী নিবন্ধন",
         "registration": "বহিরাগত নিবন্ধন",
         "participant": "অংশগ্রহণকারী",
         "full_name": "সম্পূর্ণ নাম",
@@ -1278,7 +1332,8 @@
         "alert": "বহিরাগত অংশগ্রহণকারী নিবন্ধনের জন্য এই লিঙ্কে যান",
         "user_name": "ব্যবহারকারীর নাম",
         "delete_header": "অংশগ্রহণকারীকে মুছুন",
-        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
+        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।",
+        "result": "ফলাফল"
       },
       "kobo": {
         "edit": "টোকেন এডিট করুন",

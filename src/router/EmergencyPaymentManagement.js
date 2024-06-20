@@ -81,6 +81,64 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/PaymentCycle/Index.vue"),
   },
+
+  //dashboard
+  {
+    path: "/emergency-payment-management/dashboard",
+    name: "emergency-payment-management-dashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-dashboard-show",
+    },
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/Dashboard/Index.vue"),
+  },
+  {
+    path: "/emergency-payment/supplementary-payroll",
+    name: "emergency-payment-supplementary-payroll",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-supplementary-payroll-show",
+    },
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"),
+  },
+  {
+    path: "/emergency-payment/cycle/view/:id",
+    name: "Emergency Payment",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-cycle-view",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/PaymentCycle/viewDetails.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/cycle/reject/:id",
+    name: "Emergency Payment",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-cycle-view",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/PaymentCycle/RejectDetails.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/payroll-reconciliation",
+    name: "Emergency Payment Reconciliation",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-reconciliation-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/PayrollReconciliationCoordination/index.vue"
+      ),
+  },
 ];
 
 export default EmergencyPaymentManagementRoutes;

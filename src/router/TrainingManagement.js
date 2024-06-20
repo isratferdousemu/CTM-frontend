@@ -176,6 +176,24 @@ const TrainingManagementRoutes = [
     component: () => import("../pages/TrainingManagement/Participant/View.vue")
   },
   {
+    path: "/training-management/participant/grade-exam/:id",
+    name: "ParticipantExam",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-edit",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/GradeExam.vue")
+  },
+  {
+    path: "/training-management/participant/trainer-rating/:id",
+    name: "ParticipantRating",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-edit",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/TrainerRating.vue")
+  },
+  {
     path: "/training-management/participant/:id/:training_circular_id",
     name: "Participant",
     meta: {
@@ -197,6 +215,27 @@ const TrainingManagementRoutes = [
     component: () => import("../pages/TrainingManagement/Kobo/Edit.vue")
   },
   /*Kobo update route start*/
+
+
+  {
+    path: "/training-management/training-program/certificates",
+    name: "TrainingProgramCertificates",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/Certificate.vue")
+  },
+
+  {
+    path: "/training-management/dashboard",
+    name: "TrainingManagementDashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/Dashboard/Index.vue")
+  },
 ];
 
 

@@ -6,11 +6,12 @@
           <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{ $t("container.grievance_management.grievance_settings") }}
-                </h3>
-              </v-card-title>
+        
+                    <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                  <h3 class="white--text">
+                    {{ $t("container.grievance_management.grievance_settings") }}
+                  </h3>
+                </v-card-title>
               <v-card-text>
 
                 <v-row justify="space-between" align="center" class="mx-5">
@@ -904,6 +905,7 @@ export default {
         });
     },
     async GetGrievanceSettings() {
+       this.loading = true;
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -921,7 +923,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log(result, 'all get data');
+         this.loading = false;
           this.total = result?.data?.meta?.total;
           this.settings = result.data.data;
           this.pagination.current = result.data.meta.current_page;

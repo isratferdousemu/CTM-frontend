@@ -149,43 +149,43 @@ export default {
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.name') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ data?.circular_name }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.type') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2"> {{ language == 'bn' ?
                                     data?.circular_type
                                     ?.value_bn : data?.circular_type
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     data?.training_type
                                     ?.value_bn : data?.training_type
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.list.status') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     data?.status
                                     ?.value_bn : data?.status
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.module') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b>
                                 <!-- <span class="ml-2">{{ language == 'bn' ?
                                     data?.modules
@@ -197,36 +197,36 @@ export default {
                                     item.value_bn : item.value_en }}
                                 </v-chip>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.class_duration') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ data?.class_duration }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                             </v-col>
                           
 
 
-                                <v-col cols="7" class="d-flex align-items-start" style="font-size: 12px;">
+                                <v-col cols="10" class="d-flex align-items-start" style="font-size: 12px;">
                                     <b>:</b>
 
                                     <div v-html="data?.description" class="ml-3"></div>
                                 </v-col>
 
                           
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:12px;">
+                            <v-col cols="2" style="font-size:12px;">
                                 <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:12px;">
+                            <v-col cols="10" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                             </v-col>

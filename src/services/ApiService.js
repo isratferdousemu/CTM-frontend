@@ -18,6 +18,18 @@ const ApiService = {
         return res;
       })
       .catch((errors) => {
+        if (res.data.message) {
+          
+          // Toast.fire({
+          //   icon: "success",
+          //   title: res.data.message,
+          // });
+        }
+
+        return res;
+      })
+      .catch((errors) => {
+        // this.ErrorResponse(errors);
         return errors.response;
       });
   },
@@ -59,6 +71,28 @@ const ApiService = {
       });
   },
 
+  // Handling Error Response
+  ErrorResponse(res) {
+    let message = "";
+    if (res.response.status == 422) {
+      Object.values(res.response.data.errors).map((ele) => {
+        ele.map((msg) => {
+          message = message + msg + "<br>";
+        });
+      });
+      // Toast.fire({
+      //   icon: "error",
+      //   title: message,
+      // });
+      return message;
+    } else {
+      // Toast.fire({
+      //   icon: "error",
+      //   title: res,
+      // });
+      return res
+    }
+  },
 };
 
 export default ApiService;
