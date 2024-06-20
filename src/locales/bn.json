@@ -97,7 +97,10 @@
       "certificate": "সনদপত্র",
       "accept": "গ্রহণ করুন",
       "decline": "প্রত্যাখ্যান করুন",
-      "accept_invitation": "পরীক্ষার আমন্ত্রণ"
+      "accept_invitation": "পরীক্ষার আমন্ত্রণ",
+      "manage_beneficary": "সুবিধাভোগী পরিচালনা করুন",
+      "existing": "বিদ্যমান সুবিধাভোগী",
+      "add_beneficiary": "নতুন সুবিধাভোগী"
     },
     "system_config": {
       "demo_graphic": {
@@ -1194,7 +1197,7 @@
         "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
-        "searchBy": "দ্বারা অনুসন্ধান করুন",
+        "searchBy": "জরুরী নতুন/বিদ্যমান সুবিধাভোগী",
         "summary": "সংক্ষিপ্ত বিবরণ",
         "emergency_applicant": "জরুরী সুবিধাভোগী তৈরি করুন"
       },

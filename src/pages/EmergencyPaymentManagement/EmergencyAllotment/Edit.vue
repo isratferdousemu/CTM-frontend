@@ -546,8 +546,8 @@ import { required } from "vee-validate/dist/rules";
 import ApiService from "@/services/ApiService";
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Emergency Allotment",
+  name: "Edit",
+  title: "CTM - Emergency Allotment Edit",
   components: {
     ValidationProvider,
     ValidationObserver,

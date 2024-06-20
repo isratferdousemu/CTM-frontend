@@ -3093,8 +3093,6 @@ import ApiService from "@/services/ApiService";
 import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
 import {numeric, required} from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
-import EmergencyComponent from "./Includes/EmergencyComponent.vue";
-import ExistingEmergency from "./Includes/ExistingEmergency.vue";
 
 extend("required", required);
 extend("numeric", {
@@ -3210,14 +3208,12 @@ extend("checkNumberMobile", {
       "This field must be an 11-digit number starting with 'correct format'",
 });
 export default {
-  name: "Create",
-  title: "CTM - Emergency Beneficiary Create",
+  name: "Edit",
+  title: "CTM - Emergency Beneficiary Edit",
   components: {
     ValidationProvider,
     ValidationObserver,
     Spinner,
-    EmergencyComponent,
-    ExistingEmergency,
   },
   data() {
     return {

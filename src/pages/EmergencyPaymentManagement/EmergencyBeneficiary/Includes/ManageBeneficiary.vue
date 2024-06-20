@@ -4,7 +4,6 @@
       <v-col cols="12">
         <Spinner :loading="loading"/>
         <!--Search Panel -->
-
         <v-row>
           <v-col cols="12">
             <v-card color="white" elevation="10" rounded="md" theme="light">
@@ -19,7 +18,7 @@
               >
                 <h3 class="white--text text-uppercase pt-3">
                   {{
-                    $t("container.emergency_payment.emergency_beneficiary.list")
+                    $t("container.list.manage_beneficary")
                   }}
                 </h3>
               </v-card-title>
@@ -81,31 +80,19 @@
                   </div>
                   <div>
                     <v-btn
-                        class="btn mr-2 white--text"
-                        color="red darken-4"
-                        elevation="2"
-                        @click="generatePDF()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.PDF") }}
-                    </v-btn>
-                    <v-btn
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        elevation="2"
-                        @click="generateExcel()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.excel") }}
-                    </v-btn>
-                    <v-btn
                         color="primary"
-                        router
-                        to="/emergency-payment/emergency-beneficiary/create"
-
+                        @click="getNewBeneficiary"
                     >
                       <v-icon class="pr-1"> mdi-plus</v-icon>
-                      {{ $t("container.list.add_new") }}
+                      {{ $t("container.list.add_beneficiary") }}
+                    </v-btn>
+                    <v-btn
+                        class="ml-2"
+                        color="success"
+                        @click="getExistingBeneficiary"
+                    >
+                      <v-icon class="pr-1"> mdi-plus</v-icon>
+                      {{ $t("container.list.existing") }}
                     </v-btn>
                   </div>
                   <!--Data table-->
@@ -154,25 +141,6 @@
                       <!-- Action Button -->
 
                       <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'emergency-allotment-edit'"
-                                color="success"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="editData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-account-edit-outline</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.edit") }}
-                          </span>
-                        </v-tooltip>
-
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -257,8 +225,8 @@ extend("bangla", {
   message: "Only Bangla characters will be allowed in this field",
 });
 export default {
-  name: "Index",
-  title: "CTM - Emergency Beneficiary List",
+  name: "ManageBeneficiary",
+  title: "CTM - Manage Emergency Beneficiary List",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -476,6 +444,17 @@ export default {
   methods: {
     getLocationText(item) {
       return this.language === "bn" ? item.value_bn : item.value_en;
+    },
+    getNewBeneficiary() {
+      this.$router.push({
+        path: `/emergency-payment/manage-emergency-beneficiary/create`,
+        query: { flag: 'New' }
+      });
+    },
+    getExistingBeneficiary() {
+      this.$router.push({
+        path: `/emergency-payment/manage-emergency-beneficiary/create`
+      });
     },
     status(status) {
       if (status === 1) {

@@ -33,6 +33,31 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/EmergencyAllotment/Edit.vue"),
   },
+  //   Manage Emergency Beneficiary
+  {
+    path: "/emergency-payment/manage-emergency-beneficiary",
+    name: "Manage Emergency beneficiary",
+    meta: {
+      requiresAuth: true,
+      permission: "manage-emergency-beneficiary-view",
+    },
+    component: () =>
+        import(
+            "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Includes/ManageBeneficiary.vue"
+            ),
+  },
+  {
+    path: "/emergency-payment/manage-emergency-beneficiary/create",
+    name: "Existing Emergency beneficiary",
+    meta: {
+      requiresAuth: true,
+      permission: "manage-emergency-beneficiary-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Includes/ExistingEmergency.vue"
+      ),
+  },
   // Emergency Beneficiary routes
   {
     path: "/emergency-payment/emergency-beneficiary",
@@ -101,7 +126,9 @@ const EmergencyPaymentManagementRoutes = [
       permission: "emergency-supplementary-payroll-show",
     },
     component: () =>
-      import("../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"),
+      import(
+        "../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"
+      ),
   },
   {
     path: "/emergency-payment/cycle/view/:id",

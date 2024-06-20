@@ -97,7 +97,10 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "accept_invitation": "Invitation of exam"
+      "accept_invitation": "Invitation of exam",
+      "manage_beneficary": "Manage Beneficiary",
+      "existing": "Existing Beneficiary",
+      "add_beneficiary": "New Beneficiary"
     },
     "system_config": {
       "demo_graphic": {
@@ -1215,9 +1218,10 @@
         "search": "Search Emergency Beneficiary",
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
-        "searchBy": "Search By",
+        "searchBy": "Emergency New/Existing Beneficiary",
         "summary": "Summary",
-        "emergency_applicant": "Create Emergency Beneficiary"
+        "emergency_applicant": "Create Emergency Beneficiary",
+        "manage": "Manage Beneficiary"
       },
       "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",
@@ -1334,7 +1338,6 @@
         "start_date": "Training Start Date",
         "end_date": "Training End Date",
         "certificate": "Certificate"
-
       },
       "training_registration": {
         "list_1": "Participant List",

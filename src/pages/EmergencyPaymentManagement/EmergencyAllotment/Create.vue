@@ -547,7 +547,6 @@
                         type="submit"
                     >{{ $t("container.list.submit") }}
                     </v-btn>
-                    <!-- :disabled="invalid" -->
                   </v-col>
                 </v-row>
               </v-container>
@@ -565,8 +564,8 @@ import {required} from "vee-validate/dist/rules";
 
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Emergency Allotment",
+  name: "Create",
+  title: "CTM - Emergency Allotment Create",
   components: {
     ValidationProvider,
     ValidationObserver,
