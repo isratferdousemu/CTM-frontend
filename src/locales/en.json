@@ -1023,6 +1023,7 @@
       "budget_id": "Budget Id",
       "program": "Program",
       "no_of_previous_year": "No of Previous Year",
+      "previous_year":"Previous Years",
       "calculation_value": "Calculation Value",
       "approval_status": "Status",
       "Draft": "Draft",

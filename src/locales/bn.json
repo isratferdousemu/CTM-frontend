@@ -1024,6 +1024,7 @@
       "budget_id": "বাজেট আইডি",
       "program": "প্রোগ্রাম",
       "no_of_previous_year": "আগের বছরের সংখ্যা",
+      "previous_year":"আগের বছর সমূহ",
       "calculation_value": "গণনার মান",
       "approval_status": "স্ট্যাটাস",
       "Draft": "খসড়া",

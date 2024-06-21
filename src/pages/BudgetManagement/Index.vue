@@ -57,7 +57,7 @@
               <v-card-title tag="div" class="mb-2" style="
                   background-color: #1c3b68;
                   color: white;">
-                <h3 class="white--text text-uppercase pt-3">
+                <h3 class="white--text text-uppercase">
                   {{ $t("container.budget_management.budget_info_list") }}
                 </h3>
               </v-card-title>
