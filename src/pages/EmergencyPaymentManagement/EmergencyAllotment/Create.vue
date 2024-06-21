@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <Spinner :loading="loading"/>
     <v-card class="ma-0 pa-0" justify="center" outlined>
       <v-card-title class="component-title">
         <div class="clearfix">
@@ -25,9 +26,20 @@
                         rules="required"
                         vid="payment_name"
                     >
+
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.payment_name"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-text-field
                           v-model="data.payment_name"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -36,7 +48,6 @@
                             : ''
                         "
                           :hide-details="!errors[0]"
-                          :label="$t('container.emergency_payment.payment_name')"
                           clearable
                           outlined
                           required
@@ -51,9 +62,19 @@
                         rules="required"
                         vid="program_name"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.program_name"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.program_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -61,9 +82,8 @@
                               : 'Please select the program name'
                             : ''
                         "
-                          :hide-details="errors[0] ? false : true"
+                          :hide-details="!errors[0]"
                           :items="allowanceProgrames"
-                          :label="$t('container.emergency_payment.program_name')"
                           clearable
                           item-text="name_en"
                           item-value="id"
@@ -79,6 +99,16 @@
                         rules="required"
                         vid="starting_period"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.starting_period"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-menu
                           :close-on-content-click="false"
                           :nudge-right="40"
@@ -97,9 +127,6 @@
                             : ''
                         "
                               :hide-details="!errors[0]"
-                              :label="
-                            $t('container.emergency_payment.starting_period')
-                          "
                               append-icon="mdi-calendar"
                               clearable
                               outlined
@@ -124,6 +151,16 @@
                         rules="required"
                         vid="starting_period"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.closing_period"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-menu
                           :close-on-content-click="false"
                           :nudge-right="40"
@@ -143,9 +180,6 @@
                             : ''
                         "
                               :hide-details="!errors[0]"
-                              :label="
-                            $t('container.emergency_payment.closing_period')
-                          "
                               append-icon="mdi-calendar"
                               clearable
                               outlined
@@ -170,9 +204,19 @@
                         rules="required"
                         vid="per_person_amount"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.per_person_amount"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-text-field
                           v-model="data.per_person_amount"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -180,10 +224,8 @@
                               : 'Please enter per person amount'
                             : ''
                         "
-                          :hide-details="errors[0] ? false : true"
-                          :label="
-                          $t('container.emergency_payment.per_person_amount')
-                        "
+                          :hide-details="!errors[0]"
+
                           clearable
                           outlined
                           required
@@ -198,9 +240,19 @@
                         rules="required"
                         vid="payment_cycle"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.payment_cycle"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.payment_cycle"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -208,9 +260,8 @@
                               : 'Please select the payment cycle'
                             : ''
                         "
-                          :hide-details="errors[0] ? false : true"
+                          :hide-details="!errors[0]"
                           :items="payment_cycles"
-                          :label="$t('container.emergency_payment.payment_cycle')"
                           clearable
                           item-text="name"
                           item-value="name"
@@ -220,6 +271,7 @@
                     </ValidationProvider>
                   </v-col>
                   <!-- location panel -->
+                  <!-- Division List -->
                   <v-col cols="12" lg="6" md="6">
                     <ValidationProvider
                         v-slot="{ errors }"
@@ -227,32 +279,38 @@
                         rules="required"
                         vid="division"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.division.division"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.division_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে বিভাগের নাম নির্বাচন করুন'
-                              : 'Please select the division name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে বিভাগের নাম নির্বাচন করুন'
+                                        : 'Please select the division name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="divisions"
-                          :label="
-                          $t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
-                          @input="onChangeDivision($event)"
+                          @change="getDistrictList"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!--District List-->
                   <v-col cols="12" lg="6" md="6">
                     <ValidationProvider
                         v-slot="{ errors }"
@@ -260,32 +318,38 @@
                         rules="required"
                         vid="district"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.district.district"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.district_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে জেলার নাম নির্বাচন করুন'
-                              : 'Please select the district name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে জেলার নাম নির্বাচন করুন'
+                                        : 'Please select the district name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="districts"
-                          :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
-                          @input="onChangeDistrict($event)"
+                          @input="getThanaList"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!--Location Type List-->
                   <v-col cols="12" lg="6" md="6">
                     <ValidationProvider
                         v-slot="{ errors }"
@@ -293,19 +357,24 @@
                         rules="required"
                         vid="location_type"
                     >
+                      <label style="display: inline-block"
+                      >{{ $t("container.list.location_type") }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.location_type"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অবস্থানের ধরন নির্বাচন করুন'
-                              : 'Please select the location type'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অবস্থানের ধরন নির্বাচন করুন'
+                                        : 'Please select the location type'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="locationType"
-                          :label="$t('container.list.location_type')"
                           clearable
                           item-text="value_en"
                           item-value="id"
@@ -315,159 +384,471 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 2" cols="12" lg="6" md="6">
+                  <!--Upazila List-->
+                  <v-col
+                      v-if="data.location_type === 2"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                  >
                     <ValidationProvider
                         v-slot="{ errors }"
                         name="Upazila"
                         rules="required"
                         vid="thana_id"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.upazila"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.thana_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে উপজেলার নাম নির্বাচন করুন'
-                              : 'Please select the upazila name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে উপজেলার নাম নির্বাচন করুন'
+                                        : 'Please select the upazila name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="thanas"
-                          :label="
-                          $t('container.system_config.demo_graphic.thana.thana')
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
-                          @change="onChangeUpazila($event)"
+                          @change="getUnionList"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 2" cols="12" lg="6" md="6">
+                  <!--Sub Location List-->
+                  <v-col
+                      v-if="data.location_type === 2"
+                      cols="6"
+                      lg="6"
+                      md="6"
+                  >
+                    <label style="display: inline-block"
+                    >{{
+                        $t(
+                            "container.system_config.demo_graphic.ward.subLocation_type"
+                        )
+                      }}
+                    </label>
+                    <span style="margin-left: 4px; color: red">*</span>
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Sub Location"
+                        rules="required"
+                        vid="subLocationType"
+                    >
+                      <v-autocomplete
+                          v-model="data.sub_location_type"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
+                                    : 'Please enter Sub Location'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemValue"
+                          :items="subLocationType"
+                          class="no-arrow-icon"
+                          item-value="id"
+                          outlined
+                          @input="SubLocationType($event)"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--Upazila Union List-->
+                  <v-col
+                      v-if="data.location_type === 2 && data.sub_location_type === 2"
+
+                      cols="12"
+                      lg="6"
+                      md="6"
+                  >
                     <ValidationProvider
                         v-slot="{ errors }"
                         name="union"
                         rules="required"
                         vid="union_id"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.union"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.union_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে ইউনিয়নের নাম নির্বাচন করুন'
-                              : 'Please select the union name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে ইউনিয়নের নাম নির্বাচন করুন'
+                                        : 'Please select the union name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="unions"
-                          :label="
-                          $t('container.system_config.demo_graphic.ward.union')
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
+                          @input="onChangeUnion($event)"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 3" cols="12" lg="6" md="6">
+                  <!--Upazila union ward List-->
+                  <v-col
+                      v-if="
+                            data.location_type === 2 &&
+                            data.sub_location_type === 2
+                          "
+                      cols="6"
+                      lg="6"
+                      md="6"
+                  >
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Ward"
+                        rules="required"
+                        vid="ward_id_union"
+                    >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.ward"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red">*</span>
+                      <v-autocomplete
+                          v-model="data.ward_id_union"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+                                    : 'Please enter Ward'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemText"
+                          :items="wards_upazila_union"
+                          clearable
+                          item-value="id"
+                          outlined
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--Upazila Paurashava List-->
+                  <v-col
+                      v-if="
+                            data.location_type === 2 &&
+                            data.sub_location_type === 1
+                          "
+                      cols="6"
+                  >
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Pouroshava"
+                        rules="required"
+                        vid="pouro_id"
+                    >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.pouro"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red">*</span>
+                      <v-autocomplete
+                          v-model="data.pouro_id"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
+                                    : 'Please enter Pourashava'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemText"
+                          :items="pouros"
+                          item-value="id"
+                          outlined
+                          @input="onChangePouro($event)"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--Upazila Paurashava Ward List-->
+                  <v-col
+                      v-if="
+                            data.location_type === 2 &&
+                            data.sub_location_type === 1 && data.pouro_id
+                          "
+                      cols="6"
+                      lg="6"
+                      md="6"
+                  >
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Ward"
+                        rules="required"
+                        vid="ward_id_union"
+                    >
+                      <label style="display: inline-block">Ward </label>
+                      <span style="margin-left: 4px; color: red">*</span>
+                      <v-autocomplete
+                          v-model="data.ward_id_pouro"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+                                    : 'Please enter Ward'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemText"
+                          :items="wards_upazila_pouro"
+                          clearable
+                          item-value="id"
+                          outlined
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--City Corporation List-->
+                  <v-col
+                      v-if="data.location_type === 3"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                  >
                     <ValidationProvider
                         v-slot="{ errors }"
                         name="city corporation"
                         rules="required"
                         vid="city_id"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.city"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.city_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে সিটি কর্পোরেশনের নাম নির্বাচন করুন'
-                              : 'Please select the city corporation Name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে সিটি কর্পোরেশনের নাম নির্বাচন করুন'
+                                        : 'Please select the city corporation Name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="cities"
-                          :label="
-                          $t('container.system_config.demo_graphic.ward.city')
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
-                          @change="onChangeCity($event)"
+                          @change="getCityThanaList"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 3" cols="12" lg="6" md="6">
+                  <!--City Thana List-->
+                  <v-col
+                      v-if="data.location_type === 3"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                  >
                     <ValidationProvider
                         v-slot="{ errors }"
                         name="thana"
                         rules="required"
                         vid="city_thana_id"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.thana"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.city_thana_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে থানার নাম নির্বাচন করুন'
-                              : 'Please select the thana Name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে থানার নাম নির্বাচন করুন'
+                                        : 'Please select the thana Name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="city_thanas"
-                          :label="
-                          $t('container.system_config.demo_graphic.ward.thana')
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
+                          @input="OnChangeCityThana($event)"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 1" cols="12" lg="6" md="6">
+                  <!--City Thana Ward List-->
+                  <v-col
+                      v-if="data.location_type === 3"
+                      cols="6"
+                      lg="6"
+                      md="6"
+                  >
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Ward"
+                        rules="required"
+                        vid="ward_id_city"
+                    >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.ward"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red">*</span>
+                      <v-autocomplete
+                          v-model="data.ward_id_city"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+                                    : 'Please enter Ward'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemText"
+                          :items="wards_city"
+                          clearable
+                          item-value="id"
+                          outlined
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--District Paurashova List-->
+                  <v-col
+                      v-if="data.location_type === 1"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                  >
                     <ValidationProvider
                         v-slot="{ errors }"
                         name="District Pourashava"
                         rules="required"
                         vid="district_pouro_id"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.pouro"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-autocomplete
                           v-model="data.district_pouro_id"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে জেলার পৌরশব নাম নির্বাচন করুন'
-                              : 'Please select the district Paurashava Name'
-                            : ''
-                        "
-                          :hide-details="errors[0] ? false : true"
+                                    errors[0]
+                                      ? language === 'bn'
+                                        ? 'অনুগ্রহ করে জেলার পৌরশব নাম নির্বাচন করুন'
+                                        : 'Please select the district Paurashava Name'
+                                      : ''
+                                  "
+                          :hide-details="!errors[0]"
                           :items="district_poros"
-                          :label="
-                          $t('container.system_config.demo_graphic.ward.pouro')
-                        "
                           clearable
                           item-text="name_en"
                           item-value="id"
                           outlined
                           required
+                          @input="onChangeDistrictPouro"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-
+                  <!--District Pourashava Ward list-->
+                  <v-col
+                      v-if="data.location_type === 1"
+                      cols="6"
+                      lg="6"
+                      md="6"
+                  >
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Ward"
+                        rules="required"
+                        vid="ward_id_dist"
+                    >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.system_config.demo_graphic.ward.ward"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red">*</span>
+                      <v-autocomplete
+                          v-model="data.ward_id_dist"
+                          :error="!!errors[0]"
+                          :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+                                    : 'Please enter Ward'
+                                  : ''
+                              "
+                          :hide-details="!errors[0]"
+                          :item-text="getItemText"
+                          :items="wards_dist"
+                          clearable
+                          item-value="id"
+                          outlined
+                      >
+                      </v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!--Location panel ends-->
                   <v-col cols="12" lg="6" md="6">
                     <ValidationProvider
                         v-slot="{ errors }"
@@ -475,9 +856,19 @@
                         rules="required"
                         vid="no_of_new_benificiary"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.no_of_new_benificiary"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-text-field
                           v-model="data.no_of_new_benificiary"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -485,12 +876,7 @@
                               : 'Please enter the no of new beneficiary'
                             : ''
                         "
-                          :hide-details="errors[0] ? false : true"
-                          :label="
-                          $t(
-                            'container.emergency_payment.no_of_new_benificiary'
-                          )
-                        "
+                          :hide-details="!errors[0]"
                           clearable
                           outlined
                           required
@@ -505,9 +891,19 @@
                         rules="required"
                         vid="no_of_existing_benificiary"
                     >
+                      <label style="display: inline-block"
+                      >{{
+                          $t(
+                              "container.emergency_payment.no_of_existing_benificiary"
+                          )
+                        }}
+                      </label>
+                      <span style="margin-left: 4px; color: red"
+                      >*</span
+                      >
                       <v-text-field
                           v-model="data.no_of_existing_benificiary"
-                          :error="errors[0] ? true : false"
+                          :error="!!errors[0]"
                           :error-messages="
                           errors[0]
                             ? language === 'bn'
@@ -515,12 +911,7 @@
                               : 'Please enter the no of existing beneficiary'
                             : ''
                         "
-                          :hide-details="errors[0] ? false : true"
-                          :label="
-                          $t(
-                            'container.emergency_payment.no_of_existing_benificiary'
-                          )
-                        "
+                          :hide-details="!errors[0]"
                           clearable
                           outlined
                           required
@@ -528,7 +919,6 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-
                   <!-- Button Part -->
                   <v-col class="text-right" cols="12">
                     <v-btn
@@ -558,10 +948,10 @@
   </v-container>
 </template>
 <script>
-import {mapActions, mapState} from "vuex";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
-import {required} from "vee-validate/dist/rules";
-
+import { mapActions, mapState } from "vuex";
+import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 extend("required", required);
 export default {
   name: "Create",
@@ -569,6 +959,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   data() {
     return {
@@ -579,11 +970,17 @@ export default {
         division_id: null,
         district_id: null,
         location_type: null,
+        sub_location_type: null,
         thana_id: null,
+        pouro_id: null,
         union_id: null,
         city_id: null,
         city_thana_id: null,
         district_pouro_id: null,
+        ward_id_city: null,
+        ward_id_upazila_union: null,
+        ward_id_upazila_pouro: null,
+        ward_id_dist: null,
         no_of_new_benificiary: null,
         no_of_existing_benificiary: null,
         per_person_amount: null,
@@ -591,25 +988,41 @@ export default {
         starting_period: null,
         closing_period: null,
       },
-
       districts: [],
       district_poros: [],
       cities: [],
       thanas: [],
+      programs: [],
       city_thanas: [],
       unions: [],
+      wards_city: [],
+      wards_upazila_pouro: [],
+      wards_upazila_union: [],
+      wards: [],
       locationType: [],
-      delete_loading: false,
+      subLocationType: [
+        {
+          id: 1,
+          value_en: "Pouroshava",
+          value_bn: "পৌরসভা",
+        },
+
+        {
+          id: 2,
+          value_en: "Union",
+          value_bn: "ইউনিয়ন ",
+        },
+      ],
+      pouros: [],
+      wards_dist: [],
       loading: false,
       search: "",
-      wards: [],
       pagination: {
         current: 1,
         total: 0,
         perPage: 5,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
-      isEdit: false,
       payment_cycles: [
         {
           id: 1,
@@ -650,11 +1063,6 @@ export default {
     this.getLocationType();
   },
   methods: {
-    getLocationType() {
-      this.$store
-          .dispatch("getLookupByType", 1)
-          .then((res) => (this.locationType = res));
-    },
     GeneratePDF() {
       this.$axios
           .get("/admin/union/generate-pdf", {
@@ -700,11 +1108,11 @@ export default {
               if (res.data?.success) {
                 this.$toast.success(
                     this.language === "bn"
-                        ? "ডেটা সফলভাবে জমা দেওয়া হয়েছে"
-                        : "Data inserted successfully"
+                        ? "জরুরী বরাদ্দ সফলভাবে তৈরি করা হয়েছে"
+                        : "Emergency Allotment Created Successfully"
                 );
-                this.resetData();
                 this.$router.push("/emergency-payment/emergency-allotment");
+                this.resetData();
               } else if (res?.data?.errors) {
                 this.$refs.form.setErrors(res.data.errors);
                 this.$toast.error(res.data.message);
@@ -716,6 +1124,11 @@ export default {
       } catch (e) {
         console.log(e, "err");
       }
+    },
+    getLocationType() {
+      this.$store
+          .dispatch("getLookupByType", 1)
+          .then((res) => (this.locationType = res));
     },
     async LocationType($event) {
       if (this.data.district_id != null && this.data.location_type != null) {
@@ -757,66 +1170,164 @@ export default {
         }
       }
     },
+    async SubLocationType($event) {
+      if ($event === 1) {
+        await this.$axios
+            .get(`/global/union/pouro/get/${this.data.thana_id}`, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.pouros = result.data.data;
+              console.log({ pouros: this.pouros });
+            });
+        this.data.union_id = null;
+      }
+      if ($event === 2) {
+        await this.onChangeUpazila(this.data.thana_id);
+        this.data.pouro_id = null;
+      }
+    },
+    async OnChangeCityThana($event) {
+      await this.$axios
+          .get(`/global/ward/get/thana/${this.data.city_thana_id}`, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.wards_city = result.data.data;
+            this.wards_upazila = [];
+            this.wards_dist = [];
+            this.ward_id_dist = null;
+            this.ward_id_upazila = null;
+          });
+    },
+    async onChangeDistrictPouro($event) {
+      console.log("hi district pourashava called");
+      await this.$axios
+          .get(`/global/ward/get/district_pouro/${this.data.district_pouro_id}`, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.wards_dist = result.data.data;
+            this.wards_upazila_union = [];
+            this.wards_upazila_pouro = [];
+            this.wards_city = [];
+            this.ward_id_city = null;
+            this.ward_id_union = null;
+          });
+    },
     async onChangeUpazila(event) {
       await this.$axios
-          .get(`/admin/union/get/${this.data.thana_id}`, {
+          .get(`/global/union/get/${this.data.thana_id}`, {
             headers: {
-              Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
             this.unions = result.data.data;
+
           });
     },
-    async onChangeDivision(event) {
+    async onChangeUnion($event) {
       await this.$axios
-          .get(`/admin/district/get/${event}`, {
+          .get(`/global/ward/get/${$event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
-            this.districts = result.data.data;
+            this.wards_upazila_union = result.data.data;
+            console.log(this.wards_upazila_union, "union");
+            this.wards_upazila_pouro = [];
+            this.wards_dist = [];
+            this.wards_city = [];
+            this.data.ward_id_dist = null;
+            this.data.ward_id_city = null;
+            this.data.ward_id_pouro = null;
           });
     },
-    async onChangeDistrict(event) {
+    async onChangePouro($event) {
       await this.$axios
-          .get(`/admin/thana/get/${event}`, {
+          .get(`/global/ward/get/pouro/${$event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
-            this.LocationType(this.data.location_type);
-            this.thanas = result.data.data;
+            this.wards_upazila_pouro = result.data.data;
+            this.wards_upazila_union = [];
+            this.wards_dist = [];
+            this.wards_city = [];
+            this.data.ward_id_dist = null;
+            this.data.ward_id_city = null;
+            this.data.ward_id_union = null;
           });
     },
-    async onChangeThana(event) {
-      await this.$axios
-          .get(`/admin/union/get/${event}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
+    getDistrictList(division_id = null) {
+      let divisionId = division_id ? division_id : this.data.division_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: divisionId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+          .then((res) => {
+            this.districts = res.data;
           })
-          .then((result) => {
-            this.unions = result.data.data;
-          });
+          .catch((error) => console.log(error));
     },
-    async onChangeCity(event) {
-      await this.$axios
-          .get(`/admin/thana/get/city/${this.data.city_id}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
+    getThanaList(district_id = null) {
+      let districtId = district_id ? district_id : this.data.district_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: districtId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+          .then((res) => {
+            this.thanas = res.data;
           })
-          .then((result) => {
-            this.city_thanas = result.data.data;
-          });
+          .catch((error) => console.log(error));
+    },
+    getUnionList(thana_id = null) {
+      let thanaId = thana_id ? thana_id : this.data.thana_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: thanaId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+          .then((res) => {
+            this.unions = res.data;
+          })
+          .catch((error) => console.log(error));
+    },
+    getCityThanaList(city_id = null) {
+      let cityId = city_id ? city_id : this.data.city_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: cityId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+          .then((res) => {
+            this.city_thanas = res.data;
+          })
+          .catch((error) => console.log(error));
+    },
+    getItemValue(item) {
+      return this.language === "bn" ? item.value_bn : item.value_en;
+    },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
     },
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
