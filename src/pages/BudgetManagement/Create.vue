@@ -44,15 +44,20 @@
                               </ValidationProvider>
 
 
-                              <ValidationProvider name="previousYear" vid="previous_year" rules="required"
+                              <ValidationProvider name="prev_financial_year_ids" vid="prev_financial_year_ids" rules="required"
                                 v-slot="{ errors }">
-
-                                <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
-          'container.budget_management.no_of_previous_year'
-        )
-          " required :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-
+                                <v-select
+                                  clearable
+                                  chips
+                                  :label="$t('container.budget_management.previous_year')"
+                                  :items="financial_years"
+                                  item-text="financial_year"
+                                  item-value="id"
+                                  v-model="data.prev_financial_year_ids"
+                                  multiple
+                                  outlined required :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                ></v-select>
                               </ValidationProvider>
 
                               <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
@@ -199,7 +204,7 @@ export default {
         program_id: null,
         financial_year_id: null,
         calculation_type: null,
-        previous_year_value: null,
+        prev_financial_year_ids: null,
         calculation_value: null,
         remarks: null
       },
@@ -260,7 +265,7 @@ export default {
       },
       GetFinancial_Year() {
         this.$axios
-          .get("/admin/financial-year/get", {
+          .get("/admin/financial-year/list", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data"
@@ -287,7 +292,7 @@ export default {
       fd.append("program_id", this.data.program_id ?? '');
       fd.append("financial_year_id", this.active_year.id ?? '');
       fd.append("calculation_type", this.data.calculation_type ?? '');
-      fd.append("no_of_previous_year", this.data.previous_year_value ?? '');
+      fd.append("prev_financial_year_ids", this.data.prev_financial_year_ids ?? '');
       fd.append("calculation_value", this.data.calculation_value ?? '');
       fd.append("remarks", this.data.remarks ?? '');
 
@@ -323,7 +328,7 @@ export default {
         this.data.program_id = null;
         this.data.financial_year_id = null;
         this.data.calculation_type = null;
-        this.data.previous_year_value = null;
+        this.data.prev_financial_year_ids = null;
         this.data.calculation_value = null;
         this.data.remarks = null;
     },
