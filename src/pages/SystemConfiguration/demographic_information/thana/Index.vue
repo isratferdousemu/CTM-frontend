@@ -4,66 +4,37 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.thana.list") }}
+                  {{ $t("container.system_config.demo_graphic.thana.list") }}{{ pagination }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                      @keyup.native="GetUpazila"
-                      outlined
-                      dense
-                      v-model="search"
-                      prepend-inner-icon="mdi-magnify"
-                      class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
-                      variant="outlined"
-                      :label="
+                    <v-text-field @keyup.native="GetUpazila" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
+                      variant="outlined" :label="
                         $t('container.system_config.demo_graphic.thana.search')
-                      "
-                      hide-details
-                      color="primary"
-                    >
+                      " hide-details color="primary">
                     </v-text-field>
                   </div>
-                  <v-btn
-                    @click="createDialog"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                    v-can="'thana-create'"
-                  >
+                  <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus"
+                    v-can="'thana-create'">
                     {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="upazilas"
-                      :items-per-page="pagination.perPage"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    {{ pagination }}
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="upazilas"
+                      :items-per-page="pagination.perPage" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+                        (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1
                         }}
                       </template>
                       <template v-slot:item.division="{ item }">
@@ -86,15 +57,8 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'thana-edit'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editDialog(item)"
-                            >
+                            <v-btn v-can="'thana-edit'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -105,16 +69,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'thana-delete'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
+                            <v-btn v-can="'thana-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -124,32 +80,16 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -175,196 +115,84 @@
               <form @submit.prevent="submitUpazila()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Division"
-                      vid="division_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
-                        outlined
-                        :label="
+                    <ValidationProvider name="Division" vid="division_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined :label="
                           $t(
                             'container.system_config.demo_graphic.division.division'
                           )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                        " :items="divisions" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
 
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-if="isDistrictHidden"
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeDistrict($event)"
-                        outlined
-                        v-model="data.district_id"
-                        :label="
+                    <ValidationProvider v-if="isDistrictHidden" name="District" vid="district" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeDistrict($event)" outlined v-model="data.district_id" :label="
                           $t(
                             'container.system_config.demo_graphic.district.district'
                           )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                        " :items="districts" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-if="isLocationTypeHidden"
-                      name="Location Type"
-                      vid="division"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeLocationType($event)"
-                        v-model="data.location_type"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="filteredOptions"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider v-if="isLocationTypeHidden" name="Location Type" vid="division" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined
+                        :label="$t('container.list.location_type')" :items="filteredOptions" item-text="value_en"
+                        item-value="id" required :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="!isCityCorporationHidden"
-                  >
-                    <ValidationProvider
-                      name="City Corporation"
-                      vid="city corporation"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        v-model="data.city_corporation_id"
-                        outlined
-                        :label="
+                  <v-col lg="6" md="6" cols="12" v-if="!isCityCorporationHidden">
+                    <ValidationProvider name="City Corporation" vid="city corporation" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete v-model="data.city_corporation_id" outlined :label="
                           $t('container.system_config.demo_graphic.city.city')
-                        "
-                        :items="city"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                        " :items="city" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required|codeRules"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        :hide-details="errors[0] ? false : true"
-                        type="number"
-                        v-model="data.code"
+                    <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }">
+                      <v-text-field outlined :hide-details="errors[0] ? false : true" type="number" v-model="data.code"
                         :label="
                           $t('container.system_config.demo_graphic.thana.code')
-                          "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                          " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Name English"
-                      vid="name_en"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_en"
-                        :label="
+                    <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" v-model="data.name_en" :label="
                           $t(
                             'container.system_config.demo_graphic.thana.name_en'
                           )
-                        "
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                        " required :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="
+                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" v-model="data.name_bn" :label="
                           $t(
                             'container.system_config.demo_graphic.thana.name_bn'
                           )
-                        "
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                        " required :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width black white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width black white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -388,201 +216,84 @@
               <form @submit.prevent="updateUpazila()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Division"
-                      vid="division_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
-                        outlined
-                        :label="
+                    <ValidationProvider name="Division" vid="division_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined :label="
                           $t(
                             'container.system_config.demo_graphic.division.division'
                           )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        readonly
-                      ></v-autocomplete>
+                        " :items="divisions" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]" readonly></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
 
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-if="isDistrictHidden"
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeDistrict($event)"
-                        outlined
-                        v-model="data.district_id"
-                        :label="
+                    <ValidationProvider v-if="isDistrictHidden" name="District" vid="district" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeDistrict($event)" outlined v-model="data.district_id" :label="
                           $t(
                             'container.system_config.demo_graphic.district.district'
                           )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        readonly
-                      ></v-autocomplete>
+                        " :items="districts" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]" readonly></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-if="isLocationTypeHidden"
-                      name="Location Type"
-                      vid="division"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeLocationType($event)"
-                        v-model="data.location_type"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="filteredOptions"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        readonly
-                      ></v-autocomplete>
+                    <ValidationProvider v-if="isLocationTypeHidden" name="Location Type" vid="division" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined
+                        :label="$t('container.list.location_type')" :items="filteredOptions" item-text="value_en"
+                        item-value="id" required :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false" :error-messages="errors[0]" readonly></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="!isCityCorporationHidden"
-                  >
-                    <ValidationProvider
-                      name="City Corporation"
-                      vid="city corporation"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        v-model="data.city_corporation_id"
-                        outlined
-                        :label="
+                  <v-col lg="6" md="6" cols="12" v-if="!isCityCorporationHidden">
+                    <ValidationProvider name="City Corporation" vid="city corporation" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete v-model="data.city_corporation_id" outlined :label="
                           $t('container.system_config.demo_graphic.city.city')
-                        "
-                        :items="city"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        readonly
-                      ></v-autocomplete>
+                        " :items="city" item-text="name_en" item-value="id" required
+                        :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]" readonly></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required|codeRules"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="number"
-                        v-model="data.code"
-                        
-                        :label="
+                    <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }">
+                      <v-text-field outlined type="number" v-model="data.code" :label="
                           $t('container.system_config.demo_graphic.thana.code')
-                        "
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                        " required :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Name English"
-                      vid="name_en"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_en"
-                        :label="
+                    <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" v-model="data.name_en" :label="
                           $t(
                             'container.system_config.demo_graphic.thana.name_en'
                           )
-                        "
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                        " required :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="
+                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" v-model="data.name_bn" :label="
                           $t(
                             'container.system_config.demo_graphic.thana.name_bn'
                           )
-                        "
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                        " required :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width black white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width black white--text py-2">
                     {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
@@ -603,27 +314,17 @@
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.system_config.demo_graphic.thana.delete_alert")
+              $t("container.system_config.demo_graphic.thana.delete_alert")
               }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteUpazila()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width black white--text py-2"
-              >
+              <v-btn text @click="deleteUpazila()" color="white" :loading="delete_loading"
+                class="custom-btn-width black white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>

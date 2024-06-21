@@ -736,7 +736,7 @@ export default {
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
-                        <v-expansion-panels>
+                        <!-- <v-expansion-panels>
                             <v-expansion-panel class="ma-2">
                                 <v-expansion-panel-header color=#1c3b68>
                                     <template v-slot:actions>
@@ -748,9 +748,9 @@ export default {
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="elevation-0 transparent mt-10">
                                     <ValidationObserver ref="form" v-slot="{ invalid }">
-                                        <form @submit.prevent="submitWard()">
+                                     
                                             <v-row>
-                                               
+
                                                 <v-col lg="3" md="3" cols="12">
 
                                                     <v-select dense :append-icon-cb="appendIconCallback"
@@ -762,7 +762,9 @@ export default {
                                                         :error-messages="errors[0]"></v-select>
 
                                                 </v-col>
+                                                {{ divisions }} hello
                                                 <v-col lg="3" md="3" cols="12">
+
                                                     <v-select dense outlined clearable @input="onChangeDivision($event)"
                                                         :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                         v-model="data.division_id" :label="$t(
@@ -801,18 +803,7 @@ export default {
 
                                                 </v-col>
 
-                                                <!-- <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="union" vid="union_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-select dense :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.union_id"
-                                                            outlined :label="$t('container.system_config.demo_graphic.ward.union')
-                                " :items="unions" :item-text="getItemText" item-value="id" required
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-select>
-                                                    </ValidationProvider>
-                                                </v-col> -->
+                                              
 
                                                 <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="city" vid="city_id" rules="required"
@@ -878,8 +869,7 @@ export default {
                                                         append-icon="mdi-plus"></v-select>
 
                                                 </v-col>
-                                                <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
-
+                                              
                                                 <v-col v-if="data.sub_location_type == 2 &&
                                             data.location_type == 2" lg="3" md="3" cols="12">
 
@@ -925,11 +915,11 @@ export default {
                                                     </div>
                                                 </v-col>
                                             </v-row>
-                                        </form>
+                                    
                                     </ValidationObserver>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
-                        </v-expansion-panels>
+                        </v-expansion-panels> -->
 
                     </v-col>
                     <v-col cols="12">

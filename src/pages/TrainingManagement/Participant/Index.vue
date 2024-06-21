@@ -63,7 +63,7 @@ export default {
               { text: this.$t('container.training_management.training_program.program'), value: "program", align: "start", width: "15%" },
               { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
               { text: this.$t('container.training_management.training_program.employee_id'), value: "user_id", align: "start", width: "15%", sortable: false, },
-              { text: this.$t('container.list.status'), value: "status", width: "15%" },
+              { text: this.$t('container.training_management.training_registration.result'), value: "status", width: "15%" },
               { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "20%" },
             ];
         },
@@ -292,7 +292,7 @@ export default {
                 this.$t('container.training_management.training_registration.full_name'),
                 this.$t('container.training_management.trainer_info.email'),
                 this.$t('container.training_management.trainer_info.mobile'),
-                this.$t('container.list.status'),
+                this.$t('container.training_management.training_registration.result'),
                 
              
            
@@ -402,7 +402,7 @@ export default {
                         this.$t('container.training_management.training_registration.full_name'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.mobile'),
-                        this.$t('container.list.status'),
+                        this.$t('container.training_management.training_registration.result'),
 
                     ]
 
@@ -541,6 +541,10 @@ export default {
             this.GetData();
         },
 
+
+      downloadCertificate(certificate) {
+        this.$router.push({ name: 'TrainingProgramCertificates', params: { certificate } });
+      },
 
        
         deleteAlert(id) {
@@ -816,6 +820,17 @@ export default {
                                                     </template>
                                                     <span>{{ $t("container.list.delete") }}</span>
                                                 </v-tooltip>
+
+                                              <v-tooltip top v-if="item.certificate">
+                                                <template v-slot:activator="{ on }">
+                                                  <v-btn fab x-small v-on="on" color="deep-purple"
+                                                         class=" mr-2 white--text mb-1" elevation="0"
+                                                         @click="downloadCertificate(item.certificate)">
+                                                    <v-icon> mdi-file-download-outline </v-icon>
+                                                  </v-btn>
+                                                </template>
+                                                <span>{{ $t("container.list.certificate") }}</span>
+                                              </v-tooltip>
                                             </template>
                                             <template v-slot:footer="item">
                                                 <v-row class="text-right pt-2 v-data-footer justify-end pb-2">

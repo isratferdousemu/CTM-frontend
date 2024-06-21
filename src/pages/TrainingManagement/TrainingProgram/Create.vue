@@ -186,7 +186,7 @@
                                                 <ValidationProvider name="Module" vid="module" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select dense type="text" v-model="data.status"
-                                                        :label="$t('container.list.status')" persistent-hint outlined
+                                                        :label="$t('container.training_management.training_program.status')" persistent-hint outlined
                                                         :error="errors[0] ? true : false" :items="status_types"
                                                         :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '
                                         : 'Please enter status') : ''">
@@ -195,7 +195,7 @@
                                             </v-col>
                                             <v-col cols=" 12" sm="12" lg="12">
                                                 <label>{{
-                                                    $t('container.training_management.trainer_info.description')
+                                                    $t('container.training_management.training_circular.description')
                                                     }}</label>
 
                                                 <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
