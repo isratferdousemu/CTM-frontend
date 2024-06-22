@@ -244,6 +244,11 @@ export default {
   computed: {
     ...mapState({
     }),
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
   },
   methods: {
     ...mapActions({
