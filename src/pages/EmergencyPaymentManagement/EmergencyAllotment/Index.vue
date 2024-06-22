@@ -1,434 +1,438 @@
 <template>
-  <div id="emergency_allotment">
-    <v-row class="ml-sm-5 mt-0">
-      <v-col cols="12">
-        <Spinner :loading="loading"/>
-        <!-- Search Panel Starts -->
-        <v-expansion-panels>
-          <v-expansion-panel class="ma-2">
-            <v-expansion-panel-header color="#1c3b68">
-              <template v-slot:actions>
-                <v-icon color="white"> $expand</v-icon>
-              </template>
-              <h3 class="white--text text-uppercase">
-                {{ $t("container.grievance_management.grievanceList.search") }}
-              </h3>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content class="elevation-0 transparent mt-10">
-              <ValidationObserver ref="form" v-slot="{ invalid }">
-                <form @submit.prevent="submitsearch()">
-                  <v-row>
-                    <v-col cols="12" lg="3" md="3">
-                      <ValidationProvider
-                          v-slot="{ errors }"
-                          name="emergency_payment_name"
-                          vid="emergency_payment_name"
-                      >
-                        <v-autocomplete
-                            v-model="data.emergency_payment_name"
-                            :append-icon-cb="appendIconCallback"
-                            :error="errors[0] ? true : false"
-                            :error-messages="
+  <v-container fluid>
+    <Spinner :loading="loading"/>
+    <!-- Search Panel Starts -->
+    <v-expansion-panels>
+      <v-expansion-panel class="mb-2">
+        <v-expansion-panel-header color="#1c3b68">
+          <template v-slot:actions>
+            <v-icon color="white"> $expand</v-icon>
+          </template>
+          <h3 class="white--text text-uppercase">
+            {{ $t("container.emergency_payment.search") }}
+          </h3>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="elevation-0 transparent mt-5">
+          <ValidationObserver ref="form" v-slot="{ invalid }">
+            <form @submit.prevent="submitsearch()">
+              <v-row>
+                <v-col cols="12" lg="4" md="4">
+                  <ValidationProvider
+                      v-slot="{ errors }"
+                      name="emergency_payment_name"
+                      rules="required"
+                      vid="emergency_payment_name"
+                  >
+                    <v-autocomplete
+                        v-model="data.emergency_payment_name"
+                        :append-icon-cb="appendIconCallback"
+                        :error="!!errors[0]"
+                        :error-messages="
                             errors[0]
                               ? language === 'bn'
                                 ? 'অনুগ্রহ করে জরুরি অর্থপ্রদানের নাম নির্বাচন করুন'
                                 : 'Please select the emergency payment name'
                               : ''
                           "
-                            :hide-details="errors[0] ? false : true"
-                            :item-text="'emergency_payment_name'"
-                            :items="payment_names"
-                            :label="
+                        :hide-details="!errors[0]"
+                        :item-text="'emergency_payment_name'"
+                        :items="payment_names"
+                        :label="
                             $t('container.emergency_payment.payment_name')
                           "
-                            append-icon="mdi-plus"
-                            class="no-arrow-icon"
-                            clearable
-                            item-value="emergency_payment_name"
-                            outlined
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col cols="12" lg="3" md="3">
-                      <ValidationProvider
-                          v-slot="{ errors }"
-                          name="Started Date"
-                          rules="required"
-                          vid="starting_period"
-                      >
-                        <v-menu
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            min-width="auto"
-                            offset-y
-                            transition="scale-transition"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="data.starting_period"
-                                :error="!!errors[0]"
-                                :error-messages="
+                        append-icon="mdi-plus"
+                        class="no-arrow-icon"
+                        clearable
+                        item-value="emergency_payment_name"
+                        outlined
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" lg="4" md="4">
+                  <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Started Date"
+                      rules="required"
+                      vid="starting_period"
+                  >
+                    <v-menu
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        min-width="auto"
+                        offset-y
+                        transition="scale-transition"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="data.starting_period"
+                            :error="!!errors[0]"
+                            :error-messages="
                                 errors[0]
                                   ? language === 'bn'
                                     ? 'অনুগ্রহ করে শুরুর সময়কাল লিখুন'
                                     : 'Please enter started period'
                                   : ''
                               "
-                                :hide-details="!errors[0]"
-                                :label="
+                            :hide-details="!errors[0]"
+                            :label="
                                 $t(
                                   'container.emergency_payment.starting_period'
                                 )
                               "
-                                append-icon="mdi-calendar"
-                                clearable
-                                outlined
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                              v-model="data.starting_period"
-                              no-title
-                              scrollable
-                          ></v-date-picker>
-                        </v-menu>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col cols="12" lg="3" md="3">
-                      <ValidationProvider
-                          v-slot="{ errors }"
-                          name="Started Date"
-                          rules="required"
-                          vid="starting_period"
-                      >
-                        <v-menu
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            min-width="auto"
-                            offset-y
-                            transition="scale-transition"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="data.closing_period"
-                                :error="!!errors[0]"
-                                :error-messages="
+                            append-icon="mdi-calendar"
+                            clearable
+                            outlined
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                          v-model="data.starting_period"
+                          no-title
+                          scrollable
+                      ></v-date-picker>
+                    </v-menu>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" lg="4" md="4">
+                  <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Started Date"
+                      rules="required"
+                      vid="starting_period"
+                  >
+                    <v-menu
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        min-width="auto"
+                        offset-y
+                        transition="scale-transition"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="data.closing_period"
+                            :error="!!errors[0]"
+                            :error-messages="
                                 errors[0]
                                   ? language === 'bn'
                                     ? 'অনুগ্রহ করে সমাপ্তির সময়কাল লিখুন'
                                     : 'Please enter closing period'
                                   : ''
                               "
-                                :hide-details="!errors[0]"
-                                :label="
+                            :hide-details="!errors[0]"
+                            :label="
                                 $t('container.emergency_payment.closing_period')
                               "
-                                append-icon="mdi-calendar"
-                                clearable
-                                outlined
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                              v-model="data.closing_period"
-                              no-title
-                              scrollable
-                          ></v-date-picker>
-                        </v-menu>
-                      </ValidationProvider>
-                    </v-col>
-                  </v-row>
-                  <!-- Action button -->
-                  <div class="d-inline d-flex justify-end mt-2">
-                    <v-btn class="btn mr-2" elevation="2" @click="resetForm()"
-                    >{{ $t("container.list.reset") }}
-                    </v-btn>
-                    <v-btn
-                        :disabled="invalid"
-                        class="btn mr-2"
-                        color="success"
-                        elevation="2"
-                        type="submit"
-                    >{{ $t("container.list.search") }}
-                    </v-btn>
-                  </div>
-                </form>
-              </ValidationObserver>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <!-- Search Panel Ends -->
-        <!--Table header & Body part -->
-        <v-row>
-          <v-col cols="12">
-            <v-card color="white" elevation="10" rounded="md" theme="light">
-              <v-card-title
-                  style="
-                  background-color: #1c3b68;
-                  color: white;
-                  margin-bottom: 17px;
-                  font-size: 17px;
-                "
-                  tag="div"
+                            append-icon="mdi-calendar"
+                            clearable
+                            outlined
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                          v-model="data.closing_period"
+                          no-title
+                          scrollable
+                      ></v-date-picker>
+                    </v-menu>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <!-- Action button -->
+              <div class="d-inline d-flex justify-end mt-2">
+                <v-btn class="btn mr-2" elevation="2" @click="resetForm()"
+                >{{ $t("container.list.reset") }}
+                </v-btn>
+                <v-btn
+                    :disabled="invalid"
+                    class="btn mr-2"
+                    color="success"
+                    elevation="2"
+                    type="submit"
+                >{{ $t("container.list.search") }}
+                </v-btn>
+              </div>
+            </form>
+          </ValidationObserver>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <!-- Search Panel Ends -->
+    <!--Table header & Body part -->
+    <v-row>
+      <v-col cols="12">
+        <v-card color="white" elevation="10" rounded="md" theme="light">
+          <v-card-title class="component-title mb-5">
+            <div class="clearfix">
+              <div class="title-left">
+                <h4 class="title-text">
+                  {{
+                    $t("container.emergency_payment.list")
+                  }}
+                </h4>
+              </div>
+            </div>
+          </v-card-title>
+          <!-- Data Table -->
+          <v-card-text>
+            <v-row align="center" justify="space-between">
+              <v-col cols="12" lg="3" md="3">
+                {{ $t("container.list.total") }}:&nbsp;<span
+                  style="font-weight: bold"
               >
-                <h3 class="white--text text-uppercase pt-3">
-                  {{ $t("container.emergency_payment.list") }}
-                </h3>
-              </v-card-title>
-              <!-- Data Table -->
-              <v-card-text>
-                <v-row align="center" justify="space-between">
-                  <v-col cols="12" lg="3" md="3">
-                    {{ $t("container.list.total") }}:&nbsp;<span
-                      style="font-weight: bold"
-                  >
                       {{
-                      language === "bn"
-                          ? $helpers.englishToBangla(this.total)
-                          : this.total
-                    }}
+                  language === "bn"
+                      ? $helpers.englishToBangla(this.total)
+                      : this.total
+                }}
                     </span>
-                  </v-col>
-                  <v-col class="text-right" cols="12" lg="3" md="3">
-                    <v-select
-                        v-model="selectedColumns"
-                        :items="selectableColumns"
-                        :label="
+              </v-col>
+              <v-col class="text-right" cols="12" lg="3" md="3">
+                <v-select
+                    v-model="selectedColumns"
+                    :items="selectableColumns"
+                    :label="
                         $t(
                           'container.application_selection.application.select_column'
                         )
                       "
-                        menu-props="top"
-                        multiple
-                        outlined
-                        @change="updateVisibleColumns"
-                    >
-                      <template v-slot:selection="{ item, index }"></template>
-                    </v-select>
-                  </v-col>
-                </v-row>
-
-                <!-- data table -->
-                <v-row
-                    class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
-                    justify="space-between"
+                    menu-props="top"
+                    multiple
+                    outlined
+                    @change="updateVisibleColumns"
                 >
-                  <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                        v-model="search"
-                        :label="$t('container.emergency_payment.search')"
-                        class="my-sm-0 my-3 mx-0v -input--horizontal"
-                        color="primary"
-                        dense
-                        hide-details
-                        outlined
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        @keyup.native="getListData"
-                    >
-                    </v-text-field>
-                  </div>
-                  <div>
-                    <v-btn
-                        class="btn mr-2 white--text"
-                        color="red darken-4"
-                        elevation="2"
-                        @click="generatePDF()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.PDF") }}
-                    </v-btn>
-                    <v-btn
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        elevation="2"
-                        @click="generateExcel()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.excel") }}
-                    </v-btn>
-                    <v-btn
-                        color="primary"
-                        router
-                        to="/emergency-payment/emergency-allotment/create"
-                    >
-                      <v-icon class="pr-1"> mdi-plus</v-icon>
-                      {{ $t("container.list.add_new") }}
-                    </v-btn>
-                  </div>
+                  <template v-slot:selection="{ item, index }"></template>
+                </v-select>
+              </v-col>
+            </v-row>
 
-                  <v-col cols="12">
-                    <v-data-table
-                        :headers="visibleHeaders"
-                        :items="emergencyAllotments"
-                        :items-per-page="pagination.perPage"
-                        :loading="loading"
-                        class="elevation-0 transparent row-pointer table-responsive"
-                        hide-default-footer
-                        item-key="id"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(
-                                  (pagination.current - 1) * pagination.perPage +
-                                  index +
-                                  1
-                              )
-                              : (pagination.current - 1) * pagination.perPage +
+            <!-- data table -->
+            <v-row
+                class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
+                justify="space-between"
+            >
+              <div class="d-flex justify-sm-end flex-wrap">
+                <v-text-field
+                    v-model="search"
+                    :label="$t('container.emergency_payment.search')"
+                    class="my-sm-0 my-3 mx-0v -input--horizontal"
+                    color="primary"
+                    dense
+                    hide-details
+                    outlined
+                    prepend-inner-icon="mdi-magnify"
+                    variant="outlined"
+                    @keyup.native="getListData"
+                >
+                </v-text-field>
+              </div>
+              <div>
+                <v-btn
+                    class="btn mr-2 white--text"
+                    color="red darken-4"
+                    elevation="2"
+                    @click="generatePDF()"
+                >
+                  <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
+                  {{ $t("container.list.PDF") }}
+                </v-btn>
+                <v-btn
+                    class="btn mr-2 white--text"
+                    color="teal darken-2"
+                    elevation="2"
+                    @click="generateExcel()"
+                >
+                  <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
+                  {{ $t("container.list.excel") }}
+                </v-btn>
+                <v-btn
+                    class="my-2"
+                    color="primary"
+                    router
+                    to="/emergency-payment/emergency-allotment/create"
+                >
+                  <v-icon class="pr-1"> mdi-plus</v-icon>
+                  {{ $t("container.list.add_new") }}
+                </v-btn>
+              </div>
+
+              <v-col cols="12">
+                <v-data-table
+                    :headers="visibleHeaders"
+                    :items="emergencyAllotments"
+                    :items-per-page="pagination.perPage"
+                    :loading="loading"
+                    class="elevation-0 transparent row-pointer table-responsive"
+                    hide-default-footer
+                    item-key="id"
+                >
+                  <template v-slot:item.sl="{ item, index }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(
+                              (pagination.current - 1) * pagination.perPage +
                               index +
                               1
-                        }}
-                      </template>
-                      <template v-slot:item.no_of_new_benificiariy="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(
-                                  item.no_of_new_benificiariy
-                              )
-                              : item.no_of_new_benificiariy
-                        }}
-                      </template>
-                      <template
-                          v-slot:item.no_of_existing_benificiariy="{ item }"
-                      >
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(
-                                  item.no_of_existing_benificiariy
-                              )
-                              : item.no_of_existing_benificiariy
-                        }}
-                      </template>
-                      <template v-slot:item.amount_per_person="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(item.amount_per_person)
-                              : item.amount_per_person
-                        }}
-                      </template>
-                      <template v-slot:item.starting_period="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(item.starting_period)
-                              : item.starting_period
-                        }}
-                      </template>
-                      <template v-slot:item.closing_period="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(item.closing_period)
-                              : item.closing_period
-                        }}
-                      </template>
+                          )
+                          : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1
+                    }}
+                  </template>
+                  <!-- Programs Template -->
+                  <template v-slot:item.programs="{ item }">
+                    <div v-if="item.programs && item.programs.length">
+                      <div v-for="program in item.programs" :key="program.id">
+                        {{ getItemText(program) }}
+                      </div>
+                    </div>
+                  </template>
+                  <template v-slot:item.no_of_new_benificiariy="{ item }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(
+                              item.no_of_new_benificiariy
+                          )
+                          : item.no_of_new_benificiariy
+                    }}
+                  </template>
+                  <template
+                      v-slot:item.no_of_existing_benificiariy="{ item }"
+                  >
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(
+                              item.no_of_existing_benificiariy
+                          )
+                          : item.no_of_existing_benificiariy
+                    }}
+                  </template>
+                  <template v-slot:item.amount_per_person="{ item }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(item.amount_per_person)
+                          : item.amount_per_person
+                    }}
+                  </template>
+                  <template v-slot:item.starting_period="{ item }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(item.starting_period)
+                          : item.starting_period
+                    }}
+                  </template>
+                  <template v-slot:item.closing_period="{ item }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(item.closing_period)
+                          : item.closing_period
+                    }}
+                  </template>
 
-                      <!-- Action Button -->
+                  <!-- Action Button -->
 
-                      <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'emergency-allotment-view'"
-                                color="success"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="manageBeneficiary(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-eye</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
+                  <template v-slot:item.actions="{ item }">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'emergency-allotment-view'"
+                            color="success"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="manageBeneficiary(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-eye</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>
                             {{ $t("container.list.manage_beneficary") }}
                           </span>
-                        </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'emergency-allotment-edit'"
-                                class="ml-2 white--text"
-                                color="success"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="editData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-account-edit-outline</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'emergency-allotment-edit'"
+                            class="ml-2 white--text"
+                            color="success"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="editData(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-account-edit-outline</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>
                             {{ $t("container.list.edit") }}
                           </span>
-                        </v-tooltip>
+                    </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'delete-division'"
-                                class="ml-2 white--text"
-                                color="grey"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="deleteData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'delete-division'"
+                            class="ml-2 white--text"
+                            color="grey"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="deleteData(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-delete</v-icon>
+                        </v-btn>
                       </template>
-                      <!-- End Action Button -->
-                      <template v-slot:footer="item">
-                        <v-container class="pa-0 py-0" fluid>
-                          <v-row class="align-center" cols="12">
-                            <v-col
-                                class="d-flex justify-center mb-2 mb-sm-0"
-                                cols="12"
-                                lg="10"
-                                md="10"
-                                sm="4"
-                            >
-                              <v-pagination
-                                  v-model="pagination.current"
-                                  :length="pagination.total"
-                                  :total-visible="11"
-                                  circle
-                                  class="custom-pagination-item"
-                                  primary
-                                  @input="onPageChange"
-                              ></v-pagination>
-                            </v-col>
-                            <v-col class="" cols="12" lg="2" md="2" sm="4">
-                              <v-select
-                                  v-model="pagination.perPage"
-                                  :items="items"
-                                  dense
-                                  hide-details
-                                  outlined
-                                  @change="onPageSetup"
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+                      <span> {{ $t("container.list.delete") }}</span>
+                    </v-tooltip>
+                  </template>
+                  <!-- End Action Button -->
+                  <template v-slot:footer="item">
+                    <v-container class="pa-0 py-0" fluid>
+                      <v-row class="align-center" cols="12">
+                        <v-col
+                            class="d-flex justify-center mb-2 mb-sm-0"
+                            cols="12"
+                            lg="10"
+                            md="10"
+                            sm="4"
+                        >
+                          <v-pagination
+                              v-model="pagination.current"
+                              :length="pagination.total"
+                              :total-visible="11"
+                              circle
+                              class="custom-pagination-item"
+                              primary
+                              @input="onPageChange"
+                          ></v-pagination>
+                        </v-col>
+                        <v-col class="" cols="12" lg="2" md="2" sm="4">
+                          <v-select
+                              v-model="pagination.perPage"
+                              :items="items"
+                              dense
+                              hide-details
+                              outlined
+                              @change="onPageSetup"
+                          ></v-select>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </template>
+                </v-data-table>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -449,6 +453,11 @@ extend("bangla", {
 export default {
   name: "Index",
   title: "CTM - Emergency Allotment List",
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+    Spinner,
+  },
   data() {
     return {
       data: {
@@ -471,8 +480,7 @@ export default {
       items: [5, 10, 15, 20, 40, 50, 100],
       selectedColumns: [
         "emergency_payment_name",
-        "program.name_en",
-        "program.name_bn",
+        "programs",
         "no_of_new_benificiariy",
         "no_of_existing_benificiariy",
         "amount_per_person",
@@ -482,11 +490,7 @@ export default {
       fixedColumns: ["sl", "actions"], // Two columns that will always remain visible
     };
   },
-  components: {
-    ValidationProvider,
-    ValidationObserver,
-    Spinner,
-  },
+
   computed: {
     headers() {
       return [
@@ -503,7 +507,7 @@ export default {
         },
         {
           text: this.$t("container.emergency_payment.program_name"),
-          value: this.language === "bn" ? "program.name_bn" : "program.name_en",
+          value: "programs",
           class: "highlight-column",
           width: "250px",
         },
@@ -605,7 +609,7 @@ export default {
               ? index + 1
               : this.$helpers.englishToBangla(index + 1),
           i.emergency_payment_name,
-          this.$i18n.locale === "bn" ? i.program.name_bn : i.program.name_en,
+          this.$i18n.locale === "bn" ? i.programs[0].name_bn : i.programs[0].name_en,
           this.$i18n.locale === "en"
               ? i.no_of_new_benificiariy
               : this.$helpers.englishToBangla(i.no_of_new_benificiariy),
@@ -656,7 +660,6 @@ export default {
         console.error("Error generating PDF:", error);
       }
     },
-
     async generateExcel() {
       this.isLoading = true;
       let page;
@@ -684,9 +687,7 @@ export default {
                   ? index + 1
                   : this.$helpers.englishToBangla(index + 1),
               i.emergency_payment_name,
-              this.$i18n.locale === "bn"
-                  ? i.program.name_bn
-                  : i.program.name_en,
+              this.$i18n.locale === "bn" ? i.programs[0].name_bn : i.programs[0].name_en,
               this.$i18n.locale == "en"
                   ? i.no_of_new_benificiariy
                   : this.$helpers.englishToBangla(i.no_of_new_benificiariy),
@@ -752,14 +753,7 @@ export default {
       // Handle the click event for the custom append icon here
       return "mdi-minus";
     },
-    appendIcon() {
-      return "mdi-plus"; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
-    },
     submitsearch() {
-      // this.pagination = {
-      //   ...this.pagination,
-      //   current: 1,
-      // };
       this.getListData();
     },
     updateVisibleColumns() {
@@ -891,8 +885,10 @@ export default {
       this.getListData();
       this.getPaymentName();
     },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
   },
-
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },

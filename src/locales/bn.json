@@ -97,7 +97,7 @@
       "certificate": "সনদপত্র",
       "accept": "গ্রহণ করুন",
       "decline": "প্রত্যাখ্যান করুন",
-      "manage_beneficary": "সুবিধাভোগী পরিচালনা করুন",
+      "manage_beneficiary": "সুবিধাভোগী পরিচালনা করুন",
       "existing": "বিদ্যমান সুবিধাভোগী",
       "add_beneficiary": "নতুন সুবিধাভোগী",
       "accept_invitation": "প্রশিক্ষণ আমন্ত্রণ"
@@ -1200,7 +1200,8 @@
         "n_beneficiary": "নতুন সংযোজন থেকে",
         "searchBy": "জরুরী নতুন/বিদ্যমান সুবিধাভোগী",
         "summary": "সংক্ষিপ্ত বিবরণ",
-        "emergency_applicant": "জরুরী সুবিধাভোগী তৈরি করুন"
+        "emergency_applicant": "জরুরী সুবিধাভোগী তৈরি করুন",
+        "manage": "সুবিধাভোগী পরিচালনা করুন"
       },
       "emergency_payment_cycle": {
         "filter_title": "জরুরী পেমেন্ট চক্র",

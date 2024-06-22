@@ -1,216 +1,313 @@
 <template>
-  <v-container>
-    <v-row class="ml-sm-5 mt-0">
-      <v-col cols="12">
-        <Spinner :loading="loading"/>
-        <!--Search Panel -->
-        <v-row>
-          <v-col cols="12">
-            <v-card color="white" elevation="10" rounded="md" theme="light">
-              <v-card-title
-                  style="
-                  background-color: #1c3b68;
-                  color: white;
-                  margin-bottom: 17px;
-                  font-size: 17px;
-                "
-                  tag="div"
+  <v-container fluid>
+    <Spinner :loading="loading"/>
+    <!--Search Panel -->
+    <v-card
+        color="white" elevation="1" outlined rounded="md" theme="light"
+    >
+      <v-card-title
+          class="component-title"
+      >
+        <div class="clearfix">
+          <div class="title-left">
+            <h4 class="title-text">
+              {{
+                $t("container.emergency_payment.emergency_beneficiary.manage")
+              }}
+            </h4>
+          </div>
+        </div>
+      </v-card-title>
+      <v-card-text>
+        <v-col cols="12">
+          <v-row
+              class="white round-border d-flex justify-space-between"
+              justify="space-between"
+          >
+            <v-col cols="12" lg="6" md="6">
+              <ValidationProvider
+                  v-slot="{ errors }"
+                  name="emergency_payment_name"
+                  vid="emergency_payment_name"
               >
-                <h3 class="white--text text-uppercase pt-3">
-                  {{
-                    $t("container.list.manage_beneficary")
-                  }}
-                </h3>
-              </v-card-title>
-              <!-- Data Table -->
-              <v-card-text>
-                <v-row align="center" justify="space-between">
-                  <v-col cols="12" lg="3" md="3">
-                    {{ $t("container.list.total") }}:&nbsp;<span
-                      style="font-weight: bold"
+                <v-autocomplete
+                    v-model="data.emergency_payment_name"
+                    :error="!!errors[0]"
+                    :error-messages="
+                              errors[0]
+                                ? language === 'bn'
+                                  ? 'অনুগ্রহ করে জরুরি অর্থপ্রদানের নাম নির্বাচন করুন'
+                                  : 'Please select the emergency payment name'
+                                : ''
+                            "
+                    :hide-details="!errors[0]"
+                    :item-text="'emergency_payment_name'"
+                    :items="payment_names"
+                    :label="
+                              $t(
+                                'container.emergency_payment.emergency_beneficiary.payment_name'
+                              )
+                            "
+                    clearable
+                    item-value="id"
+                    outlined
+                    @change="calculateData"
+                >
+                </v-autocomplete>
+
+              </ValidationProvider>
+            </v-col>
+            <!-- Summary part -->
+            <v-col
+                v-if="data.emergency_payment_name"
+                cols="12"
+                lg="6"
+                md="6"
+            >
+              <v-card :style="styleObject" elevation="1" outlined rounded="md" theme="light">
+                <v-card-title>
+                  <v-row
+                      class=" white round-border d-flex justify-space-between"
+                      justify="space-between"
                   >
+                    <v-col class="text-center">
+                      <p style="color: #2d3c95">
+                        {{
+                          $t(
+                              "container.emergency_payment.emergency_beneficiary.summary"
+                          )
+                        }}
+                      </p>
+                      <v-divider
+                          class="mx-14 black lighten-2"
+                      ></v-divider>
+                      <div
+                          class="pl-0 pt-3 text-left d-flex flex-column "
+                      >
+                        <p class="pl-5  small-font">
+                          Total Beneficiaries: <span>{{ totalCount }} </span>
+                        </p>
+                        <p class="pl-5  small-font">
+                          Selected Beneficiaries: <span>{{ selectedBeneficiariesCount }} </span>
+                        </p>
+                        <p class="pl-5  small-font">
+                          Existing Beneficiaries: <span>{{ existingBeneficiariesCount }} </span>
+                        </p>
+                        <p class="pl-5  small-font">
+                          New Beneficiaries Beneficiaries: <span>{{ newBeneficiariesCount }} </span>
+                        </p>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-card-text>
+    </v-card>
+    <!-- Search Panel Ends -->
+    <v-card class="mt-3" color="white" elevation="1" rounded="md" theme="light">
+      <v-card-title
+          class="component-title"
+      >
+        <div class="clearfix">
+          <div class="title-left">
+            <h4 class="title-text">
+              {{
+                $t("container.emergency_payment.emergency_beneficiary.list")
+              }}
+            </h4>
+          </div>
+        </div>
+      </v-card-title>
+      <!-- Data Table -->
+      <v-card-text>
+        <v-col cols="12" lg="12" md="6">
+          <v-row align="center" justify="space-between">
+            <v-col cols="12" lg="3" md="3">
+              {{ $t("container.list.total") }}:&nbsp;<span
+                style="font-weight: bold"
+            >
                       {{
-                      language === "bn"
-                          ? $helpers.englishToBangla(this.total)
-                          : this.total
-                    }}
+                language === "bn"
+                    ? $helpers.englishToBangla(this.total)
+                    : this.total
+              }}
                     </span>
-                  </v-col>
-                  <v-col class="text-right" cols="12" lg="3" md="3">
-                    <v-autocomplete
-                        v-model="selectedColumns"
-                        :items="selectableColumns"
-                        :label="
+            </v-col>
+            <v-col class="text-right" cols="12" lg="3" md="3">
+              <v-autocomplete
+                  v-model="selectedColumns"
+                  :items="selectableColumns"
+                  :label="
                         $t(
                           'container.application_selection.application.select_column'
                         )
                       "
-                        menu-props="top"
-                        multiple
-                        outlined
-                        @change="updateVisibleColumns"
-                    >
-                      <template v-slot:selection="{ item, index }"></template>
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-                <!-- data table -->
-                <v-row
-                    class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
-                    justify="space-between"
-                >
-                  <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                        v-model="search"
-                        :label="
+                  menu-props="top"
+                  multiple
+                  outlined
+                  @change="updateVisibleColumns"
+              >
+                <template v-slot:selection="{ item, index }"></template>
+              </v-autocomplete>
+            </v-col>
+          </v-row>
+          <!-- data table -->
+          <v-row
+              align="center" justify="space-between"
+          >
+            <div class="d-flex justify-sm-end flex-wrap ">
+              <v-text-field
+                  v-model="search"
+                  :label="
                         $t(
                           'container.emergency_payment.emergency_beneficiary.search'
                         )
                       "
-                        class="my-sm-0 my-3 mx-0v -input--horizontal"
-                        color="primary"
-                        dense
-                        hide-details
-                        outlined
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        @keyup.native="getListData"
-                    >
-                    </v-text-field>
-                  </div>
-                  <div>
-                    <v-btn
-                        color="primary"
-                        @click="getNewBeneficiary"
-                    >
-                      <v-icon class="pr-1"> mdi-plus</v-icon>
-                      {{ $t("container.list.add_beneficiary") }}
-                    </v-btn>
-                    <v-btn
-                        class="ml-2"
-                        color="success"
-                        @click="getExistingBeneficiary"
-                    >
-                      <v-icon class="pr-1"> mdi-plus</v-icon>
-                      {{ $t("container.list.existing") }}
-                    </v-btn>
-                  </div>
-                  <!--Data table-->
-                  <v-col cols="12">
-                    <v-data-table
-                        :headers="visibleHeaders"
-                        :items="emergencyBeneficiaries"
-                        :items-per-page="pagination.perPage"
-                        :loading="loading"
-                        class="elevation-0 transparent row-pointer table-responsive"
-                        hide-default-footer
-                        item-key="id"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(
-                                  (pagination.current - 1) * pagination.perPage +
-                                  index +
-                                  1
-                              )
-                              : (pagination.current - 1) * pagination.perPage +
-                              index +
-                              1
-                        }}
-                      </template>
-                      <template v-slot:item.current_mobile="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(item.current_mobile)
-                              : item.current_mobile
-                        }}
-                      </template>
-                      <template v-slot:item.status="{ item }">
+                  class="my-sm-0 my-3 mx-0 v-input--horizontal"
+                  color="primary"
+                  dense
+                  hide-details
+                  outlined
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                  @keyup.native="getListData"
+              >
+              </v-text-field>
+            </div>
+            <div>
+              <v-btn
+                  class="mr-2"
+                  color="primary"
+                  @click="getNewBeneficiary"
+              >
+                <v-icon class="pr-1"> mdi-plus</v-icon>
+                {{ $t("container.list.add_beneficiary") }}
+              </v-btn>
+              <v-btn
+                  class="mr-2 my-3"
+                  color="success"
+                  @click="getExistingBeneficiary"
+              >
+                <v-icon class="pr-1"> mdi-plus</v-icon>
+                {{ $t("container.list.existing") }}
+              </v-btn>
+            </div>
+            <!--Data table-->
+            <v-col cols="12">
+              <v-data-table
+                  :headers="visibleHeaders"
+                  :items="emergencyBeneficiaries"
+                  :items-per-page="pagination.perPage"
+                  :loading="loading"
+                  class="elevation-0 transparent row-pointer table-responsive"
+                  hide-default-footer
+                  item-key="id"
+              >
+                <template v-slot:item.sl="{ item, index }">
+                  {{
+                    language === "bn"
+                        ? $helpers.englishToBangla(
+                            (pagination.current - 1) * pagination.perPage +
+                            index +
+                            1
+                        )
+                        : (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1
+                  }}
+                </template>
+                <template v-slot:item.current_mobile="{ item }">
+                  {{
+                    language === "bn"
+                        ? $helpers.englishToBangla(item.current_mobile)
+                        : item.current_mobile
+                  }}
+                </template>
+                <template v-slot:item.status="{ item }">
                         <span v-if="item.status === 1">
                           {{ language === "bn" ? "সক্রিয়" : "Active" }}
                         </span>
-                        <span v-if="item.status === 2">
+                  <span v-if="item.status === 2">
                           {{ language === "bn" ? "নিষ্ক্রিয়" : "Inactive" }}
                         </span>
-                        <span v-if="item.status === 3">
+                  <span v-if="item.status === 3">
                           {{ language === "bn" ? "অপেক্ষেয়মান" : "Waiting" }}
                         </span>
-                      </template>
+                </template>
 
-                      <!-- Action Button -->
+                <!-- Action Button -->
 
-                      <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'delete-division'"
-                                class="ml-3 white--text"
-                                color="grey"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="deleteData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
-                      </template>
-                      <!-- End Action Button -->
-                      <template v-slot:footer="item">
-                        <v-container class="pa-0 py-0" fluid>
-                          <v-row class="align-center" cols="12">
-                            <v-col
-                                class="d-flex justify-center mb-2 mb-sm-0"
-                                cols="12"
-                                lg="10"
-                                md="10"
-                                sm="4"
-                            >
-                              <v-pagination
-                                  v-model="pagination.current"
-                                  :length="pagination.total"
-                                  :total-visible="11"
-                                  circle
-                                  class="custom-pagination-item"
-                                  primary
-                                  @input="onPageChange"
-                              ></v-pagination>
-                            </v-col>
-                            <v-col class="" cols="12" lg="2" md="2" sm="4">
-                              <v-autocomplete
-                                  v-model="pagination.perPage"
-                                  :items="items"
-                                  dense
-                                  hide-details
-                                  outlined
-                                  @change="onPageSetup"
-                              >
+                <template v-slot:item.actions="{ item }">
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                          v-can="'delete-division'"
+                          class="ml-3 white--text"
+                          color="grey"
+                          elevation="0"
+                          fab
+                          x-small
+                          @click="deleteData(item)"
+                          v-on="on"
+                      >
+                        <v-icon> mdi-delete</v-icon>
+                      </v-btn>
+                    </template>
+                    <span> {{ $t("container.list.delete") }}</span>
+                  </v-tooltip>
+                </template>
+                <!-- End Action Button -->
+                <template v-slot:footer="item">
+                  <v-container class="pa-0 py-0" fluid>
+                    <v-row class="align-center" cols="12">
+                      <v-col
+                          class="d-flex justify-center mb-2 mb-sm-0"
+                          cols="12"
+                          lg="10"
+                          md="10"
+                          sm="4"
+                      >
+                        <v-pagination
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            :total-visible="11"
+                            circle
+                            class="custom-pagination-item"
+                            primary
+                            @input="onPageChange"
+                        ></v-pagination>
+                      </v-col>
+                      <v-col class="" cols="12" lg="2" md="2" sm="4">
+                        <v-autocomplete
+                            v-model="pagination.perPage"
+                            :items="items"
+                            dense
+                            hide-details
+                            outlined
+                            @change="onPageSetup"
+                        >
 
-                              </v-autocomplete>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+                        </v-autocomplete>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
-import {required} from "vee-validate/dist/rules";
+import { mapActions, mapState } from "vuex";
+import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
@@ -296,14 +393,18 @@ export default {
         "current_mobile",
         "status",
       ], // Initially, first 8 columns are selected
-
+      styleObject: { border: "2px solid  rgba(9, 9, 121, 100)" },
       fixedColumns: ["sl", "actions"], // Two columns that will always remain visible
+      newBeneficiariesCount: 0,
+      existingBeneficiariesCount: 0,
+      totalCount: 0,
+      selectedBeneficiariesCount: 0
     };
   },
   computed: {
     headers() {
       return [
-        {text: this.$t("container.list.sl"), value: "sl", fixed: true},
+        { text: this.$t("container.list.sl"), value: "sl", fixed: true },
         {
           text: this.$t(
               "container.beneficiary_management.beneficiary_list.beneficiary_id"
@@ -456,6 +557,20 @@ export default {
         path: `/emergency-payment/manage-emergency-beneficiary/create`
       });
     },
+    calculateData(id) {
+      this.loading = true;
+      ApiService
+          .get("/admin/emergency/beneficiaries-info/" + id)
+          .then((res) => {
+            console.log(res);
+            this.totalCount = res?.data?.data?.totalCount;
+            this.selectedBeneficiariesCount = res?.data?.data?.selectedCount;
+            this.existingBeneficiariesCount = res.data?.data?.existingBeneficiariesCount;
+            this.newBeneficiariesCount = res.data?.data?.newBeneficiariesCount;
+
+            this.loading = false;
+          });
+    },
     status(status) {
       if (status === 1) {
         return this.$i18n.locale === "en" ? "Active" : "সক্রিয়";
@@ -530,7 +645,7 @@ export default {
             }
         );
 
-        const blob = new Blob([response.data], {type: "application/pdf"});
+        const blob = new Blob([response.data], { type: "application/pdf" });
         const url = window.URL.createObjectURL(blob);
         window.open(url, "_blank");
         this.isLoading = false;
@@ -818,7 +933,6 @@ export default {
         }
       }
     },
-
     async onChangeUpazila(event) {
       await this.$axios
           .get(`/admin/union/get/${this.data.thana_id}`, {
@@ -959,15 +1073,9 @@ export default {
     onPageChange($event) {
       this.getListData();
     },
-    editData(item) {
-      this.$router.push({
-        path: `/emergency-payment/emergency-beneficiary/edit/${item.id}`,
-      });
-    },
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
     }),
-
     getListData() {
       this.search = this.search.replace(/%/g, '');
       this.loading = true;
@@ -982,7 +1090,7 @@ export default {
 
       };
       ApiService
-          .get("/admin/emergency/beneficiaries", {
+          .get("/admin/emergency/get-selected-beneficiaries", {
             params: queryParams,
           })
           .then((result) => {
@@ -998,7 +1106,7 @@ export default {
       const queryData = {
         table_name: "emergency_allotments",
         field_name: ["id", "emergency_payment_name"],
-        condition: {status: 1, deleted_at: null},
+        condition: { status: 1, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
@@ -1099,7 +1207,31 @@ export default {
   background-color: #e0eaf1;
 }
 
-.custom-margin-left {
-  margin-left: 4px;
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+
+.pt-3 {
+  padding-top: 1rem; /* Adjust as needed */
+}
+
+.text-left {
+  text-align: left;
+}
+
+.pl-5 {
+  padding-left: 1.25rem; /* Adjust as needed */
+}
+
+.small-font {
+  font-size: 0.875rem; /* Adjust as needed */
 }
 </style>

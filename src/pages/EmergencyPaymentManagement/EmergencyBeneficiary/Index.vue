@@ -1,248 +1,578 @@
 <template>
-  <v-container>
-    <v-row class="ml-sm-5 mt-0">
-      <v-col cols="12">
-        <Spinner :loading="loading"/>
-        <!--Search Panel -->
+  <v-container fluid>
+    <Spinner :loading="loading"/>
+    <!--Search Panel -->
+    <v-expansion-panels>
+      <v-expansion-panel class="mb-2">
+        <v-expansion-panel-header color="#1c3b68">
+          <template v-slot:actions>
+            <v-icon color="white"> $expand</v-icon>
+          </template>
+          <h3 class="white--text text-uppercase">
+            {{ $t("container.emergency_payment.emergency_beneficiary.list") }}
+          </h3>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="elevation-0 transparent mt-5">
+          <ValidationObserver ref="form" v-slot="{ invalid }">
+            <form @submit.prevent="submitSearch()">
+              <v-row>
+                <v-col cols="12" lg="3" md="3">
+                  <ValidationProvider
+                      v-slot="{ errors }"
+                      name="program"
+                      rules="required"
+                      vid="program"
+                  >
 
-        <v-row>
-          <v-col cols="12">
-            <v-card color="white" elevation="10" rounded="md" theme="light">
-              <v-card-title
-                  style="
-                  background-color: #1c3b68;
-                  color: white;
-                  margin-bottom: 17px;
-                  font-size: 17px;
-                "
-                  tag="div"
-              >
-                <h3 class="white--text text-uppercase pt-3">
+                    <v-autocomplete
+                        v-model="data.program_id"
+                        :append-icon-cb="appendIconCallback"
+                        :error="!!errors[0]"
+                        :error-messages="
+                    errors[0]
+                      ? language === 'bn'
+                        ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+                        : 'Please enter Program'
+                      : ''
+                  "
+                        :hide-details="!errors[0]"
+                        :items="programs"
+                        :label="$t('container.emergency_payment.list')"
+                        append-icon="mdi-plus"
+                        class="no-arrow-icon"
+                        clearable
+                        item-text="emergency_payment_name"
+                        item-value="id"
+                        outlined
+                    >
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="Division" vid="division">
+                    <v-text-field v-if="user_permission.division" v-model="user_permission.division_name" :label="$t(
+          'container.system_config.demo_graphic.division.division'
+        )
+          " outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.division"
+                                    v-model="data.division_id"
+                                    :append-icon-cb="appendIconCallback"
+                                    :error="!!errors[0]" :error-messages="errors[0]"
+                                    :hide-details="!errors[0]" :item-text="getItemText"
+                                    :items="divisions" :label="$t(
+          'container.system_config.demo_graphic.division.division'
+        )
+          " append-icon="mdi-plus"
+                                    class="no-arrow-icon" clearable item-value="id"
+                                    outlined @input="onChangeDivision($event)">
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="District" vid="district">
+                    <v-text-field v-if="user_permission.district" v-model="user_permission.district_name" :label="$t(
+          'container.system_config.demo_graphic.district.district'
+        )
+          " outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.district"
+                                    v-model="data.district_id"
+                                    :append-icon-cb="appendIconCallback"
+                                    :error="!!errors[0]" :error-messages="errors[0]"
+                                    :hide-details="!errors[0]"
+                                    :item-text="getItemText"
+                                    :items="districts" :label="$t(
+          'container.system_config.demo_graphic.district.district'
+        )
+          " append-icon="mdi-plus"
+                                    class="no-arrow-icon" clearable
+                                    item-value="id"
+                                    outlined
+                                    @input="onChangeDistrict($event)"
+                    ></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="Location Type" vid="location_type">
+                    <v-text-field v-if="user_permission.location_type" v-model="user_permission.location_type_name"
+                                  :label="$t('container.list.location_type')"
+                                  outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.location_type" v-model="data.location_type"
+                                    :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]"
+                                    :hide-details="!errors[0]"
+                                    :item-text="getLocationText"
+                                    :items="locationType"
+                                    :label="$t('container.list.location_type')"
+                                    append-icon="mdi-plus"
+                                    class="no-arrow-icon"
+                                    clearable
+                                    item-value="id"
+                                    outlined
+                                    @input="LocationType($event)">
+
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col v-if="data.location_type === 1" cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="thana" vid="district_pouro_id">
+                    <v-text-field v-if="user_permission.district_pourashava"
+                                  v-model="user_permission.district_pourashava_name" :label="$t(
+          'container.system_config.demo_graphic.ward.pouro'
+        )
+          " outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.district_pourashava"
+                                    v-model="data.district_pouro_id"
+                                    :append-icon-cb="appendIconCallback"
+                                    :error="!!errors[0]"
+                                    :error-messages="errors[0]"
+                                    :hide-details="!errors[0]"
+                                    :item-text="getItemText"
+                                    :items="district_pouros" :label="$t(
+          'container.system_config.demo_graphic.ward.pouro'
+        )
+          "
+                                    append-icon="mdi-plus"
+                                    class="no-arrow-icon"
+                                    clearable
+                                    item-value="id"
+                                    outlined
+                                    @change="onChangeDistrictPouro($event)">
+
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col v-if="data.location_type === 2" cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="Upazila" vid="thana_id">
+                    <v-text-field v-if="user_permission.upazila" v-model="user_permission.upazila_name" :label="$t(
+          'container.system_config.demo_graphic.thana.thana'
+        )
+          " outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.upazila"
+                                    v-model="data.thana_id"
+                                    :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]"
+                                    :hide-details="!errors[0]" :item-text="getItemText" :items="thanas" :label="$t(
+          'container.system_config.demo_graphic.thana.thana'
+        )
+          "
+                                    append-icon="mdi-plus"
+                                    class="no-arrow-icon" clearable
+                                    item-value="id"
+                                    outlined
+                                    @change="onChangeUpazila($event)">
+
+                    </v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col v-if="data.location_type === 2" cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="subLocationType" vid="subLocationType">
+                    <v-autocomplete
+                        v-model="data.sub_location_type"
+                        :append-icon-cb="appendIconCallback"
+                        :error="!!errors[0]"
+                        :error-messages="errors[0]"
+                        :hide-details="!errors[0]"
+                        :items="subLocationType"
+                        :label="$t(
+          'container.system_config.demo_graphic.ward.subLocation_type'
+        )
+          " append-icon="mdi-plus"
+                        class="no-arrow-icon" clearable
+                        item-text="value"
+                        item-value="id" outlined
+                        @input="onChangeSubLocationType($event)"></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+                <v-col v-if="data.location_type === 2 &&
+          data.sub_location_type === 1
+          " cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="pouros" vid="pouros">
+                    <v-autocomplete v-model="data.pouro_id" :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]"
+                                    :item-text="getItemText" :items="pouros"
+                                    :label="$t(
+          'container.system_config.demo_graphic.ward.pouro'
+        )
+          " append-icon="mdi-plus" class="no-arrow-icon"
+                                    clearable item-value="id" outlined></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col v-if="data.sub_location_type === 2 &&
+          data.location_type === 2
+          " cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="unions" vid="unions">
+                    <v-autocomplete v-model="data.union_id" :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]"
+                                    :item-text="getItemText" :items="unions" :label="$t(
+          'container.system_config.demo_graphic.ward.union'
+        )
+          "
+                                    append-icon="mdi-plus" class="no-arrow-icon" clearable
+                                    item-value="id" outlined @input="onChangeUnionGetWard($event)"></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col v-if="data.location_type === 3" cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="city" vid="city_id">
+                    <v-text-field v-if="user_permission.city_corp" v-model="user_permission.city_corp_name" :label="$t(
+          'container.system_config.demo_graphic.ward.city'
+        )
+          " outlined readonly>
+                    </v-text-field>
+                    <v-autocomplete v-if="!user_permission.city_corp" v-model="data.city_id"
+                                    :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]"
+                                    :item-text="getItemText" :items="cities" :label="$t(
+          'container.system_config.demo_graphic.ward.city'
+        )
+          " append-icon="mdi-plus"
+                                    class="no-arrow-icon" clearable
+                                    item-value="id" outlined @change="onChangeCity($event)"></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col v-if="data.location_type === 3" cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="thana" vid="thana_id">
+                    <v-autocomplete v-model="data.thana_id" :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]" :item-text="getItemText"
+                                    :items="thanas"
+                                    :label="$t(
+          'container.system_config.demo_graphic.ward.thana'
+        )
+          "
+                                    append-icon="mdi-plus" class="no-arrow-icon" clearable
+                                    item-value="id" outlined @change="onChangeThana($event)"></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col v-if="data.location_type === 1 ||
+          data.location_type === 2 ||
+          data.location_type === 3
+          " cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="ward" vid="ward_id">
+                    <v-autocomplete v-model="data.ward_id" :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]" :item-text="getItemText"
+                                    :items="wards" :label="$t(
+          'container.system_config.demo_graphic.ward.ward'
+        )
+          "
+                                    append-icon="mdi-plus" class="no-arrow-icon"
+                                    clearable item-value="id" outlined></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" lg="6" md="6">
+                  <v-switch v-model="advanch_search" :label="$t(
+          'container.beneficiary_management.beneficiary_list.advance_search'
+        )
+          " :value="!advanch_search" color="primary" hide-details></v-switch>
+                </v-col>
+              </v-row>
+
+              <v-row v-if="advanch_search">
+                <v-col cols="12" lg="3" md="3">
+                  <v-text-field v-model="data.beneficiary_id" :label="$t(
+          'container.beneficiary_management.beneficiary_list.beneficiary_id'
+        )
+          " clearable outlined>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <v-text-field v-model="data.nominee_name" :label="$t(
+          'container.beneficiary_management.beneficiary_list.nominee'
+        )
+          " clearable outlined>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <v-text-field v-model="data.account_number" :label="$t(
+          'container.beneficiary_management.beneficiary_list.account_no'
+        )
+          " clearable outlined>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" lg="3" md="3">
+                  <v-text-field v-model="data.nid" :label="$t(
+          'container.beneficiary_management.beneficiary_list.nid'
+        )
+          " clearable outlined>
+                  </v-text-field>
+                </v-col>
+
+                <v-col cols="12" lg="3" md="3">
+                  <ValidationProvider v-slot="{ errors }" name="status" vid="status_id">
+                    <v-autocomplete v-model="data.status" :append-icon-cb="appendIconCallback" :error="!!errors[0]"
+                                    :error-messages="errors[0]" :hide-details="!errors[0]" :items="ben_status"
+                                    :label="$t('container.list.status')"
+                                    append-icon="mdi-plus" class="no-arrow-icon"
+                                    clearable item-text="value"
+                                    item-value="id"
+                                    outlined></v-autocomplete>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+
+              <div class="d-inline d-flex justify-end">
+                <v-btn class="btn" elevation="2" @click="resetSearch">{{
+                    $t("container.list.reset")
+                  }}
+                </v-btn>
+                <v-btn class="btn ml-2" color="success" elevation="2" type="submit">{{
+                    $t("container.list.search")
+                  }}
+                </v-btn>
+
+              </div>
+            </form>
+          </ValidationObserver>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <!--Search Panel Ends-->
+    <!-- Data table -->
+    <v-row>
+      <v-col cols="12">
+        <v-card color="white" elevation="10" rounded="md" theme="light">
+          <v-card-title
+              class="component-title"
+          >
+            <div class="clearfix">
+              <div class="title-left">
+                <h4 class="title-text">
                   {{
                     $t("container.emergency_payment.emergency_beneficiary.list")
                   }}
-                </h3>
-              </v-card-title>
-              <!-- Data Table -->
-              <v-card-text>
-                <v-row align="center" justify="space-between">
-                  <v-col cols="12" lg="3" md="3">
-                    {{ $t("container.list.total") }}:&nbsp;<span
-                      style="font-weight: bold"
-                  >
+                </h4>
+              </div>
+            </div>
+          </v-card-title>
+          <!-- Data Table -->
+          <v-card-text>
+            <v-row align="center" justify="space-between">
+              <v-col cols="12" lg="3" md="3">
+                {{ $t("container.list.total") }}:&nbsp;<span
+                  style="font-weight: bold"
+              >
                       {{
-                      language === "bn"
-                          ? $helpers.englishToBangla(this.total)
-                          : this.total
-                    }}
+                  language === "bn"
+                      ? $helpers.englishToBangla(this.total)
+                      : this.total
+                }}
                     </span>
-                  </v-col>
-                  <v-col class="text-right" cols="12" lg="3" md="3">
-                    <v-autocomplete
-                        v-model="selectedColumns"
-                        :items="selectableColumns"
-                        :label="
+              </v-col>
+              <v-col class="text-right mt-3" cols="12" lg="3" md="3">
+                <v-autocomplete
+                    v-model="selectedColumns"
+                    :items="selectableColumns"
+                    :label="
                         $t(
                           'container.application_selection.application.select_column'
                         )
                       "
-                        menu-props="top"
-                        multiple
-                        outlined
-                        @change="updateVisibleColumns"
-                    >
-                      <template v-slot:selection="{ item, index }"></template>
-                    </v-autocomplete>
-                  </v-col>
-                </v-row>
-                <!-- data table -->
-                <v-row
-                    class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
-                    justify="space-between"
+                    menu-props="top"
+                    multiple
+                    outlined
+                    @change="updateVisibleColumns"
                 >
-                  <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                        v-model="search"
-                        :label="
+                  <template v-slot:selection="{ item, index }"></template>
+                </v-autocomplete>
+              </v-col>
+            </v-row>
+            <!-- data table -->
+            <v-row
+                class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
+                justify="space-between"
+            >
+              <div class="d-flex justify-sm-end flex-wrap">
+                <v-text-field
+                    v-model="search"
+                    :label="
                         $t(
                           'container.emergency_payment.emergency_beneficiary.search'
                         )
                       "
-                        class="my-sm-0 my-3 mx-0v -input--horizontal"
-                        color="primary"
-                        dense
-                        hide-details
-                        outlined
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        @keyup.native="getListData"
-                    >
-                    </v-text-field>
-                  </div>
-                  <div>
-                    <v-btn
-                        class="btn mr-2 white--text"
-                        color="red darken-4"
-                        elevation="2"
-                        @click="generatePDF()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.PDF") }}
-                    </v-btn>
-                    <v-btn
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        elevation="2"
-                        @click="generateExcel()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
-                      {{ $t("container.list.excel") }}
-                    </v-btn>
-                    <v-btn
-                        color="primary"
-                        router
-                        to="/emergency-payment/emergency-beneficiary/create"
+                    class="my-sm-0 my-3 mx-0v -input--horizontal"
+                    color="primary"
+                    dense
+                    hide-details
+                    outlined
+                    prepend-inner-icon="mdi-magnify"
+                    variant="outlined"
+                    @keyup.native="getListData"
+                >
+                </v-text-field>
+              </div>
+              <div>
+                <v-btn
+                    class="btn mr-2 white--text"
+                    color="red darken-4"
+                    elevation="2"
+                    @click="generatePDF()"
+                >
+                  <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
+                  {{ $t("container.list.PDF") }}
+                </v-btn>
+                <v-btn
+                    class="btn mr-2 white--text"
+                    color="teal darken-2"
+                    elevation="2"
+                    @click="generateExcel()"
+                >
+                  <v-icon class="pr-1"> mdi-tray-arrow-down</v-icon>
+                  {{ $t("container.list.excel") }}
+                </v-btn>
+                <v-btn
+                    class="my-2"
+                    color="primary"
+                    router
+                    to="/emergency-payment/emergency-beneficiary/create"
 
-                    >
-                      <v-icon class="pr-1"> mdi-plus</v-icon>
-                      {{ $t("container.list.add_new") }}
-                    </v-btn>
-                  </div>
-                  <!--Data table-->
-                  <v-col cols="12">
-                    <v-data-table
-                        :headers="visibleHeaders"
-                        :items="emergencyBeneficiaries"
-                        :items-per-page="pagination.perPage"
-                        :loading="loading"
-                        class="elevation-0 transparent row-pointer table-responsive"
-                        hide-default-footer
-                        item-key="id"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(
-                                  (pagination.current - 1) * pagination.perPage +
-                                  index +
-                                  1
-                              )
-                              : (pagination.current - 1) * pagination.perPage +
+                >
+                  <v-icon class="pr-1"> mdi-plus</v-icon>
+                  {{ $t("container.list.add_new") }}
+                </v-btn>
+              </div>
+              <!--Data table-->
+              <v-col cols="12">
+                <v-data-table
+                    :headers="visibleHeaders"
+                    :items="emergencyBeneficiaries"
+                    :items-per-page="pagination.perPage"
+                    :loading="loading"
+                    class="elevation-0 transparent row-pointer table-responsive"
+                    hide-default-footer
+                    item-key="id"
+                >
+                  <template v-slot:item.sl="{ item, index }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(
+                              (pagination.current - 1) * pagination.perPage +
                               index +
                               1
-                        }}
-                      </template>
-                      <template v-slot:item.current_mobile="{ item }">
-                        {{
-                          language === "bn"
-                              ? $helpers.englishToBangla(item.current_mobile)
-                              : item.current_mobile
-                        }}
-                      </template>
-                      <template v-slot:item.status="{ item }">
+                          )
+                          : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1
+                    }}
+                  </template>
+                  <template v-slot:item.current_mobile="{ item }">
+                    {{
+                      language === "bn"
+                          ? $helpers.englishToBangla(item.current_mobile)
+                          : item.current_mobile
+                    }}
+                  </template>
+                  <template v-slot:item.status="{ item }">
                         <span v-if="item.status === 1">
                           {{ language === "bn" ? "সক্রিয়" : "Active" }}
                         </span>
-                        <span v-if="item.status === 2">
+                    <span v-if="item.status === 2">
                           {{ language === "bn" ? "নিষ্ক্রিয়" : "Inactive" }}
                         </span>
-                        <span v-if="item.status === 3">
+                    <span v-if="item.status === 3">
                           {{ language === "bn" ? "অপেক্ষেয়মান" : "Waiting" }}
                         </span>
+                  </template>
+
+                  <!-- Action Button -->
+
+                  <template v-slot:item.actions="{ item }">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'emergency-allotment-edit'"
+                            color="success"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="editData(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-account-edit-outline</v-icon>
+                        </v-btn>
                       </template>
-
-                      <!-- Action Button -->
-
-                      <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'emergency-allotment-edit'"
-                                color="success"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="editData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-account-edit-outline</v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
+                      <span>
                             {{ $t("container.list.edit") }}
                           </span>
-                        </v-tooltip>
+                    </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'delete-division'"
-                                class="ml-3 white--text"
-                                color="grey"
-                                elevation="0"
-                                fab
-                                x-small
-                                @click="deleteData(item)"
-                                v-on="on"
-                            >
-                              <v-icon> mdi-delete</v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'delete-division'"
+                            class="ml-3 white--text"
+                            color="grey"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="deleteData(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-delete</v-icon>
+                        </v-btn>
                       </template>
-                      <!-- End Action Button -->
-                      <template v-slot:footer="item">
-                        <v-container class="pa-0 py-0" fluid>
-                          <v-row class="align-center" cols="12">
-                            <v-col
-                                class="d-flex justify-center mb-2 mb-sm-0"
-                                cols="12"
-                                lg="10"
-                                md="10"
-                                sm="4"
-                            >
-                              <v-pagination
-                                  v-model="pagination.current"
-                                  :length="pagination.total"
-                                  :total-visible="11"
-                                  circle
-                                  class="custom-pagination-item"
-                                  primary
-                                  @input="onPageChange"
-                              ></v-pagination>
-                            </v-col>
-                            <v-col class="" cols="12" lg="2" md="2" sm="4">
-                              <v-autocomplete
-                                  v-model="pagination.perPage"
-                                  :items="items"
-                                  dense
-                                  hide-details
-                                  outlined
-                                  @change="onPageSetup"
-                              >
+                      <span> {{ $t("container.list.delete") }}</span>
+                    </v-tooltip>
+                  </template>
+                  <!-- End Action Button -->
+                  <template v-slot:footer="item">
+                    <v-container class="pa-0 py-0" fluid>
+                      <v-row class="align-center" cols="12">
+                        <v-col
+                            class="d-flex justify-center mb-2 mb-sm-0"
+                            cols="12"
+                            lg="10"
+                            md="10"
+                            sm="4"
+                        >
+                          <v-pagination
+                              v-model="pagination.current"
+                              :length="pagination.total"
+                              :total-visible="11"
+                              circle
+                              class="custom-pagination-item"
+                              primary
+                              @input="onPageChange"
+                          ></v-pagination>
+                        </v-col>
+                        <v-col class="" cols="12" lg="2" md="2" sm="4">
+                          <v-autocomplete
+                              v-model="pagination.perPage"
+                              :items="items"
+                              dense
+                              hide-details
+                              outlined
+                              @change="onPageSetup"
+                          >
 
-                              </v-autocomplete>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+                          </v-autocomplete>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </template>
+                </v-data-table>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
-import {required} from "vee-validate/dist/rules";
+import { mapActions, mapState } from "vuex";
+import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
@@ -309,10 +639,11 @@ export default {
       loading: false,
       advanch_search: false,
       emergencyBeneficiaries: [],
+      beneficiary_list: [],
       payment_names: [],
       search: "",
-      sortBy: "name_en",
-      sortDesc: false, //ASC
+      sortBy: "created_at",
+      sortDesc: "desc",
       total: null,
       pagination: {
         current: 1,
@@ -335,7 +666,7 @@ export default {
   computed: {
     headers() {
       return [
-        {text: this.$t("container.list.sl"), value: "sl", fixed: true},
+        { text: this.$t("container.list.sl"), value: "sl", fixed: true },
         {
           text: this.$t(
               "container.beneficiary_management.beneficiary_list.beneficiary_id"
@@ -464,6 +795,7 @@ export default {
   },
   created() {
     this.GetAllDivisions();
+    this.getLocationType();
   },
   beforeMount() {
     this.updateHeaderTitle();
@@ -471,11 +803,18 @@ export default {
   mounted() {
     this.getListData();
     this.getPaymentName();
-
   },
   methods: {
     getLocationText(item) {
       return this.language === "bn" ? item.value_bn : item.value_en;
+    },
+    onSearch() {
+      this.loading = true;
+      this.pagination = {
+        ...this.pagination,
+        current: 1,
+      };
+      this.GetApplication();
     },
     status(status) {
       if (status === 1) {
@@ -486,79 +825,41 @@ export default {
     },
     async generatePDF() {
       this.isLoading = true;
-      let page;
-      if (!this.sortBy) {
-        page = this.pagination.current;
-      }
-      const headerInfo = [
-        this.$t("container.list.sl"),
-        this.$t("container.emergency_payment.payment_name"),
-        this.$t("container.emergency_payment.program_name"),
-        this.$t("container.emergency_payment.no_of_new_benificiary"),
-        this.$t("container.emergency_payment.no_of_existing_benificiary"),
-        this.$t("container.emergency_payment.per_person_amount"),
-        this.$t("container.emergency_payment.payment_cycle"),
-        this.$t("container.emergency_payment.starting_period"),
-        this.$t("container.emergency_payment.closing_period"),
-        this.$t("container.list.status"),
-      ];
-
-      const customInfo = this.emergencyAllotments.map((i, index) => {
-        return [
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(index + 1),
-          i.emergency_payment_name,
-          this.$i18n.locale === "bn" ? i.program.name_bn : i.program.name_en,
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(i.no_of_new_benificiariy),
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(i.no_of_existing_benificiariy),
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(i.amount_per_person),
-          i.payment_cycle,
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(i.starting_period),
-          this.$i18n.locale == "en"
-              ? index + 1
-              : this.$helpers.englishToBangla(i.closing_period),
-          this.$i18n.locale == "en"
-              ? this.status(i.status)
-              : this.status(i.status),
-        ];
-      });
-
-      const queryParam = {
+      const queryParams = {
         language: this.$i18n.locale,
-        data: customInfo,
-        header: headerInfo,
-        fileName: this.$t("container.emergency_payment.list"),
-      };
-      try {
-        const response = await this.$axios.post(
-            "/admin/generate-pdf",
-            queryParam,
-            {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "application/json", // Set content type to JSON
-              },
-              responseType: "arraybuffer",
-            }
-        );
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        city_thana_id: this.data.city_thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+        location_type: this.data.location_type,
 
-        const blob = new Blob([response.data], {type: "application/pdf"});
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, "_blank");
-        this.isLoading = false;
-      } catch (error) {
-        this.isLoading = false;
-        console.error("Error generating PDF:", error);
-      }
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        thana_id: this.data.thana_id,
+        ward_id: this.data.ward_id,
+      };
+      this.$axios
+          .get("/admin/emergency/getBeneficiaryListPdf", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "application/json",
+            },
+            params: queryParams,
+            responseType: "arraybuffer",
+          })
+          .then((result) => {
+            const blob = new Blob([result.data], { type: "application/pdf" });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, "_blank");
+            this.isLoading = false;
+            // window.open(result.data.data.url, "_blank");
+          })
+          .catch((error) => {
+            this.isLoading = false;
+            console.error("Error generating PDF:", error);
+          });
     },
     async generateExcel() {
       this.isLoading = true;
@@ -566,68 +867,177 @@ export default {
       if (!this.sortBy) {
         page = this.pagination.current;
       }
+      const queryParams = {
+        // language: this.$i18n.locale,
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: this.data.status,
+
+        perPage: this.total,
+        page: 1, // All data loaded
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+          .get("/admin/emergency/beneficiaries", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.beneficiary_list = result.data.data.data;
+            console.log(this.beneficiary_list)
+          })
+          .catch((error) => {
+            this.isLoading = false;
+            console.error("Error generating Excel:", error);
+          });
 
       try {
         import("@/plugins/Export2Excel").then((excel) => {
-          const headerInfo = [
+          const HeaderInfo = [
             this.$t("container.list.sl"),
-            this.$t("container.emergency_payment.payment_name"),
-            this.$t("container.emergency_payment.program_name"),
-            this.$t("container.emergency_payment.no_of_new_benificiary"),
-            this.$t("container.emergency_payment.no_of_existing_benificiary"),
-            this.$t("container.emergency_payment.per_person_amount"),
-            this.$t("container.emergency_payment.payment_cycle"),
-            this.$t("container.emergency_payment.starting_period"),
-            this.$t("container.emergency_payment.closing_period"),
-            this.$t("container.list.status"),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.beneficiary_id"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.beneficiary_name"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.father_name"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.program_name"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.district"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.city_dist_upazilla"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.thna_union_Pouro"
+            ),
+            this.$t("container.beneficiary_management.beneficiary_list.ward"),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.account_no"
+            ),
+            this.$t(
+                "container.beneficiary_management.beneficiary_list.monthly_allowance_amount"
+            ),
           ];
-          const customInfo = this.emergencyAllotments.map((i, index) => {
-            return [
-              this.$i18n.locale == "en"
-                  ? index + 1
-                  : this.$helpers.englishToBangla(index + 1),
-              i.emergency_payment_name,
-              this.$i18n.locale === "bn"
-                  ? i.program.name_bn
-                  : i.program.name_en,
-              this.$i18n.locale == "en"
-                  ? index + 1
-                  : this.$helpers.englishToBangla(i.no_of_new_benificiariy),
-              this.$i18n.locale == "en"
-                  ? index + 1
-                  : this.$helpers.englishToBangla(i.no_of_existing_benificiariy),
-              this.$i18n.locale == "en"
-                  ? index + 1
-                  : this.$helpers.englishToBangla(i.amount_per_person),
-              i.payment_cycle,
-              this.$helpers.formatDate(i.starting_period, this.$i18n.locale),
-              this.$helpers.formatDate(i.closing_period, this.$i18n.locale),
-              this.$i18n.locale == "en"
-                  ? this.status(i.status)
-                  : this.status(i.status),
-            ];
+          const CustomInfo = this.beneficiary_list.map((i, index) => {
+            return {
+              sl:
+                  this.$i18n.locale == "en"
+                      ? index + 1
+                      : this.$helpers.englishToBangla(index + 1),
+              beneficiary_id:
+                  this.$i18n.locale == "en" ? i.beneficiary_id : i.beneficiary_id,
+              name: this.$i18n.locale == "en" ? i.name_en : i.name_bn,
+              father_name:
+                  this.$i18n.locale == "en" ? i.father_name_en : i.father_name_bn,
+              program_name:
+                  this.$i18n.locale == "en"
+                      ? i.emergency_allotment?.emergency_payment_name
+                      : i.emergency_allotment?.emergency_payment_name,
+              district:
+                  this.$i18n.locale == "en"
+                      ? i.permanent_district?.name_en
+                      : i.permanent_district?.name_bn,
+              city_dist_upazilla:
+                  this.$i18n.locale == "en"
+                      ? i.permanent_upazila
+                          ? i.permanent_upazila?.name_en
+                          : i.permanent_city_corporation
+                              ? i.permanent_city_corporation?.name_en
+                              : i.permanent_district_pourashava
+                                  ? i.permanent_district_pourashava?.name_en
+                                  : ""
+                      : i.permanent_upazila
+                          ? i.permanent_upazila?.name_bn
+                          : i.permanent_city_corporation
+                              ? i.permanent_city_corporation?.name_bn
+                              : i.permanent_district_pourashava
+                                  ? i.permanent_district_pourashava?.name_bn
+                                  : "",
+              thna_union_Pouro:
+                  this.$i18n.locale == "en"
+                      ? i.permanent_union
+                          ? i.permanent_union?.name_en
+                          : i.permanentThana
+                              ? i.permanent_thana?.name_en
+                              : i.permanent_pourashava
+                                  ? i.permanent_pourashava?.name_en
+                                  : ""
+                      : i.permanentUnion
+                          ? i.permanent_union?.name_bn
+                          : i.permanent_thana
+                              ? i.permanentThana?.name_bn
+                              : i.permanent_pourashava
+                                  ? i.permanent_pourashava?.name_bn
+                                  : "",
+              ward:
+                  this.$i18n.locale == "en"
+                      ? i.permanent_ward?.name_en
+                      : i.permanent_ward?.name_bn,
+
+              account_number:
+                  this.$i18n.locale == "en" ? i.account_number : i.account_number,
+              monthly_allowance:
+                  this.$i18n.locale == "en"
+                      ? i.monthly_allowance
+                      : this.$helpers.englishToBangla(i.monthly_allowance),
+            };
           });
-          const fields = [
+
+          const Field = [
             "sl",
-            "emergency_payment_name",
-            "payment_cycle",
-            "status",
+            "beneficiary_id",
+            "name",
+            "father_name",
+            "program_name",
+            "district",
+            "city_dist_upazilla",
+            "thna_union_Pouro",
+            "ward",
+            "account_number",
+            "monthly_allowance",
           ];
 
-          // const data = this.FormatJson(fields, customInfo);
-          const currentDate = new Date().toISOString().slice(0, 10); //
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
           let dateinfo =
-              this.language == "en"
+              queryParams.language == "en"
                   ? currentDate
                   : this.$helpers.englishToBangla(currentDate);
 
-          const filenameWithDate = `${dateinfo}_${this.$t(
-              "container.emergency_payment.list"
+          const filenameWithDate = `${this.$t(
+              "container.emergency_payment.emergency_beneficiary.list"
           )}`;
 
           excel.export_json_to_excel({
-            header: headerInfo,
-            data: customInfo,
+            header: HeaderInfo,
+            data: Data,
             sheetName: filenameWithDate,
             filename: filenameWithDate,
             autoWidth: true,
@@ -635,6 +1045,8 @@ export default {
           });
         });
       } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
         this.isLoading = false;
       } finally {
         this.isLoading = false;
@@ -657,6 +1069,11 @@ export default {
     },
     appendIcon() {
       return "mdi-plus"; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
+    },
+    getLocationType() {
+      this.$store
+          .dispatch("getLookupByType", 1)
+          .then((res) => (this.locationType = res));
     },
     async GetAllProgram() {
       try {
@@ -839,7 +1256,59 @@ export default {
         }
       }
     },
+    getAllotmentWiseProgram() {
+      ApiService.get("/admin/emergency/get-allotment-wise-program")
+          .then((res) => {
+            this.programs = res.data;
+          })
+          .catch((error) => console.log(error));
+    },
+    async GetApplication() {
+      const queryParams = {
+        // searchText: this.search,
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
 
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: this.data.status,
+
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+      this.$axios
+          .get("/admin/beneficiary/list", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.beneficiaries = result.data.data;
+            this.total = result.data.meta.total;
+            console.log("results_total__", this.total);
+            this.pagination.current = result.data.meta.current_page;
+            this.pagination.total = result.data.meta.last_page;
+            this.pagination.grand_total = result.data.meta.total;
+            this.loading = false;
+          });
+    },
     async onChangeUpazila(event) {
       await this.$axios
           .get(`/admin/union/get/${this.data.thana_id}`, {
@@ -990,16 +1459,33 @@ export default {
     }),
 
     getListData() {
-      this.search = this.search.replace(/%/g, '');
+      // this.search = this.search.replace(/%/g, '');
       this.loading = true;
       const queryParams = {
-        searchText: this.search,
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: this.data.status,
+
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
-        sortDesc: this.sortDesc,
-        emergency_payment_name: this.data.emergency_payment_name,
-        started_period: this.data.starting_period,
+        orderBy: this.sortDesc,
 
       };
       ApiService
@@ -1019,12 +1505,12 @@ export default {
       const queryData = {
         table_name: "emergency_allotments",
         field_name: ["id", "emergency_payment_name"],
-        condition: {status: 1, deleted_at: null},
+        condition: { status: 1, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
             console.log(res);
-            this.payment_names = res.data;
+            this.programs = res.data;
           })
           .catch((error) => console.log(error));
     },
@@ -1089,6 +1575,7 @@ export default {
       this.data.nid = null;
       this.data.status = null;
 
+      // this.GetApplication();
       this.getListData();
     },
     updateHeaderTitle() {
@@ -1098,8 +1585,10 @@ export default {
     getItemText(item) {
       return this.language === "bn" ? item.name_bn : item.name_en;
     },
+    getItemValue(item) {
+      return this.language === "bn" ? item.value_bn : item.value_en;
+    },
   },
-
   watch: {
     advanch_search(val) {
       this.data = {
@@ -1110,8 +1599,10 @@ export default {
         nid: null,
         status: null,
       };
-    },
-    "$i18n.locale": "updateHeaderTitle",
+    }
+    ,
+    "$i18n.locale":
+        "updateHeaderTitle",
   },
 };
 </script>

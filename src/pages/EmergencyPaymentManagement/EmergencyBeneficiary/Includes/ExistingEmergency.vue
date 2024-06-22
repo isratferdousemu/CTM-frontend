@@ -19,7 +19,7 @@
           </v-card-title>
           <!-- Form -->
           <v-card-text>
-            <ValidationObserver ref="form">
+            <ValidationObserver ref="form" v-slot="{ invalid }">
               <v-form @submit.prevent="submitSelectedData">
                 <v-container>
                   <v-row>
@@ -683,6 +683,7 @@
                       </v-btn>
                       <v-btn
 
+                          :disabled="invalid"
                           class="btn mr-2"
                           color="success"
                           elevation="2"
@@ -731,7 +732,7 @@
                                   md="10"
                                   sm="4"
                               >
-<!--                                :length="pagination.total"-->
+                                <!--                                :length="pagination.total"-->
                                 <v-pagination
                                     v-model="pagination.current"
                                     :length="totalPages"
@@ -762,7 +763,7 @@
                       <v-btn class="mr-2" color="primary" router to="/emergency-payment/emergency-allotment">
                         {{ $t("container.list.back") }}
                       </v-btn>
-                      <v-btn color="primary" type="submit">
+                      <v-btn :disabled="invalid" color="primary" type="submit">
                         {{ $t("container.list.submit") }}
                       </v-btn>
                     </v-col>
@@ -777,10 +778,10 @@
   </v-container>
 </template>
 <script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 import ApiService from "@/services/ApiService";
-import {extend, ValidationObserver, ValidationProvider} from "vee-validate";
-import {required} from "vee-validate/dist/rules";
+import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
@@ -823,7 +824,7 @@ export default {
         status: null,
       },
       flag: this.$route.query.flag || 'Existing',
-      styleObject: {border: "2px solid  rgba(9, 9, 121, 100)"},
+      styleObject: { border: "2px solid  rgba(9, 9, 121, 100)" },
       districts: [],
       district_poros: [],
       cities: [],
@@ -877,7 +878,7 @@ export default {
       selectedBeneficiaries: [],
       beneficiaries: [],
       allotments: [],
-      isExisting:null
+      isExisting: null
     };
   },
   computed: {
@@ -1082,7 +1083,7 @@ export default {
             })
             .then((result) => {
               this.pouros = result.data.data;
-              console.log({pouros: this.pouros});
+              console.log({ pouros: this.pouros });
             });
         this.data.union_id = null;
       }
@@ -1177,7 +1178,7 @@ export default {
       var queryData = {
         table_name: "locations",
         field_name: ["id", "parent_id", "type", "name_en"],
-        condition: {parent_id: divisionId, deleted_at: null},
+        condition: { parent_id: divisionId, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
@@ -1190,7 +1191,7 @@ export default {
       var queryData = {
         table_name: "locations",
         field_name: ["id", "parent_id", "type", "name_en"],
-        condition: {parent_id: districtId, deleted_at: null},
+        condition: { parent_id: districtId, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
@@ -1203,7 +1204,7 @@ export default {
       var queryData = {
         table_name: "locations",
         field_name: ["id", "parent_id", "type", "name_en"],
-        condition: {parent_id: thanaId, deleted_at: null},
+        condition: { parent_id: thanaId, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
@@ -1216,7 +1217,7 @@ export default {
       var queryData = {
         table_name: "locations",
         field_name: ["id", "parent_id", "type", "name_en"],
-        condition: {parent_id: cityId, deleted_at: null},
+        condition: { parent_id: cityId, deleted_at: null },
       };
       ApiService.getDropData("global/common-dropdown", queryData)
           .then((res) => {
@@ -1276,21 +1277,22 @@ export default {
     },
 
     submitSelectedData() {
+      this.loading = true;
       this.updateSelectedBeneficiaries();
-      console.log({selected:this.selectedBeneficiaries})
+      console.log({ selected: this.selectedBeneficiaries })
       try {
         let modifiedBeneficiaries;
-        if(this.flag==="New"){
+        if (this.flag === "New") {
           this.isExisting = 0;
-           modifiedBeneficiaries = this.selectedBeneficiaries.map(beneficiary => {
+          modifiedBeneficiaries = this.selectedBeneficiaries.map(beneficiary => {
             return {
               ...beneficiary,
               isExisting: this.isExisting
             };
           });
-        }else{
+        } else {
           this.isExisting = 1;
-           modifiedBeneficiaries = this.selectedBeneficiaries.map(beneficiary => {
+          modifiedBeneficiaries = this.selectedBeneficiaries.map(beneficiary => {
             return {
               ...beneficiary,
               isExisting: this.isExisting
@@ -1304,11 +1306,12 @@ export default {
               if (res.data?.success) {
                 this.$toast.success(
                     this.language === "bn"
-                        ? "ডেটা সফলভাবে জমা দেওয়া হয়েছে"
-                        : "Data inserted successfully"
+                        ? "জরুরী সুবিধাভোগী সফলভাবে যোগ করা হয়েছে"
+                        : "Emergency beneficiary added successfully"
                 );
+                this.$router.push("/emergency-payment/manage-emergency-beneficiary");
                 this.resetForm();
-                this.$router.push("/emergency-payment/emergency-beneficiary");
+                this.loading = false;
               } else if (res?.data?.errors) {
                 this.$refs.form.setErrors(res.data.errors);
                 this.$toast.error(res.data.message);
@@ -1327,8 +1330,8 @@ export default {
     }),
 
     resetForm() {
-      this.data={};
-      this.selectedBeneficiaries=[];
+      this.data = {};
+      this.selectedBeneficiaries = [];
     },
     getAllotmentWiseProgram() {
       ApiService.get("/admin/emergency/get-allotment-wise-program")
@@ -1349,26 +1352,5 @@ export default {
 <style scoped>
 .highlight-column {
   background-color: #e0eaf1;
-}
-
-.custom-margin-left {
-  margin-left: 4px;
-}
-
-.button-color-linear-gradient {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-      90deg,
-      rgb(28, 59, 104) 0%,
-      rgba(9, 9, 121, 1) 35%
-  );
-
-  /* background: rgb(49, 232, 232);
-  background: linear-gradient(
-    90deg,
-    rgba(49, 232, 232, 1) 0%,
-    rgba(41, 110, 110, 1) 0%,
-    rgba(16, 30, 61, 1) 64%
-  ); */
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <Spinner :loading="loading"/>
     <v-card class="ma-0 pa-0" justify="center" outlined>
       <v-card-title class="component-title">
         <div class="clearfix">
@@ -12,9 +13,9 @@
       </v-card-title>
       <v-card-text>
         <v-col cols="12" lg="12" md="6">
-          <ValidationObserver ref="form">
+          <ValidationObserver ref="form" v-slot="{ invalid }">
             <v-form @submit.prevent="updateEmergencyAllotment()">
-              <v-container class="px-0 py-0">
+              <v-container fluid>
                 <v-row>
                   <v-col cols="12" lg="6" md="6">
                     <ValidationProvider
@@ -65,6 +66,7 @@
                           clearable
                           item-text="name_en"
                           item-value="id"
+                          multiple
                           outlined
                           required
                       ></v-autocomplete>
@@ -856,12 +858,14 @@ import { mapActions, mapState } from "vuex";
 import { extend, ValidationObserver, ValidationProvider } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import ApiService from "@/services/ApiService";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
   name: "Edit",
   title: "CTM - Emergency Allotment Edit",
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -869,7 +873,7 @@ export default {
     return {
       data: {
         id: null,
-        program_id: null,
+        program_id: [],
         payment_name: null,
         division_id: null,
         district_id: null,
@@ -968,12 +972,14 @@ export default {
   },
   methods: {
     loadEditableForm() {
+      this.loading = true;
       const edit_id = this.$route.params.id;
       if (edit_id) {
         ApiService.get(`admin/emergency/allotments/edit/${edit_id}`)
             .then((res) => {
               console.log(res);
               this.setEditData(res.data.data);
+              this.loading = false;
             })
             .catch((errors) => {
               this.$toast.error(errors.response);
@@ -984,7 +990,9 @@ export default {
       console.log(item);
       this.editedItem = item;
       this.data.payment_name = item.emergency_payment_name;
-      this.data.program_id = item.program_id;
+      item.programs.map((x) => {
+        this.data.program_id.push(x.pivot.allowance_program_id);
+      });
       this.data.starting_period = item.starting_period;
       this.data.closing_period = item.closing_period;
       this.data.per_person_amount = item.amount_per_person;
@@ -1019,7 +1027,7 @@ export default {
           this.data.union_id = item.union_id;
           this.onChangeUnion(item.union_id);
           this.data.ward_id_union = item.ward_id;
-          s
+
         } else {
           //pouro
           this.data.pouro_id = item.pourashava_id;
@@ -1234,21 +1242,25 @@ export default {
       return this.language === "bn" ? item.name_bn : item.name_en;
     },
     updateEmergencyAllotment() {
-
+      this.loading = true;
       try {
         ApiService.update(
             "admin/emergency/allotments/update/" + this.editedItem.id,
             this.data
         )
             .then((res) => {
+              console.log(res)
               if (res?.data?.success) {
                 this.$toast.success(
                     this.language === "bn"
                         ? "জরুরী বরাদ্দ সফলভাবে আপডেট করা হয়েছে"
                         : "Emergency Allotment Updated Successfully"
                 );
-                this.$router.push("/emergency-payment/emergency-allotment");
+                this.$router.push({
+                  path: `/emergency-payment/emergency-allotment`
+                });
                 this.resetData();
+                this.loading = false;
               } else if (res?.data?.errors) {
                 this.$refs.form.setErrors(res.data.errors);
                 this.$toast.error(res.data.message);

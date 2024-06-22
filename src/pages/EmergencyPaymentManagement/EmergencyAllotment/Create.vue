@@ -88,6 +88,7 @@
                           item-text="name_en"
                           item-value="id"
                           outlined
+                          multiple
                           required
                       ></v-autocomplete>
                     </ValidationProvider>
@@ -965,7 +966,7 @@ export default {
     return {
       data: {
         id: null,
-        program_id: null,
+        program_id: [],
         payment_name: null,
         division_id: null,
         district_id: null,
@@ -1050,9 +1051,7 @@ export default {
       },
     },
   },
-  watch: {
-    "$i18n.locale": "updateHeaderTitle",
-  },
+
   created() {
     this.registerCustomRules();
   },
@@ -1340,6 +1339,9 @@ export default {
     resetData() {
       this.data = {};
     },
+  },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
   },
 };
 </script>

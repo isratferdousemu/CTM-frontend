@@ -10,6 +10,7 @@
 .component-title{
   background-color: #1C3B68;
   color: white;
+  text-transform: uppercase;
 }
 .left-sidebar .v-list-item__action,
 .left-sidebar .v-list-item__icon {

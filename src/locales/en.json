@@ -97,7 +97,7 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "manage_beneficary": "Manage Beneficiary",
+      "manage_beneficiary": "Manage Beneficiary",
       "existing": "Existing Beneficiary",
       "add_beneficiary": "New Beneficiary",
       "accept_invitation": "Training Invitation"
