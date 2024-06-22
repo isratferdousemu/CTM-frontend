@@ -99,7 +99,7 @@
                       </v-btn>
                       <v-btn elevation="2"
                         :disabled="!data.program_id || !data.calculation_type || !data.prev_financial_year_ids || !data.calculation_value"
-                        class="btn mr-2" @click="getLocationoWiseBudgetDetails(null)">
+                        class="btn mr-2" color="primary" @click="getLocationoWiseBudgetDetails(null)">
                         {{ $t("container.budget_management.forecast_budget") }}
                       </v-btn>
 
@@ -144,7 +144,7 @@
                     {{ $t("container.list.sl") }}
                   </th>
                   <th class="text-left">
-                    {{ $t("container.grievance_management.dashboard.locationName") }}
+                    {{ $t("container.budget_management.location") }}
                   </th>
                   <th class="text-left">
                     {{ $t("container.budget_management.previous_total_beneficiary") }}
@@ -176,8 +176,8 @@
                   <td>{{ language === 'bn' ? $helpers.englishToBangla(item.current_total_beneficiary) :
                     item.current_total_beneficiary }}
                   </td>
-                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.current_total_beneficiary) :
-                    item.current_total_beneficiary }}
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.current_total_amount) :
+                    item.current_total_amount }}
                   </td>
                   <td>
                     <v-btn v-if="!item.is_allotment_area" @click="fetchNextLevel(item.id, item.type)" fab x-small
@@ -234,7 +234,7 @@ export default {
       calculationType: [],
       locationWiseBudget: null,
       breadcrumbItems: [
-        { text: this.$i18n.locale == 'en' ? 'Division' : 'বিভাগ', value: null },
+        { text: 'Division', value: null },
         //{ text: this.$i18n.locale == 'en' ? 'District' : 'জেলা', value: 'district' },
         // { text: this.$i18n.locale == 'en' ? 'Thana' : 'থানা', value: 'thana' },
       ],
@@ -345,11 +345,9 @@ export default {
       if (currentType === 'division') {
         nextType = 'District';
       } else if (currentType === 'district') {
-        nextType = 'Thana/City/Pourosova';
-      } else if (currentType === 'city') {
-        nextType = 'Thana';
-      } else if (currentType === 'thana') {
-        nextType = 'Union';
+        nextType = 'Upazila/City Corporation/District Pouroshava';
+      } else if (currentType === 'city' || currentType === 'thana') {
+        nextType = 'Union/Thana/Pouroshava';
       } else if (currentType === 'union') {
         nextType = 'Ward';
       }

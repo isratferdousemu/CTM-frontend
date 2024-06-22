@@ -1031,11 +1031,17 @@
       "Approved": "Approved",
       "Failed": "Failed",
       "forecast_budget": "Forecast Budget",
-      "forecast_details": "Forecast Details",
+      "forecast_details": "Budget Forecast",
       "previous_total_beneficiary": "Previous Total Beneficiary",
       "previous_total_amount": "Previous Total Amount",
       "current_total_beneficiary": "Current Total Beneficiary",
-      "current_total_amount": "Current Total Amount"
+      "current_total_amount": "Current Total Amount",
+      "location": "Location",
+      "division": "Division",
+      "district": "District",
+      "upazila_city_district": "Upazila/City Corporation/District Pouroshava",
+      "union_pouro_city": "Union/Thana/Pouroshava",
+      "ward": "Ward"
     },
     "payroll_management": {
       "view": "View",
