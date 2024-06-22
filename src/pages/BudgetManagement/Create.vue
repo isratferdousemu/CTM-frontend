@@ -100,7 +100,7 @@
                       <v-btn elevation="2"
                         :disabled="!data.program_id || !data.calculation_type || !data.prev_financial_year_ids || !data.calculation_value"
                         class="btn mr-2" @click="getLocationoWiseBudgetDetails(null)">
-                        {{ $t("Forecast Budget") }}
+                        {{ $t("container.budget_management.forecast_budget") }}
                       </v-btn>
 
                       <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">
@@ -124,7 +124,7 @@
               <caption>
                 <v-card-title class="custom-title">
                   <h6 class="text-center" style="font-size:16.16px;"> {{
-                    $t("Forecast Details") }}</h6>
+                    $t("container.budget_management.forecast_details") }}</h6>
                 </v-card-title>
 
                 <v-breadcrumbs :items="breadcrumbItems" divider="/">
@@ -147,16 +147,16 @@
                     {{ $t("container.grievance_management.dashboard.locationName") }}
                   </th>
                   <th class="text-left">
-                    {{ $t("Previous Total Beneficiary") }}
+                    {{ $t("container.budget_management.previous_total_beneficiary") }}
                   </th>
                   <th class="text-left">
-                    {{ $t("Previous Total Amount") }}
+                    {{ $t("container.budget_management.previous_total_amount") }}
                   </th>
                   <th class="text-left">
-                    {{ $t("Current Total Beneficiary") }}
+                    {{ $t("container.budget_management.current_total_beneficiary") }}
                   </th>
                   <th class="text-left">
-                    {{ $t("Current Total Amount") }}
+                    {{ $t("container.budget_management.current_total_amount") }}
                   </th>
                   <th class="text-left">
                     {{ $t("container.grievance_management.dashboard.action") }}

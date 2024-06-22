@@ -1024,12 +1024,18 @@
       "budget_id": "Budget Id",
       "program": "Program",
       "no_of_previous_year": "No of Previous Year",
-      "previous_year":"Previous Years",
+      "previous_year": "Previous Years",
       "calculation_value": "Calculation Value",
       "approval_status": "Status",
       "Draft": "Draft",
       "Approved": "Approved",
-      "Failed": "Failed"
+      "Failed": "Failed",
+      "forecast_budget": "Forecast Budget",
+      "forecast_details": "Forecast Details",
+      "previous_total_beneficiary": "Previous Total Beneficiary",
+      "previous_total_amount": "Previous Total Amount",
+      "current_total_beneficiary": "Current Total Beneficiary",
+      "current_total_amount": "Current Total Amount"
     },
     "payroll_management": {
       "view": "View",
@@ -1336,7 +1342,6 @@
         "end_date": "Training End Date",
         "certificate": "Certificate",
         "status": "Program Status"
-
       },
       "training_registration": {
         "list_1": "Participant List",
