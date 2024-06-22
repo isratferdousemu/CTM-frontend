@@ -1028,12 +1028,18 @@
       "budget_id": "বাজেট আইডি",
       "program": "প্রোগ্রাম",
       "no_of_previous_year": "আগের বছরের সংখ্যা",
-      "previous_year":"আগের বছর সমূহ",
+      "previous_year": "আগের বছর সমূহ",
       "calculation_value": "গণনার মান",
       "approval_status": "স্ট্যাটাস",
       "Draft": "খসড়া",
       "Approved": "অনুমোদিত",
-      "Failed": "অসফল"
+      "Failed": "অসফল",
+      "forecast_budget": "পূর্বাভাস বাজেট",
+      "forecast_details": "পূর্বাভাস বিবরণ",
+      "previous_total_beneficiary": "পূর্ববর্তী মোট উপকারভোগী",
+      "previous_total_amount": "পূর্ববর্তী মোট পরিমাণ",
+      "current_total_beneficiary": "বর্তমান মোট উপকারভোগী",
+      "current_total_amount": "বর্তমান মোট পরিমাণ"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",
