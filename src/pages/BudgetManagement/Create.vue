@@ -115,7 +115,7 @@
           </v-form>
         </ValidationObserver>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="locationWiseBudget !== null">
         <!-------Start  table  component ------->
         <div>
           <v-simple-table fixed-header class="table-responsive">
