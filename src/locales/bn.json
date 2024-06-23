@@ -1042,7 +1042,15 @@
       "district": "জেলা ",
       "upazila_city_district": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",
       "union_pouro_city": "ইউনিয়ন/থানা/পৌরসভা",
-      "ward": "ওয়ার্ড"
+      "ward": "ওয়ার্ড",
+      "total_budget": "মোট বাজেট",
+      "total_allotment": "মোট বরাদ্দ",
+      "yearly_total_ben": "বার্ষিক মোট উপকারভোগী",
+      "year_wise_budget_amount": "বাৎসরিক বাজেটের পরিমাণ",
+      "year_wise_allotment_amount": "বাৎসরিকবরাদ্দের পরিমাণ",
+      "program_wise_budget_amount": "প্রোগ্রাম অনুযায়ী বাজেটের পরিমাণ",
+      "program_wise_allotment_amount": "প্রোগ্রাম অনুযায়ী বরাদ্দের পরিমাণ",
+      "area_wise_budget_allotment_amount": "এলাকাভিত্তিক বাজেট ও বরাদ্দের পরিমাণ"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",

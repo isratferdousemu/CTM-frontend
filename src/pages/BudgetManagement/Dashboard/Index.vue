@@ -1,7 +1,154 @@
 <template>
     <v-container fluid>
+        <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+            <h3 class="white--text">
+                {{ $t("Budget & Allotment Dashboard") }}
+            </h3>
+        </v-card-title>
+        <!-------start  header Card component ---->
+        <v-row align="center" justify="center" dense>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row align="center" justify="center" dense>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.grievance_management.dashboard.total_received") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+        </v-row>
+
         <!-- header card start -->
-        <v-table>
+        <!-- <v-table>
             <thead>
                 <tr>
                     <td width="20%">
@@ -180,7 +327,7 @@
                     </td>
                 </tr>
             </thead>
-        </v-table>
+        </v-table> -->
         <!-- header card end -->
         <!-- first row chart start -->
         <v-row class="mt-3">
