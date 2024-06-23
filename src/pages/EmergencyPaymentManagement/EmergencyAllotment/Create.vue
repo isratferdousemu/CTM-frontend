@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <Spinner :loading="loading"/>
+<!--    <Spinner :loading="loading"/>-->
     <v-card class="ma-0 pa-0" justify="center" outlined>
       <v-card-title class="component-title">
         <div class="clearfix">

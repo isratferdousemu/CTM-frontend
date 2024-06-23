@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <Spinner :loading="loading"/>
+<!--    <Spinner :loading="loading"/>-->
     <!-- Search Panel Starts -->
     <v-expansion-panels>
       <v-expansion-panel class="mb-2">
@@ -343,14 +343,33 @@
                             elevation="0"
                             fab
                             x-small
-                            @click="manageBeneficiary(item)"
+                            @click="managePayroll(item)"
                             v-on="on"
+                            class="mr-2"
                         >
-                          <v-icon> mdi-eye</v-icon>
+                          <v-icon> mdi-cash</v-icon>
                         </v-btn>
                       </template>
                       <span>
-                            {{ $t("container.list.manage_beneficary") }}
+                            {{ $t("container.payroll_management_v2.payroll_create") }}
+                          </span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-can="'emergency-allotment-view'"
+                            color="success"
+                            elevation="0"
+                            fab
+                            x-small
+                            @click="manageBeneficiary(item)"
+                            v-on="on"
+                        >
+                          <v-icon> mdi-account-multiple-plus</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>
+                            {{ $t("container.list.manage_beneficiary") }}
                           </span>
                     </v-tooltip>
                     <v-tooltip top>
@@ -575,6 +594,11 @@ export default {
     manageBeneficiary(item) {
       this.$router.push({
         path: `/emergency-payment/manage-emergency-beneficiary`,
+      });
+    },
+    managePayroll(item) {
+      this.$router.push({
+        path: `/emergency-payment/emergency-payroll/create`,
       });
     },
     status(status) {

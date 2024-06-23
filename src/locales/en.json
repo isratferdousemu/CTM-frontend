@@ -100,7 +100,8 @@
       "manage_beneficiary": "Manage Beneficiary",
       "existing": "Existing Beneficiary",
       "add_beneficiary": "New Beneficiary",
-      "accept_invitation": "Training Invitation"
+      "accept_invitation": "Training Invitation",
+      "allotment_area_wise_ben": "Emergency Allotment Area-Wise Beneficiaries"
     },
     "system_config": {
       "demo_graphic": {
@@ -1253,6 +1254,9 @@
         "branch": "Branch",
         "routing_no": "Routing No",
         "scheme_code": "Scheme Code"
+      },
+      "emergency_payroll": {
+        "payroll_create": "Emergency Payroll Create"
       }
     },
     "training_management": {

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <Spinner :loading="loading"/>
+<!--    <Spinner :loading="loadingloading"/>-->
     <!--Search Panel -->
     <v-card
         color="white" elevation="1" outlined rounded="md" theme="light"

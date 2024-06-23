@@ -100,7 +100,8 @@
       "manage_beneficiary": "সুবিধাভোগী পরিচালনা করুন",
       "existing": "বিদ্যমান সুবিধাভোগী",
       "add_beneficiary": "নতুন সুবিধাভোগী",
-      "accept_invitation": "প্রশিক্ষণ আমন্ত্রণ"
+      "accept_invitation": "প্রশিক্ষণ আমন্ত্রণ",
+      "allotment_area_wise_ben": "জরুরী বরাদ্দ এলাকা-ভিত্তিক সুবিধাভোগী"
     },
     "system_config": {
       "demo_graphic": {
@@ -1232,6 +1233,9 @@
         "branch": "শাখা",
         "routing_no": "রাউটিং নং",
         "scheme_code": "স্কিম কোড"
+      },
+      "emergency_payroll": {
+        "payroll_create": "জরুরী বেতন তৈরি করুন"
       }
     },
     "training_management": {

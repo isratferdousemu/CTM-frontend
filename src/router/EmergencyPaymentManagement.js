@@ -95,6 +95,29 @@ const EmergencyPaymentManagementRoutes = [
         "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Edit.vue"
       ),
   },
+  // Emergency Payroll routes
+  {
+    path: "/emergency-payment/emergency-payroll/create",
+    name: "Emergency Payroll Create",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payroll-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyPayroll/Create.vue"
+        ),
+  },
+  {
+    path: '/emergency-payment/emergency-payroll/approval',
+    name: 'Emergency Payroll Approval',
+    meta: {
+      requiresAuth: true,
+      permission: 'emergency-payroll-approval',
+    },
+    component: () =>
+      import('../pages/EmergencyPaymentManagement/EmergencyPayrollApproval/Index.vue'),
+  },
   // Payment cycle routers:
   {
     path: "/emergency-payment/payment-cycle",

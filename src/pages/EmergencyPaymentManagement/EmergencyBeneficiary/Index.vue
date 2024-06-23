@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <Spinner :loading="loading"/>
+<!--    <Spinner :loading="loading"/>-->
     <!--Search Panel -->
     <v-expansion-panels>
       <v-expansion-panel class="mb-2">
@@ -637,6 +637,7 @@ export default {
       wards: [],
       district_pouros: [],
       loading: false,
+      isLoading: false,
       advanch_search: false,
       emergencyBeneficiaries: [],
       beneficiary_list: [],
