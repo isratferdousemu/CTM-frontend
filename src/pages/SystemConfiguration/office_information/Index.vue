@@ -839,7 +839,8 @@
 
                   </v-col>
                   <v-col cols="12" v-if="selectedWards_UCDUpazila.length > 0">
-                    <v-data-table :headers="headersWard_ucd_upazila" :items="selectedWardsDetails_UCDUpazila"
+                    <v-data-table :headers="headersWard_ucd_upazila"
+                                  :items="selectedWardsDetails_UCDUpazila"
                       :search="search">
                       <template v-slot:item.sl_ucd_upazila="{ item, index }">
                         {{
@@ -890,131 +891,6 @@
       <!-- office Edit modal  -->
 
 
-      <!-- office Edit modal  -->
-      <!-- <v-dialog v-model="dialogEdit" width="650">
-          <v-card style="justify-content: center; text-align: center">
-            <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.office.edit") }}
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text class="mt-7">
-              <v-row> </v-row>
-
-              <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-                <form @submit.prevent="updateOffice()">
-                  <v-row>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="OfficeType" vid="officeType" rules="required" v-slot="{ errors }">
-                        <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeOfficeType($event)"
-                          v-model="data.office_type" outlined :label="$t(
-                            'container.system_config.demo_graphic.office.office_type'
-                          )
-                            " :items="officeType" item-text="value_en" item-value="id" required
-                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12" v-if="office_type_id == 6 ||
-                      office_type_id == 7 ||
-                      office_type_id == 8 ||
-                      office_type_id == 9 ||
-                      office_type_id == 10 ||
-                      office_type_id == 11
-                      ">
-                      <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
-                        <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
-                          v-model="data.division_id" outlined :label="$t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                            " :items="divisions" item-text="name_en" item-value="id" required
-                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12" v-if="office_type_id == 7 ||
-                      office_type_id == 8 ||
-                      office_type_id == 9 ||
-                      office_type_id == 10 ||
-                      office_type_id == 11
-                      ">
-                      <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
-                        <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
-                          @input="onChangeDistrict($event)" :label="$t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                            " :items="districts" item-text="name_en" item-value="id" required
-                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-
-                    <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
-                      <ValidationProvider name="city" vid="city_corpo_id" rules="required" v-slot="{ errors }">
-                        <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_corpo_id"
-                          @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
-                            " :items="city" item-text="name_en" item-value="id" required :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="Office Name English" vid="name_en" rules="required" v-slot="{ errors }">
-                        <v-text-field outlined type="text" :hide-details="errors[0] ? false : true" v-model="data.name_en"
-                          :label="$t(
-                            'container.system_config.demo_graphic.office.name_en'
-                          )
-                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="Office Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
-                        <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
-                          :label="$t(
-                            'container.system_config.demo_graphic.office.name_bn'
-                          )
-                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="Office Address" vid="office_address" rules="required" v-slot="{ errors }">
-                        <v-text-field :hide-details="errors[0] ? false : true" outlined type="text"
-                          v-model="data.office_address" :label="$t(
-                            'container.system_config.demo_graphic.office.office_address'
-                          )
-                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="Comment" vid="comment" v-slot="{ errors }">
-                        <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.comment"
-                          :label="$t(
-                            'container.system_config.demo_graphic.office.comment'
-                          )
-                            " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
-                        <v-checkbox v-model="data.status" :label="$t(
-                          'container.system_config.demo_graphic.office.active'
-                        )
-                          " color="green" value="1" :hide-details="errors[0] ? false : true"
-                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-checkbox>
-                      </ValidationProvider>
-                    </v-col>
-                  </v-row>
-
-                  <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
-                      {{ $t("container.list.cancel") }}
-                    </v-btn>
-                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                      class="custom-btn-width black white--text py-2">
-                      {{ $t("container.list.submit") }}
-                    </v-btn>
-                  </v-row>
-                </form>
-              </ValidationObserver>
-            </v-card-text>
-          </v-card>
-        </v-dialog> -->
-      <!-- office Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
@@ -1079,7 +955,7 @@ extend("checkNameBn", {
 
     return banglaRegex.test(value);
   },
-  message: "Allowance Program  Field Name in Bangla",
+  message: "Office Name in Bangla",
 });
 
 export default {
@@ -1108,6 +984,7 @@ export default {
 
         ],
         sub_location_type: null,
+        selectedWardsDetails_UCDUpazila: [],
 
       },
 
@@ -1794,6 +1671,13 @@ export default {
           ward_ucd_upazila: ward_ucd_upazila_const?.name_en,
           ward_id_ucd_upazila: ward_ucd_upazila_const?.id,
 
+          division_id: division_ucd_upazila.id,
+          district_id: district_ucd_upazila.id,
+          upazila_id: upazila.id,
+          union_id: union?.id,
+          pouro_id: pouro?.id,
+          ward_id: ward_ucd_upazila_const.id,
+
         };
       });
 
@@ -1820,6 +1704,13 @@ export default {
           ward_ucd_upazila: ward_ucd_upazila_const?.name_en,
           ward_id_ucd_upazila: ward_ucd_upazila_const?.id,
 
+          division_id: division_ucd_upazila.id,
+          district_id: district_ucd_upazila.id,
+          upazila_id: upazila.id,
+          union_id: union?.id,
+          pouro_id: pouro?.id,
+          ward_id: ward_ucd_upazila_const.id,
+
         };
       });
 
@@ -1832,6 +1723,7 @@ export default {
       }
       if (this.selectedWards_UCDUpazila && this.selectedWards_UCDUpazila.length > 0) {
         this.data.selectedWards = this.selectedWards_UCDUpazila;
+        this.data.selectedWardsDetails_UCDUpazila = JSON.stringify(this.selectedWardsDetails_UCDUpazila)
 
       }
 
@@ -1891,11 +1783,10 @@ export default {
         this.data.selectedWards = this.selectedWards;
       }
       //console.log(this.data.selectedWards, "this.data.selectedWards")
-      if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length > 0) {
+      if (this.data.office_type === 10) {
         this.data.selectedWards = this.selectedWards_UCDUpazila_edit;
-      }
-      else if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length === 0) {
-        this.data.selectedWards = this.selectedWards_UCDUpazila;
+        this.data.selectedWardsDetails_UCDUpazila = JSON.stringify(this.selectedWardsDetails_UCDUpazila)
+
       }
 
       if ((this.data.selectedWards.length === 0 && this.data.office_type === 10) || (this.data.selectedWards.length === 0 && this.data.office_type === 9)) {

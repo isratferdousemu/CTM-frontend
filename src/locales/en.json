@@ -28,7 +28,7 @@
       "edit": "Edit",
       "print": "Print",
       "view": "View",
-      "trainer_rating":"Trainer Rating",
+      "trainer_rating": "Trainer Rating",
       "rating": "Rating",
       "search": "Search",
       "search_circular": "Circular Search",
@@ -97,7 +97,7 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "accept_invitation":"Invitation of exam"
+      "accept_invitation": "Training Invitation"
     },
     "system_config": {
       "demo_graphic": {
@@ -441,7 +441,8 @@
           "unapproved": "Unapproved",
           "active": "Active",
           "inactive": "Inactive",
-          "banned": "Banned"
+          "banned": "Banned",
+          "program": "Program"
         },
         "financial_year": {
           "financial_year": "Financial Year",
@@ -575,7 +576,7 @@
     "application_selection": {
       "application": {
         "select": "Select",
-        "mfs_name":"MFS Name",
+        "mfs_name": "MFS Name",
         "select_all": "Select All",
         "application": "Application",
         "list": "Application List",
@@ -901,7 +902,7 @@
         "monthly_honorarium_amount": "Monthly Honorarium Amount",
         "financial_year": "Financial Year",
         "other_info_of_eligibility": "Other Information of Eligibility",
-        "rollback_message": "Do you want to Rollback?",
+        "rollback_message": "Are you sure to Roll Back?",
         "application_date": "Application Date",
         "approval_date": "Approval Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
@@ -1001,10 +1002,10 @@
       "financial_year": "Financial Year",
       "action": "Action",
       "budget_create": "Budget Create",
-
-      "budget_verification": "Budget Verification",
+      "budget_verification": "Budget Approval",
       "approved_by": "Approved By",
       "approved_date": "Approved Date",
+      "attachment": "Attachment",
       "remark": "Remarks",
       "delete_title": "Delete Budget!!!",
       "delete_message": "Are you sure to delete this Budget?",
@@ -1023,8 +1024,32 @@
       "budget_id": "Budget Id",
       "program": "Program",
       "no_of_previous_year": "No of Previous Year",
+      "previous_year": "Previous Years",
       "calculation_value": "Calculation Value",
-      "approval_status": "Status"
+      "approval_status": "Status",
+      "Draft": "Draft",
+      "Approved": "Approved",
+      "Failed": "Failed",
+      "forecast_budget": "Forecast Budget",
+      "forecast_details": "Budget Forecast",
+      "previous_total_beneficiary": "Previous Total Beneficiary",
+      "previous_total_amount": "Previous Total Amount",
+      "current_total_beneficiary": "Current Total Beneficiary",
+      "current_total_amount": "Current Total Amount",
+      "location": "Location",
+      "division": "Division",
+      "district": "District",
+      "upazila_city_district": "Upazila/City Corporation/District Pouroshava",
+      "union_pouro_city": "Union/Thana/Pouroshava",
+      "ward": "Ward",
+      "total_budget": "Total Budget",
+      "total_allotment": "Total Allotment",
+      "yearly_total_ben": "Yearly Total Beneficiary",
+      "year_wise_budget_amount": "Year Wise Budget Amount",
+      "year_wise_allotment_amount": "Year Wise Allotment Amount",
+      "program_wise_budget_amount": "Program Wise Budget Amount",
+      "program_wise_allotment_amount": "Program Wise Allotment Amount",
+      "area_wise_budget_allotment_amount": "Area Wise Budget & Allotment Amount"
     },
     "payroll_management": {
       "view": "View",
@@ -1075,10 +1100,10 @@
         "approved_payroll": "Total Approved Payroll",
         "rejected_payroll": "Total Rejected Payroll",
         "total_payment_cycle": "Total Payment Cycle",
-        "completed_payment_cycle": "Processing at IBAS ++", 
+        "completed_payment_cycle": "Processing at IBAS ++",
         "total_payment_processor": "Total Payment Processor",
         "total_approve_payroll": "Total Approved Payroll",
-        "available_balance": "Available Balance",   
+        "available_balance": "Available Balance",
         "total_amount_disbursed": "Total Amount Disbursed"
       },
       "dashboard": {
@@ -1189,6 +1214,12 @@
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
       "search": "Search Emergency Allotment",
+      "emergency_supplementary_payroll": {
+        "header": "Emergency Supplementary Payroll",
+        "awaiting_correction": "Awaiting Correction",
+        "revised_beneficiary": "Revised Beneficiary",
+        "total": "Total"
+      },
       "emergency_beneficiary": {
         "slNo": "Sl No",
         "list": "Emergency Beneficiary",
@@ -1223,17 +1254,16 @@
         "already_send": "Already Send to Finance",
         "reject": "Reject"
       },
-      "emergency_payment_reconciliation":{
-         "title":"Payroll Reconciliation (Coordination)",
-         "program":"Program",
-         "nid":"NID",
-         "account_no":"Account No",
-         "bank":"Bank",
-         "branch":"Branch",
-         "routing_no":"Routing No",
-         "scheme_code":"Scheme Code"
+      "emergency_payment_reconciliation": {
+        "title": "Payroll Reconciliation (Coordination)",
+        "program": "Program",
+        "nid": "NID",
+        "account_no": "Account No",
+        "bank": "Bank",
+        "branch": "Branch",
+        "routing_no": "Routing No",
+        "scheme_code": "Scheme Code"
       }
-
     },
     "training_management": {
       "trainer_info": {
@@ -1300,16 +1330,16 @@
         "add": "Add New Program",
         "edit": "Edit Program",
         "program_name": "Program Name",
-        "exam_link": "Exam Link",
+        "exam_link": "Training Assessment Link",
         "rating_link": "Rating Link",
-        "exam": "Exam",
-        "trainer_rating_status": "Trainer Rating ",
-        "exam_status": "Exam ",
+        "exam": "Training Assessment",
+        "trainer_rating_status": "Trainer Rating Status",
+        "exam_status": "Training Assessment Status",
         "rating": "Rating",
         "program": "Program",
         "trainer": "Trainer",
-        "form_id": "Exam Form ID",
-        "training_form_id": "Training Form ID",
+        "form_id": "Training Assessment Form ID",
+        "training_form_id": "Trainer Form ID",
         "employee_id": "Employee ID",
         "passcode": "Passcode",
         "circular": "Circular",
@@ -1319,11 +1349,13 @@
         "training_circular": "Training Circular",
         "delete_header": "Delete Program",
         "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted.",
-        "accept_header": "Invitation of Exam",
-        "accept_alert": "You are invited to attend this",
+        "accept_header": "Training Assessment Invitation",
+        "accept_alert": "You are invited to attend this training assessment",
         "accept_program": "program exam.",
         "start_date": "Training Start Date",
-        "end_date": "Training End Date"
+        "end_date": "Training End Date",
+        "certificate": "Certificate",
+        "status": "Program Status"
       },
       "training_registration": {
         "list_1": "Participant List",

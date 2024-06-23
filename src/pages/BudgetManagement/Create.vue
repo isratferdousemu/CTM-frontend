@@ -6,18 +6,19 @@
           <v-form v-on:submit.prevent="addBudget">
             <v-row wrap>
               <v-col cols="12">
-                <v-card>
-                  <v-row>
-                    <v-col col="6">
-                      <v-card-title>
-                        <h3>
-                          {{ $t("container.budget_management.budget_create") }}
-                        </h3>
-                      </v-card-title>
-                    </v-col>
-                  </v-row>
-
-                  <v-divider></v-divider>
+                <div class="d-block text-right">
+                  <v-btn elevation="2" class="btn mb-2" color="primary" router to="/budget">
+                    {{ $t("container.budget_management.budget_info_list") }}
+                  </v-btn>
+                </div>
+                <v-card elevation="10" color="white" rounded="md" theme="light">
+                  <v-card-title tag="div" class="mb-3" style="
+                  background-color: #1c3b68;
+                  color: white;">
+                    <h3 class="white--text text-uppercase pt-3">
+                      {{ $t("container.budget_management.budget_create") }}
+                    </h3>
+                  </v-card-title>
 
                   <v-card-text>
                     <v-col cols="12" class="d-flex">
@@ -44,15 +45,12 @@
                               </ValidationProvider>
 
 
-                              <ValidationProvider name="previousYear" vid="previous_year" rules="required"
-                                v-slot="{ errors }">
-
-                                <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
-                                  'container.budget_management.no_of_previous_year'
-                                )
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-
+                              <ValidationProvider name="Previous Financial Year" vid="prev_financial_year_ids"
+                                rules="required" v-slot="{ errors }">
+                                <v-select clearable chips :label="$t('container.budget_management.previous_year')"
+                                  :items="financial_years" item-text="financial_year" item-value="id"
+                                  v-model="data.prev_financial_year_ids" multiple outlined required
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                               </ValidationProvider>
 
                               <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
@@ -84,62 +82,6 @@
                               </ValidationProvider>
 
                             </v-col>
-
-                            <!-- <v-col cols="12" sm="6" lg="6">
-                              <v-card elevation="2" shaped outlined>
-                                <v-card-title class="justify-center"
-                                  >Program</v-card-title
-                                >
-                                <hr
-                                  style="
-                                    width: 50%;
-                                    margin-left: 25% !important;
-                                    margin-right: 25% !important;
-                                  "
-                                />
-                                <v-card-text>
-                                  <h4>
-                                    Amount of Monthly Allowance per Beneficiary
-                                  </h4>
-
-                                  <div v-show="isDisable === 0">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
-                                        amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
-                                      <div v-for="g in genders" :key="g.id">
-                                        <h5 v-if="amount.gender_id === g.id">
-                                          {{ g.value_en }} : {{ amount.amount }}
-                                        </h5>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div v-show="isDisable === 1">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
-                                        amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
-                                      <div v-for="gt in genderTypes" :key="gt.id">
-                                        <h5 v-if="amount.type_id === gt.id">
-                                          {{ gt.value_en }} :
-                                          {{ amount.amount }}
-                                        </h5>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <h4>Distribution Medium</h4>
-                                  <h4>Bank Account</h4>
-                                </v-card-text>
-                              </v-card>
-                            </v-col> -->
                           </v-row>
                         </v-col>
                       </v-row>
@@ -148,23 +90,110 @@
 
                   <v-col cols="12">
                     <v-row class="justify-end mb-5 mr-2">
-                      <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
-                        $t("container.list.back") }}
+                      <!-- <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
+          $t("container.list.back") }}
+                      </v-btn> -->
+
+                      <v-btn elevation="2" class="btn mr-2" @click="resetSearch()">
+                        {{ $t("container.list.reset") }}
+                      </v-btn>
+                      <v-btn elevation="2"
+                        :disabled="!data.program_id || !data.calculation_type || !data.prev_financial_year_ids || !data.calculation_value"
+                        class="btn mr-2" color="primary" @click="getLocationoWiseBudgetDetails(null)">
+                        {{ $t("container.budget_management.forecast_budget") }}
                       </v-btn>
 
-                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">{{
-                        $t("container.list.submit") }}
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">
+                        {{ $t("container.list.submit") }}
                       </v-btn>
                     </v-row>
                   </v-col>
                 </v-card>
               </v-col>
 
-
             </v-row>
           </v-form>
         </ValidationObserver>
       </v-col>
+      <v-col cols="12" v-if="locationWiseBudget !== null">
+        <!-------Start  table  component ------->
+        <div>
+          <v-simple-table fixed-header class="table-responsive">
+
+            <template v-slot:default>
+              <caption>
+                <v-card-title class="custom-title">
+                  <h6 class="text-center" style="font-size:16.16px;"> {{
+                    $t("container.budget_management.forecast_details") }}</h6>
+                </v-card-title>
+
+                <v-breadcrumbs :items="breadcrumbItems" divider="/">
+                  <template v-slot:item="{ item, index }">
+                    <v-breadcrumbs-item :key="index" :disabled="item.disabled"
+                      @click.prevent="handleBreadcrumbClick(item.value)"
+                      style="cursor: pointer;font-weight: bold; color: blue;transition: color 0.3s ease; ">
+                      {{ language === 'bn' ? $helpers.englishToBangla(item.text) : item.text }}
+                    </v-breadcrumbs-item>
+                  </template>
+                </v-breadcrumbs>
+              </caption>
+
+              <thead class="primary lighten-1">
+                <tr>
+                  <th class="text-left">
+                    {{ $t("container.list.sl") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.budget_management.location") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.budget_management.previous_total_beneficiary") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.budget_management.previous_total_amount") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.budget_management.current_total_beneficiary") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.budget_management.current_total_amount") }}
+                  </th>
+                  <th class="text-left">
+                    {{ $t("container.grievance_management.dashboard.action") }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in locationWiseBudget" :key="item.index">
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(index + 1) : index + 1 }}</td>
+                  <td>{{ language === 'bn' ? item.name_bn : item.name_en }}</td>
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.previous_total_beneficiary) :
+                    item.previous_total_beneficiary
+                    }}</td>
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.previous_total_amount) :
+                    item.previous_total_amount }}
+                  </td>
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.current_total_beneficiary) :
+                    item.current_total_beneficiary }}
+                  </td>
+                  <td>{{ language === 'bn' ? $helpers.englishToBangla(item.current_total_amount) :
+                    item.current_total_amount }}
+                  </td>
+                  <td>
+                    <v-btn v-if="!item.is_allotment_area" @click="fetchNextLevel(item.id, item.type)" fab x-small
+                      v-on="on" color="success" elevation="0">
+                      <v-icon>mdi-arrow-collapse-right </v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+
+          </v-simple-table>
+        </div>
+        <!-------End  table component ------->
+      </v-col>
+
     </v-row>
   </div>
 </template>
@@ -172,7 +201,6 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapActions, mapState } from "vuex";
-import office from "@/store/modules/system_configuration/office";
 
 export default {
   name: "Create",
@@ -195,7 +223,7 @@ export default {
         program_id: null,
         financial_year_id: null,
         calculation_type: null,
-        previous_year_value: null,
+        prev_financial_year_ids: null,
         calculation_value: null,
         remarks: null
       },
@@ -204,44 +232,26 @@ export default {
       financial_years: [],
       active_year: '',
       calculationType: [],
+      locationWiseBudget: null,
+      breadcrumbItems: [
+        { text: 'Division', value: null },
+        //{ text: this.$i18n.locale == 'en' ? 'District' : 'জেলা', value: 'district' },
+        // { text: this.$i18n.locale == 'en' ? 'Thana' : 'থানা', value: 'thana' },
+      ],
     };
-  },
 
+  },
   computed: {
     ...mapState({
-      // allowances: (state) => state.ManageAllotment.allowances,
-      // allowanceAmounts: (state) => state.ManageAllotment.allowanceAmounts,
-      // educationGenders: (state) => state.ManageAllotment.educationGender,
-      // isDisable: (state) => state.ManageAllotment.is_disable_class,
-      // genders: (state) => state.Allowance.genders,
-      // genderTypes: (state) => state.Allowance.genderTypes,
-      // districts: (state) => state.ManageAllotment.districts,
-      // locations: (state) => state.ManageAllotment.locations,
-      // financial: (state) => state.ManageAllotment.financial_years,
     }),
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
   },
-
-  mounted() {
-    //this.getAllAllowanceProgram();
-    // this.GerAllLookUpGender();
-    // this.GerAllLookUpGenderType();
-    // this.getAllDistrict();
-    // this.getAllFinancialYear();
-    this.GetAllowance();
-    this.GetFinancial_Year();
-    this.$store
-      .dispatch("getLookupByType", 23)
-      .then((res) => (this.calculationType = res));
-  },
-
   methods: {
     ...mapActions({
-      // getAllAllowanceProgram: "ManageAllotment/getAllAllowanceProgram",
-      // GerAllLookUpGender: "Allowance/GerAllLookUpGender",
-      // GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
-      // getAllDistrict: "ManageAllotment/getAllDistrict",
-      // getAllFinancialYear: "ManageAllotment/getAllFinancialYear",
-
       GetAllowance() {
         this.$axios
           .get("/global/program", {
@@ -256,7 +266,7 @@ export default {
       },
       GetFinancial_Year() {
         this.$axios
-          .get("/admin/financial-year/get", {
+          .get("/admin/financial-year/list", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data"
@@ -280,12 +290,12 @@ export default {
 
     addBudget() {
       let fd = new FormData();
-      fd.append("program_id", this.data.program_id);
-      fd.append("financial_year_id", this.active_year.id);
-      fd.append("calculation_type", this.data.calculation_type);
-      fd.append("no_of_previous_year", this.data.previous_year_value);
-      fd.append("calculation_value", this.data.calculation_value);
-      fd.append("remarks", this.data.remarks);
+      fd.append("program_id", this.data.program_id ?? '');
+      fd.append("financial_year_id", this.active_year.id ?? '');
+      fd.append("calculation_type", this.data.calculation_type ?? '');
+      fd.append("prev_financial_year_ids", this.data.prev_financial_year_ids ?? '');
+      fd.append("calculation_value", this.data.calculation_value ?? '');
+      fd.append("remarks", this.data.remarks ?? '');
 
       try {
         this.$store
@@ -315,48 +325,73 @@ export default {
         console.log(e);
       }
     },
-    callback() {
-      //   alert("hello");
-
-      let data = [{
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      {
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      ];
-      this.data.division = data;
-      //   this.data.division = [...this.data.division, data];
+    resetSearch() {
+      this.data.program_id = null;
+      this.data.financial_year_id = null;
+      this.data.calculation_type = null;
+      this.data.prev_financial_year_ids = null;
+      this.data.calculation_value = null;
+      this.data.remarks = null;
     },
-    callback2() {
-      //   alert("hello");
-
-      let data = [{
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      {
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      ];
-      this.data.district = data;
-      //   this.data.district = [...this.data.district, data];
+    handleBreadcrumbClick(parentId) {
+      // remove item in breadcrumb
+      const pos = this.breadcrumbItems.map(e => e.value).indexOf(parentId);
+      this.breadcrumbItems = this.breadcrumbItems.slice(0, pos + 1); //Need to assign it to the same or another variable
+      this.getLocationoWiseBudgetDetails(parentId);
     },
+
+    fetchNextLevel(parentId, currentType) {
+      let nextType;
+      if (currentType === 'division') {
+        nextType = 'District';
+      } else if (currentType === 'district') {
+        nextType = 'Upazila/City Corporation/District Pouroshava';
+      } else if (currentType === 'city' || currentType === 'thana') {
+        nextType = 'Union/Thana/Pouroshava';
+      } else if (currentType === 'union') {
+        nextType = 'Ward';
+      }
+      //  else {
+      //   return; // No further levels
+      // }
+
+      let obj = {
+        text: nextType, value: parentId
+      };
+      // add item in breadcrumb
+      this.breadcrumbItems.push(obj);
+      this.getLocationoWiseBudgetDetails(parentId);
+    },
+
+    async getLocationoWiseBudgetDetails(parentId) {
+      const queryParams = {
+        program_id: this.data.program_id ?? '',
+        financial_year_id: this.active_year.id ?? '',
+        calculation_type: this.data.calculation_type ?? '',
+        prev_financial_year_ids: this.data.prev_financial_year_ids ?? '',
+        calculation_value: this.data.calculation_value ?? '',
+        location_id: parentId
+
+      };
+      console.log(queryParams, 'queryParamsqueryParams');
+      await this.$axios.get("/admin/budget/getProjection", {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+        this.locationWiseBudget = result?.data?.data;
+      });
+    },
+
+  },
+  mounted() {
+    this.GetAllowance();
+    this.GetFinancial_Year();
+    this.$store
+      .dispatch("getLookupByType", 23)
+      .then((res) => (this.calculationType = res));
   },
 };
 </script>
@@ -381,5 +416,15 @@ export default {
 /* Hover effect on rows */
 .custom-table tbody tr:hover {
   background-color: #ffffff;
+}
+
+.highlight-column {
+  background-color: #e0eaf1;
+}
+
+.custom-title {
+  background-color: rgb(28, 59, 104);
+  color: white;
+  padding: 10px;
 }
 </style>

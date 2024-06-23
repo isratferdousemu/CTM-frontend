@@ -1715,6 +1715,37 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+                  <v-col lg="6" md="6" cols="12" v-if="
+                    data.user_type === 1 &&
+                    data.office_type &&
+                    ![4, 5].includes(data.office_type)
+                  ">
+                    <ValidationProvider
+                        name="Program"
+                        vid="programs_id"
+                        rules=""
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          multiple
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.programs_id"
+                          :items="programs"
+                          :item-text="'name_en'"
+                          item-value="id"
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.program'
+                          )
+                        "
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -2536,6 +2567,36 @@
                     </ValidationProvider>
                   </v-col>
 
+                  <v-col lg="6" md="6" cols="12" v-if="
+                    data.user_type === 1 &&
+                    data.office_type &&
+                    ![4, 5].includes(data.office_type)
+                  ">
+                    <ValidationProvider
+                        name="Program"
+                        vid="programs_id"
+                        rules=""
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          multiple
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.programs_id"
+                          :items="programs"
+                          :item-text="'name_en'"
+                          item-value="id"
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.program'
+                          )
+                        "
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -2647,6 +2708,7 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
 import Spinner from "@/components/Common/Spinner.vue";
+import ApiService from "../../../../services/ApiService";
 
 extend("required", required);
 
@@ -2730,7 +2792,9 @@ export default {
         city_corpo_id: null,
         committee_type: null,
         committee_id: null,
-        office_ward_id: []
+        office_ward_id: [],
+        programs: [],
+        programs_id: []
       },
 
       userStatus: {
@@ -2794,6 +2858,11 @@ export default {
     Spinner,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         {
@@ -3066,6 +3135,7 @@ export default {
               fd.append("role_id[]", value[i]);
             }
           }
+
         }
       }
       this.$axios
@@ -3176,8 +3246,9 @@ export default {
         this.data.role_id.push(role.id);
       });
 
-      this.data.status = item.status;
+      this.data.programs_id = item.programs_id?.map(Number);
 
+      this.data.status = item.status;
 
       if (item.assign_location?.type == 'division') {
         this.data.division_id = item?.assign_location?.id
@@ -3509,6 +3580,15 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    getPrograms() {
+      ApiService.get('/global/program')
+          .then(res => {
+            this.programs = res.data.data
+          }).catch(error => {
+        console.log(error.response)
+      })
     },
 
     onChangeOfficeType(event) {
@@ -3906,6 +3986,7 @@ export default {
     this.GetDivision();
     this.getRoles();
     this.GetOfficeType();
+    this.getPrograms();
   },
   beforeMount() {
     this.updateHeaderTitle();

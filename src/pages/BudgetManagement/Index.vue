@@ -6,14 +6,19 @@
         <v-row>
           <v-col cols="12">
             <div class="d-block text-right">
-              <v-btn elevation="2" class="btn my-2" color="primary" router to="/budget/create">{{
-                $t("container.budget_management.add_new") }}</v-btn>
+              <v-btn elevation="2" class="btn" color="primary" router to="/budget/create">{{
+          $t("container.budget_management.add_new") }}</v-btn>
             </div>
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">{{ $t("container.list.search") }}</h3>
+                <v-expansion-panel-header color="#1c3b68">
+                  <template v-slot:actions>
+                    <v-icon color="white"> $expand </v-icon>
+                  </template>
+                  <h3 class="white--text text-uppercase">
+                    {{ $t("container.list.search") }}
+                  </h3>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="elevation-0 transparent mt-10">
                   <ValidationObserver ref="form" v-slot="{ invalid }">
@@ -22,25 +27,23 @@
                         <v-col lg="6" md="6" cols="12">
                           <v-autocomplete outlined clearable :items="allowances" item-text="name_en" item-value="id"
                             v-model="data.program_id" :label="$t(
-                              'container.application_selection.application.program'
-                            )
-                              "></v-autocomplete>
+          'container.application_selection.application.program'
+        )
+          "></v-autocomplete>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
                           <v-select outlined clearable :items="financial_years" item-text="financial_year"
-                            item-value="id" v-model="data.financial_year_id" :label="$t(
-                              'container.system_config.demo_graphic.financial_year.financial_year'
-                            )
-                              "></v-select>
+                            item-value="id" v-model="data.financial_year_id"
+                            :label="$t('container.system_config.demo_graphic.financial_year.financial_year')">
+                          </v-select>
                         </v-col>
                       </v-row>
                       <div class="d-inline d-flex justify-end">
-                        <v-btn elevation="2" class="btn mr-2" color="success" type="submit">{{
-                          $t("container.list.search") }}</v-btn>
+                        <v-btn elevation="2" class="btn mr-2" color="success" type="submit">
+                          {{ $t("container.list.search") }}
+                        </v-btn>
                         <v-btn elevation="2" class="btn" @click="resetSearch">
-                          {{
-                            $t("container.list.reset")
-                          }}
+                          {{ $t("container.list.reset") }}
                         </v-btn>
                       </div>
                     </form>
@@ -50,38 +53,50 @@
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
-            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">{{ $t("container.budget_management.budget_info_list") }}</h3>
+            <v-card elevation="10" color="white" rounded="md" theme="light">
+              <v-card-title tag="div" class="mb-2" style="
+                  background-color: #1c3b68;
+                  color: white;">
+                <h3 class="white--text text-uppercase">
+                  {{ $t("container.budget_management.budget_info_list") }}
+                </h3>
               </v-card-title>
               <v-card-text>
                 <v-row class="ma-0 white round-border d-flex justify-space-between align-center" justify="center"
                   justify-lg="space-between">
                   <v-col cols="12">
+                    <div class="d-block text-right">
+                      <v-btn fab color="#83D3F3" elevation="0" class="white--text" @click="onSearch()">
+                        <v-icon>mdi-refresh-circle</v-icon>
+                      </v-btn>
+
+                    </div>
                     <v-data-table :headers="headers" :items="allotments" :loading="loading" item-key="id"
                       :items-per-page="pagination.perPage" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.approve_name="{ item }">
-                        <span v-if="item.is_approved == 1">
+                        <!-- <span v-if="item.approval_status == 1">
                           {{ language === "bn" ? "অনুমোদিত" : "Approved" }}
                         </span>
                         <span v-else>
                           {{ language === "bn" ? "খসড়া" : "Draft" }}
+                        </span> -->
+
+                        <span>
+                          {{ $t("container.budget_management." + item.approval_status) }}
                         </span>
 
                       </template>
                       <template v-slot:item.sl="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
+          (pagination.current - 1) * pagination.perPage + index + 1
+        }}
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
+                            <v-btn :disabled="item.process_flag <= 0" v-can="'update-post'" fab x-small v-on="on"
                               color="#F40F02" elevation="0" class="white--text ml-2" @click="GeneratePDF(item.id)">
                               <v-icon>mdi-file-pdf-box</v-icon>
                             </v-btn>
@@ -91,7 +106,7 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
+                            <v-btn :disabled="item.process_flag <= 0" v-can="'update-post'" fab x-small v-on="on"
                               color="#1D6F42" elevation="0" class="white--text ml-2" @click="GenerateExcel(item.id)">
                               <v-icon>mdi-file-excel</v-icon>
                             </v-btn>
@@ -112,7 +127,7 @@
                         <span v-if="item.is_approved == 0">
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                              <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
+                              <v-btn :disabled="item.process_flag <= 0" v-can="'update-post'" fab x-small v-on="on"
                                 color="#83D3F3" elevation="0" class="white--text ml-2"
                                 @click="verifyBudgetItem(item.id)">
                                 <v-icon>mdi-checkbox-marked-circle</v-icon>
@@ -169,10 +184,14 @@
       <!-- Budget Verify modal  -->
       <v-dialog v-model="dialogVerify" width="650">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.budget_management.budget_verification") }}
+          <v-card-title tag="div" class="mb-3" style="
+                  background-color: #1c3b68;
+                  color: white;">
+            <h3 class="white--text text-uppercase pt-2">
+              {{ $t("container.budget_management.budget_verification") }}
+            </h3>
           </v-card-title>
-          <v-divider></v-divider>
+
           <v-card-text class="mt-7">
             <ValidationObserver ref="formVerify" v-slot="{ invalid }">
               <form @submit.prevent="submitVerification()">
@@ -187,47 +206,47 @@
                     </ValidationProvider>
                   </v-col> -->
 
-                  <v-col lg="6" md="6" cols="12">
+                  <!-- <v-col lg="6" md="6" cols="12">
                     <ValidationProvider name="Approved By" vid="approvedby" rules="required" v-slot="{ errors }">
                       <v-text-field :hide-details="errors[0] ? false : true" outlined type="text"
                         v-model="budget_verify.approve_by" :label="$t(
-                          'container.budget_management.approved_by'
-                        )
-                          " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+          'container.budget_management.approved_by'
+        )
+          " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  </v-col> -->
+                  <!-- <v-col lg="6" md="6" cols="12">
                     <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
                       transition="scale-transition" offset-y min-width="auto">
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field outlined clearable v-model="budget_verify.approved_date" :label="$t(
-                          'container.budget_management.approved_date'
-                        )
-                          " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+          'container.budget_management.approved_date'
+        )
+          " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                       </template>
                       <v-date-picker v-model="budget_verify.approved_date" @input="menu2 = false"></v-date-picker>
                     </v-menu>
 
-                  </v-col>
-                  <!-- <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider v-slot="{ errors }" name="Image" vid="image">
-                      <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera" label="File Attached"
-                        v-model="budget_verify.attachment" accept="image/*" :error="errors[0] ? true : false"
+                  </v-col> -->
+                  <v-col lg="12" md="12" cols="12">
+                    <ValidationProvider v-slot="{ errors }" name="approved_document" vid="approved_document">
+                      <v-file-input outlined show-size counter prepend-inner-icon="mdi-file"
+                        :label="$t('container.budget_management.attachment')" v-model="budget_verify.approved_document"
+                        accept="image/*, application/pdf" prepend-icon="" :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-file-input>
                     </ValidationProvider>
-                  </v-col> -->
+                  </v-col>
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider name="Remarks" vid="remarks" rules="required" v-slot="{ errors }">
                       <v-textarea :hide-details="errors[0] ? false : true" outlined type="text"
                         v-model="budget_verify.remakrs" :label="$t('container.budget_management.remark')
-                          " rows="2" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-textarea>
+          " rows="2" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-textarea>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn @click="dialogVerify = false" outlined class="custom-btn-width py-2 mr-10">
+                  <v-btn @click="cancelVerification()" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn type="submit" color="primary" :disabled="invalid" :loading="loading"
@@ -252,10 +271,10 @@
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t(
-                  "container.budget_management.delete_message"
-                )
-              }}
+          $t(
+            "container.budget_management.delete_message"
+          )
+        }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -307,11 +326,11 @@ export default {
       delete_id: null,
       isLoading: false,
       budget_verify: {
-        program_id: null,
-        approve_by: null,
-        approved_date: null,
-        attachment: null,
-        remakrs: null
+        // program_id: null,
+        // approve_by: null,
+        // approved_date: null,
+        approved_document: "",
+        remakrs: ""
       },
       pagination: {
         current: 1,
@@ -486,9 +505,9 @@ export default {
       try {
         let fd = new FormData();
         // fd.append("program_id", this.budget_verify.program_id);
-        fd.append("approved_by", this.budget_verify.approve_by);
+        // fd.append("approved_by", this.budget_verify.approve_by);
         // fd.append("approved_date", this.budget_verify.approved_date);
-        // fd.append("attachment", this.budget_verify.attachment);
+        fd.append("approved_document", this.budget_verify.approved_document);
         fd.append("approved_remarks", this.budget_verify.remakrs);
 
         const data = { formData: fd, id: this.verify_id };
@@ -510,6 +529,10 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    cancelVerification() {
+      this.budget_verify = {};
+      this.dialogVerify = false;
     },
     async GeneratePDF(id) {
       this.isLoading = true;

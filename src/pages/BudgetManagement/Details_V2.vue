@@ -6,10 +6,149 @@
                     <form @submit.prevent="submitApplication()">
                         <v-card class="pa-5 px-10 mb-4">
                             <div>
+                                <!--  Budget  Details -->
+                                <v-card elevation="10" color="white" rounded="md" theme="light">
+                                    <v-card-title tag="div" class="mb-3"
+                                        style="background-color: #1c3b68; color: white;">
+                                        <h3 class="white--text text-uppercase">
+                                            {{ $t("container.budget_management.budget_details_info") }}
+                                        </h3>
+                                    </v-card-title>
+
+
+                                    <v-card-text class="mt-5">
+                                        <div class="mb-4">
+                                            <v-row class="mb-4">
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.program"
+                    )
+                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.program.name_en }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.financial_year"
+                    )
+                }}
+                                                            </label>
+                                                        </v-col>
+
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.financialYear?.financial_year }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.calculation_type"
+                    )
+                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.calculationType?.value_en }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.approval_status"
+                    )
+                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.approval_status }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.previous_year"
+                    )
+                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.prev_financial_years }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                    $t(
+                        "container.budget_management.calculation_value"
+                    )
+                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span>
+                                                                    {{ beneficiary?.calculation_value }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                                <!--  Budget  Details -->
+
                                 <!-- Budget Information -->
-                                <v-card class="mt-5">
-                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                        {{ $t("container.budget_management.budget_basic_info") }}
+                                <v-card elevation="10" color="white" rounded="md" theme="light">
+                                    <v-card-title tag="div" class="mb-3"
+                                        style="background-color: #1c3b68; color: white;">
+                                        <h3 class="white--text text-uppercase">
+                                            {{ $t("container.list.search") }}
+                                        </h3>
                                     </v-card-title>
 
                                     <v-card-text class="mt-5">
@@ -23,18 +162,16 @@
                                                                     v-slot="{ errors }">
                                                                     <v-text-field outlined readonly
                                                                         v-model="user_permission.division_name" :label="$t(
-                                                                            'container.system_config.demo_graphic.division.division'
-                                                                        )
-                                                                            " v-if="user_permission.division">
+                    'container.system_config.demo_graphic.division.division'
+                )
+                    " v-if="user_permission.division">
                                                                     </v-text-field>
                                                                     <v-select v-if="!user_permission.division" outlined
                                                                         @input="onChangeDivision($event)"
                                                                         v-model="data.division_id" :label="$t(
-                                                                            'container.system_config.demo_graphic.division.division'
-                                                                        )
-                                                                            " :items="divisions"
-                                                                        :item-text="getItemText" item-value="id"
-                                                                        :error="errors[0] ? true : false"
+                    'container.system_config.demo_graphic.division.division'
+                )
+                    " :items="divisions" :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
                                                                         :error-messages="errors[0]"
                                                                         class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
@@ -47,18 +184,16 @@
                                                                     v-slot="{ errors }">
                                                                     <v-text-field outlined readonly
                                                                         v-model="user_permission.district_name" :label="$t(
-                                                                            'container.system_config.demo_graphic.district.district'
-                                                                        )
-                                                                            " v-if="user_permission.district">
+                    'container.system_config.demo_graphic.district.district'
+                )
+                    " v-if="user_permission.district">
                                                                     </v-text-field>
                                                                     <v-select v-if="!user_permission.district" outlined
                                                                         v-model="data.district_id"
                                                                         @input="onChangeDistrict($event)" :label="$t(
-                                                                            'container.system_config.demo_graphic.district.district'
-                                                                        )
-                                                                            " :items="districts"
-                                                                        :item-text="getItemText" item-value="id"
-                                                                        class="no-arrow-icon"
+                    'container.system_config.demo_graphic.district.district'
+                )
+                    " :items="districts" :item-text="getItemText" item-value="id" class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -95,21 +230,18 @@
                                                                     <v-text-field outlined readonly
                                                                         v-model="user_permission.district_pourashava_name"
                                                                         :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.pouro'
-                                                                        )
-                                                                            "
-                                                                        v-if="user_permission.district_pourashava">
+                    'container.system_config.demo_graphic.ward.pouro'
+                )
+                    " v-if="user_permission.district_pourashava">
                                                                     </v-text-field>
                                                                     <v-select
                                                                         v-if="!user_permission.district_pourashava"
                                                                         v-model="data.district_pouro_id" outlined
                                                                         :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.pouro'
-                                                                        )
-                                                                            " @change="onChangeDistrictPouro($event)"
-                                                                        :items="district_pouros"
-                                                                        :item-text="getItemText" item-value="id"
-                                                                        class="no-arrow-icon"
+                    'container.system_config.demo_graphic.ward.pouro'
+                )
+                    " @change="onChangeDistrictPouro($event)" :items="district_pouros" :item-text="getItemText"
+                                                                        item-value="id" class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -123,17 +255,16 @@
                                                                     v-slot="{ errors }">
                                                                     <v-text-field outlined readonly
                                                                         v-model="user_permission.upazila_name" :label="$t(
-                                                                            'container.system_config.demo_graphic.thana.thana'
-                                                                        )
-                                                                            " v-if="user_permission.upazila">
+                    'container.system_config.demo_graphic.thana.thana'
+                )
+                    " v-if="user_permission.upazila">
                                                                     </v-text-field>
                                                                     <v-select v-if="!user_permission.upazila"
                                                                         v-model="data.upazila_id" outlined :label="$t(
-                                                                            'container.system_config.demo_graphic.thana.thana'
-                                                                        )
-                                                                            " @change="onChangeUpazila($event)"
-                                                                        :items="thanas" :item-text="getItemText"
-                                                                        item-value="id" class="no-arrow-icon"
+                    'container.system_config.demo_graphic.thana.thana'
+                )
+                    " @change="onChangeUpazila($event)" :items="thanas" :item-text="getItemText" item-value="id"
+                                                                        class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -150,11 +281,9 @@
                                                                         @input="onChangeSubLocationType($event)"
                                                                         v-model="data.sub_location_type" outlined
                                                                         :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.subLocation_type'
-                                                                        )
-                                                                            " :items="subLocationType"
-                                                                        item-text="value" item-value="id"
-                                                                        :error="errors[0] ? true : false"
+                    'container.system_config.demo_graphic.ward.subLocation_type'
+                )
+                    " :items="subLocationType" item-text="value" item-value="id" :error="errors[0] ? true : false"
                                                                         :error-messages="errors[0]"
                                                                         :hide-details="errors[0] ? false : true"
                                                                         class="no-arrow-icon"
@@ -163,17 +292,14 @@
                                                                         clearable></v-autocomplete>
                                                                 </ValidationProvider>
                                                             </v-col>
-                                                            <v-col v-if="
-                                                                data.location_type == 2 && data.sub_location_type == 1
-                                                            " lg="3" md="3" cols="12">
+                                                            <v-col v-if="data.location_type == 2 && data.sub_location_type == 1
+                    " lg="3" md="3" cols="12">
                                                                 <ValidationProvider name="pouros" vid="pouros"
                                                                     v-slot="{ errors }">
                                                                     <v-select v-model="data.pouro_id" outlined :label="$t(
-                                                                        'container.system_config.demo_graphic.ward.pouro'
-                                                                    )
-                                                                        " :items="pouros" :item-text="getItemText"
-                                                                        item-value="id"
-                                                                        :error="errors[0] ? true : false"
+                    'container.system_config.demo_graphic.ward.pouro'
+                )
+                    " :items="pouros" :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
                                                                         :error-messages="errors[0]"
                                                                         :hide-details="errors[0] ? false : true"
                                                                         class="no-arrow-icon"
@@ -182,18 +308,15 @@
                                                                 </ValidationProvider>
                                                             </v-col>
 
-                                                            <v-col v-if="
-                                                                data.sub_location_type == 2 && data.location_type == 2
-                                                            " lg="3" md="3" cols="12">
+                                                            <v-col v-if="data.sub_location_type == 2 && data.location_type == 2
+                    " lg="3" md="3" cols="12">
                                                                 <ValidationProvider name="unions" vid="unions"
                                                                     v-slot="{ errors }">
                                                                     <v-select @input="onChangeUnionGetWard($event)"
                                                                         v-model="data.union_id" outlined :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.union'
-                                                                        )
-                                                                            " :items="unions" :item-text="getItemText"
-                                                                        item-value="id"
-                                                                        :error="errors[0] ? true : false"
+                    'container.system_config.demo_graphic.ward.union'
+                )
+                    " :items="unions" :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
                                                                         :error-messages="errors[0]"
                                                                         :hide-details="errors[0] ? false : true"
                                                                         class="no-arrow-icon"
@@ -208,17 +331,16 @@
                                                                     v-slot="{ errors }">
                                                                     <v-text-field outlined readonly
                                                                         v-model="user_permission.city_corp_name" :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.city'
-                                                                        )
-                                                                            " v-if="user_permission.city_corp">
+                    'container.system_config.demo_graphic.ward.city'
+                )
+                    " v-if="user_permission.city_corp">
                                                                     </v-text-field>
                                                                     <v-select v-if="!user_permission.city_corp"
                                                                         v-model="data.city_id"
                                                                         @change="onChangeCity($event)" outlined :label="$t(
-                                                                            'container.system_config.demo_graphic.ward.city'
-                                                                        )
-                                                                            " :items="cities" :item-text="getItemText"
-                                                                        item-value="id" class="no-arrow-icon"
+                    'container.system_config.demo_graphic.ward.city'
+                )
+                    " :items="cities" :item-text="getItemText" item-value="id" class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -232,11 +354,10 @@
                                                                 <ValidationProvider name="thana" vid="thana_id"
                                                                     v-slot="{ errors }">
                                                                     <v-select v-model="data.thana_id" outlined :label="$t(
-                                                                        'container.system_config.demo_graphic.ward.thana'
-                                                                    )
-                                                                        " @change="onChangeThana($event)"
-                                                                        :items="thanas" :item-text="getItemText"
-                                                                        item-value="id" class="no-arrow-icon"
+                    'container.system_config.demo_graphic.ward.thana'
+                )
+                    " @change="onChangeThana($event)" :items="thanas" :item-text="getItemText" item-value="id"
+                                                                        class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -245,18 +366,16 @@
                                                                 </ValidationProvider>
                                                             </v-col>
 
-                                                            <v-col v-if="
-                                                                data.location_type == 1 ||
-                                                                data.location_type == 2 ||
-                                                                data.location_type == 3
-                                                            " lg="3" md="3" cols="12">
+                                                            <v-col v-if="data.location_type == 1 ||
+                    data.location_type == 2 ||
+                    data.location_type == 3
+                    " lg="3" md="3" cols="12">
                                                                 <ValidationProvider name="ward" vid="ward_id"
                                                                     v-slot="{ errors }">
                                                                     <v-select v-model="data.ward_id" outlined :label="$t(
-                                                                        'container.system_config.demo_graphic.ward.ward'
-                                                                    )
-                                                                        " :items="wards" :item-text="getItemText"
-                                                                        item-value="id" class="no-arrow-icon"
+                    'container.system_config.demo_graphic.ward.ward'
+                )
+                    " :items="wards" :item-text="getItemText" item-value="id" class="no-arrow-icon"
                                                                         :append-icon-cb="appendIconCallback"
                                                                         append-icon="mdi-plus"
                                                                         :error="errors[0] ? true : false"
@@ -268,12 +387,12 @@
                                                         <div class="d-inline d-flex justify-end">
                                                             <v-btn elevation="2" class="btn mr-2" color="success"
                                                                 type="submit" :disabled="!data.division_id ||
-                                                                    !data.district_id
-                                                                    ">{{ $t("container.list.search")
+                    !data.district_id
+                    ">{{ $t("container.list.search")
                                                                 }}</v-btn>
                                                             <v-btn elevation="2" class="btn" @click="resetSearch">{{
-                                                                $t("container.list.reset")
-                                                                }}</v-btn>
+                    $t("container.list.reset")
+                }}</v-btn>
                                                         </div>
                                                     </form>
                                                 </ValidationObserver>
@@ -283,143 +402,15 @@
                                 </v-card>
                                 <!-- Budget End -- -->
 
-                                <!--  Budget  Details -->
-                                <v-card class="mt-5">
-                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                        {{ $t("container.budget_management.budget_details_info") }}
-                                    </v-card-title>
-
-                                    <v-card-text class="mt-5">
-                                        <div class="mb-4">
-                                            <v-row class="mb-4">
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.program"
-                                                                    )
-                                                                }}
-                                                            </label></v-col>
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.program.name_en }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.financial_year"
-                                                                    )
-                                                                }}
-                                                            </label>
-                                                        </v-col>
-
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.financial_year?.financial_year }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.calculation_type"
-                                                                    )
-                                                                }}
-                                                            </label></v-col>
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.calculation_type?.value_en }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.approval_status"
-                                                                    )
-                                                                }}
-                                                            </label></v-col>
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.approval_status }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.no_of_previous_year"
-                                                                    )
-                                                                }}
-                                                            </label></v-col>
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.no_of_previous_year }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                                <v-col cols="6" lg="6">
-                                                    <v-row>
-                                                        <v-col cols="4" lg="4">
-                                                            <label>
-                                                                {{
-                                                                    $t(
-                                                                        "container.budget_management.calculation_value"
-                                                                    )
-                                                                }}
-                                                            </label></v-col>
-                                                        <v-col cols="8" lg="8">
-                                                            :<template>
-                                                                <span style="20px">
-                                                                    {{ beneficiary?.calculation_value }}
-                                                                </span>
-                                                            </template>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-col>
-                                            </v-row>
-
-                                        </div>
-                                    </v-card-text>
-                                </v-card>
-                                <!--  Budget  Details -->
-
                                 <!--  Budget Information Details -->
-                                <v-card class="mt-5">
-                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                        {{ $t("container.manage_allotment.detail_budget_list") }}
+                                <v-card elevation="10" color="white" rounded="md" theme="light">
+                                    <v-card-title tag="div" class="mb-3"
+                                        style="background-color: #1c3b68; color: white;">
+                                        <h3 class="white--text text-uppercase">
+                                            {{ $t("container.manage_allotment.detail_budget_list") }}
+                                        </h3>
                                     </v-card-title>
+
                                     <v-card-text>
                                         <div class="mt-2">
 
@@ -433,9 +424,9 @@
                                                         class="elevation-0 transparent row-pointer">
                                                         <template v-slot:item.sl="{ item, index }">
                                                             {{
-                                                                (pagination.current - 1) * pagination.perPage +
-                                                                index +
-                                                                1
+                                                            (pagination.current - 1) * pagination.perPage +
+                                                            index +
+                                                            1
                                                             }}
                                                         </template>
                                                         <!-- Download Action Button -->
