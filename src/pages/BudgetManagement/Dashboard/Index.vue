@@ -1,187 +1,153 @@
 <template>
     <v-container fluid>
-        <!-- header card start -->
-        <v-table>
-            <thead>
-                <tr>
-                    <td width="20%">
-                        <v-card elevation="2" rounded="xl" class="mr-2" height="100%" @click="GoBenInfoList()">
-                            <v-card-title>
-                                <v-row>
-                                    <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
-                                        <v-icon color="primary">mdi mdi-account-multiple</v-icon>
-                                    </v-avatar>
+        <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+            <h3 class="white--text">
+                {{ $t("container.budget_management.budget_allotment_dashboard") }}
+            </h3>
+        </v-card-title>
+        <!-------start header Card component ---->
+        <v-row align="center" justify="center" dense>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.total_budget") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.total_allotment") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.yearly_total_ben") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.year_wise_budget_amount") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row align="center" justify="center" dense>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.year_wise_allotment_amount") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.program_wise_budget_amount") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-8" size="32">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.program_wise_allotment_amount") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+            <v-col cols="12" md="3">
+                <v-card class="mx-auto" max-width="600">
+                    <v-card-title>
+                        <v-icon color='indigo' class="mr-4" size="25">
+                            mdi-account-multiple-plus
+                        </v-icon>
+                        <v-row align="start">
+                            <div class="text-caption black--text text-uppercase">
+                                {{ $t("container.budget_management.area_wise_budget_allotment_amount") }}
+                            </div>
+                        </v-row>
+                    </v-card-title>
+                    <h1 align="center">{{ language === 'bn' ?
+                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
+                        beneficiaries.totalInactiveBeneficiaries }}</h1>
+                </v-card>
+            </v-col>
+        </v-row>
+        <!-------end header Card component ---->
 
-                                    <v-col>
-                                        <v-card-text style="word-break: break-word">
-                                            <div class="font-weight-bold d-flex">
-                                                {{
-                                                    $t(
-                                                        "container.beneficiary_management.dashboard.total_beneficiary"
-                                                    )
-                                                }}
-                                            </div>
-                                            <div class="headline font-weight-bold d-flex">
-                                                {{
-                                                    beneficiaries.totalBeneficiaries
-                                                        ? this.$i18n.locale == "en"
-                                                            ? beneficiaries.totalBeneficiaries
-                                                            : this.$helpers.englishToBangla(
-                                                                beneficiaries.totalBeneficiaries
-                                                            )
-                                                        : null
-                                                }}
-                                            </div>
-                                        </v-card-text>
-                                    </v-col>
-                                </v-row>
-                            </v-card-title>
-                        </v-card>
-                    </td>
-                    <td width="20%">
-                        <v-card max-height="auto" elevation="2" rounded="xl" class="ml-2 mr-2" height="100%"
-                            @click="GoActiveBenInfoList()">
-                            <v-card-title>
-                                <v-row>
-                                    <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
-                                        <v-icon color="primary">mdi-account</v-icon>
-                                    </v-avatar>
-
-                                    <v-col>
-                                        <v-card-text style="word-break: break-word">
-                                            <div class="font-weight-bold d-flex">
-                                                {{
-                                                    $t(
-                                                        "container.beneficiary_management.dashboard.active_beneficiary"
-                                                    )
-                                                }}
-                                            </div>
-                                            <div class="headline font-weight-bold d-flex">
-                                                {{
-                                                    beneficiaries.totalActiveBeneficiaries
-                                                        ? this.$i18n.locale == "en"
-                                                            ? beneficiaries.totalActiveBeneficiaries
-                                                            : this.$helpers.englishToBangla(
-                                                                beneficiaries.totalActiveBeneficiaries
-                                                            )
-                                                        : null
-                                                }}
-                                            </div>
-                                        </v-card-text>
-                                    </v-col>
-                                </v-row>
-                            </v-card-title>
-                        </v-card>
-                    </td>
-                    <td width="20%">
-                        <v-card max-height="auto" elevation="2" rounded="xl" class="ml-2 mr-2" height="100%"
-                            @click="GoInActiveBenInfoList()">
-                            <v-card-title>
-                                <v-row>
-                                    <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
-                                        <v-icon color="primary">mdi mdi-account-off</v-icon>
-                                    </v-avatar>
-
-                                    <v-col>
-                                        <v-card-text>
-                                            <div class="font-weight-bold d-flex" style="word-break: break-word">
-                                                {{
-                                                    $t(
-                                                        "container.beneficiary_management.dashboard.inactive_beneficiary"
-                                                    )
-                                                }}
-                                            </div>
-                                            <div class="headline font-weight-bold d-flex">
-                                                {{
-                                                    beneficiaries.totalInactiveBeneficiaries
-                                                        ? this.$i18n.locale == "en"
-                                                            ? beneficiaries.totalInactiveBeneficiaries
-                                                            : this.$helpers.englishToBangla(
-                                                                beneficiaries.totalInactiveBeneficiaries
-                                                            )
-                                                        : null
-                                                }}
-                                            </div>
-                                        </v-card-text>
-                                    </v-col>
-                                </v-row>
-                            </v-card-title>
-                        </v-card>
-                    </td>
-                    <td width="20%">
-                        <v-card max-height="auto" elevation="2" rounded="xl" class="ml-2 mr-2" height="100%"
-                            @click="GoWaitingBenInfoList()">
-                            <v-card-title style="word-break: break-word">
-                                <v-row>
-                                    <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
-                                        <v-icon color="primary">mdi mdi-account-multiple-outline</v-icon>
-                                    </v-avatar>
-
-                                    <v-col>
-                                        <v-card-text>
-                                            <div class="font-weight-bold d-flex">
-                                                {{
-                                                    $t(
-                                                        "container.beneficiary_management.dashboard.waitining_beneficiary"
-                                                    )
-                                                }}
-                                            </div>
-                                            <div class="headline font-weight-bold d-flex">
-                                                {{
-                                                    beneficiaries.totalWaitingBeneficiaries
-                                                        ? this.$i18n.locale == "en"
-                                                            ? beneficiaries.totalWaitingBeneficiaries
-                                                            : this.$helpers.englishToBangla(
-                                                                beneficiaries.totalWaitingBeneficiaries
-                                                            )
-                                                        : null
-                                                }}
-                                            </div>
-                                        </v-card-text>
-                                    </v-col>
-                                </v-row>
-                            </v-card-title>
-                        </v-card>
-                    </td>
-                    <td width="20%">
-                        <v-card height="100%" max-height="auto" elevation="2" rounded="xl" class="ml-2"
-                            @click="GoReplaceBenInfoList()">
-                            <v-card-title>
-                                <v-row>
-                                    <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
-                                        <v-icon color="primary">mdi mdi-account-switch</v-icon>
-                                    </v-avatar>
-
-                                    <v-col>
-                                        <v-card-text style="word-break: break-word">
-                                            <div class="font-weight-bold d-flex">
-                                                {{
-                                                    $t(
-                                                        "container.beneficiary_management.dashboard.replaced_beneficiary"
-                                                    )
-                                                }}
-                                            </div>
-                                            <div class="headline font-weight-bold d-flex">
-                                                {{
-                                                    beneficiaries.totalReplacedBeneficiaries
-                                                        ? this.$i18n.locale == "en"
-                                                            ? beneficiaries.totalReplacedBeneficiaries
-                                                            : this.$helpers.englishToBangla(
-                                                                beneficiaries.totalReplacedBeneficiaries
-                                                            )
-                                                        : null
-                                                }}
-                                            </div>
-                                        </v-card-text>
-                                    </v-col>
-                                </v-row>
-                            </v-card-title>
-                        </v-card>
-                    </td>
-                </tr>
-            </thead>
-        </v-table>
-        <!-- header card end -->
         <!-- first row chart start -->
         <v-row class="mt-3">
             <v-col cols="12" md="6" lg="6">
@@ -195,54 +161,46 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.program_and_location_wise_ben"
+                                                        "container.budget_management.total_budget"
                                                     )
                                                 }}
                                             </span>
                                         </label></v-col>
                                 </v-row>
                                 <v-row class="ml-1 mr-1">
-                                    <v-col cols="7">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeText" :value="formattedDates"
-                                                        :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="dates" :range="[dates[0], dates[1]]"
-                                                    :rules="[customDateRangeRule]" no-title scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary"
-                                                        @click="resetDateProgramAndLocationWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary"
-                                                        @click="submitDateProgramAndLocationWiseBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="5">
+                                    <v-col cols="4">
                                         <v-row>
                                             <v-select :label="$t(
-                                                'container.beneficiary_management.dashboard.select_program'
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " :items="programs"
-                                                v-model="program_location_Wise_beneficiary.program_id"
+                                                " :items="financial_years" v-model="total_budget.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetTotalBudget($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
+                                            )
+                                                " :items="programs" v-model="total_budget.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetLocationWiseBeneficiaries($event)" clearable></v-select>
+                                                @change="GetTotalBudget($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="total_budget.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetTotalBudget($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <canvas id="program_location_wise_chart"></canvas>
+                                    <canvas id="program_wise_beneficiary"></canvas>
                                 </v-row>
                             </v-col>
                         </V-row>
@@ -260,53 +218,47 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.gender_wise_ben"
+                                                        "container.budget_management.total_allotment"
                                                     )
                                                 }}
                                             </span>
                                         </label></v-col>
                                 </v-row>
                                 <v-row class="ml-1 mr-1">
-                                    <v-col cols="7">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeTextOnGender"
-                                                        :value="formattedDates" :append-icon="menu2 ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="gender_wise_dates"
-                                                    :range="[gender_wise_dates[0], gender_wise_dates[1]]" no-title
-                                                    scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary" @click="resetDateGenderWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary"
-                                                        @click="submitDateGenderWiseBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="5">
+                                    <v-col cols="4">
                                         <v-row>
                                             <v-select :label="$t(
-                                                'container.beneficiary_management.dashboard.select_program'
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " :items="programs" v-model="gender_Wise_beneficiary.program_id"
+                                                " :items="financial_years" v-model="total_allotment.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetTotalAllotment($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
+                                            )
+                                                " :items="programs" v-model="total_allotment.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetGenderWiseBeneficiaries($event)" clearable></v-select>
+                                                @change="GetTotalAllotment($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="total_allotment.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetTotalAllotment($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <canvas id="gender_wise_beneficiary"></canvas>
+                                    <!-- <canvas id="gender_wise_beneficiary"></canvas> -->
+                                    <canvas height="300" id="year_wise_waiting_ben"></canvas>
                                 </v-row>
                             </v-col>
                         </V-row>
@@ -328,54 +280,47 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.year_wise_waiting_ben"
+                                                        "container.budget_management.yearly_total_ben"
                                                     )
                                                 }}
                                             </span>
                                         </label></v-col>
                                 </v-row>
                                 <v-row class="ml-1 mr-1">
-                                    <v-col cols="7">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu3" v-model="menu3" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeTextOnWaitingBen"
-                                                        :value="formattedDates" :append-icon="menu3 ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="wiaiting_wise_dates" :range="[
-                                                    wiaiting_wise_dates[0],
-                                                    wiaiting_wise_dates[1],
-                                                ]" no-title scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary"
-                                                        @click="resetDateWaitingWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary" @click="submitDateWaitingBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="5">
+                                    <v-col cols="4">
                                         <v-row>
                                             <v-select :label="$t(
-                                                'container.beneficiary_management.dashboard.select_program'
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " :items="programs" v-model="waiting_beneficiary.program_id"
+                                                " :items="financial_years"
+                                                v-model="yearly_total_beneficiary.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
+                                            )
+                                                " :items="programs" v-model="yearly_total_beneficiary.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetWaitingBeneficiaries($event)" clearable></v-select>
+                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="yearly_total_beneficiary.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <canvas height="300" id="year_wise_waiting_ben"></canvas>
+                                    <canvas id="program_location_wise_chart"></canvas>
                                 </v-row>
                             </v-col>
                         </V-row>
@@ -393,7 +338,7 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.program_wise_ben"
+                                                        "container.budget_management.year_wise_budget_amount"
                                                     )
                                                 }}
                                             </span>
@@ -401,48 +346,41 @@
                                 </v-row>
 
                                 <v-row class="ml-1 mr-1">
-                                    <v-col cols="7">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu4" v-model="menu4" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeTextOnProgramWiseBen"
-                                                        :value="formattedDates" :append-icon="menu4 ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="program_wise_dates" :range="[
-                                                    program_wise_dates[0],
-                                                    program_wise_dates[1],
-                                                ]" no-title scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary"
-                                                        @click="resetDateProgramWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary" @click="submitDateProgramBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="5">
+                                    <v-col cols="4">
                                         <v-row>
                                             <v-select :label="$t(
-                                                'container.beneficiary_management.dashboard.select_program'
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " :items="programs" v-model="program_wise_beneficiary.program_id"
+                                                " :items="financial_years"
+                                                v-model="year_wise_budget_amount.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
+                                            )
+                                                " :items="programs" v-model="year_wise_budget_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetProgramWiseBeneficiaries($event)" clearable></v-select>
+                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="year_wise_budget_amount.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
 
                                 <v-row>
-                                    <canvas id="program_wise_beneficiary"></canvas>
+                                    <canvas id="gender_wise_beneficiary"></canvas>
                                 </v-row>
                             </v-col>
                         </V-row>
@@ -465,52 +403,42 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.age_and_program_wise_ben"
+                                                        "container.budget_management.year_wise_allotment_amount"
                                                     )
                                                 }}
                                             </span>
                                         </label></v-col>
                                 </v-row>
                                 <v-row class="ml-1 mr-1">
-                                    <v-col cols="7">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu5" v-model="menu5" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeTextOnAgeAndProgramWiseBen"
-                                                        :value="formattedDates" :append-icon="menu5 ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="age_and_program_wise_dates" :range="[
-                                                    age_and_program_wise_dates[0],
-                                                    age_and_program_wise_dates[1],
-                                                ]" no-title scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary"
-                                                        @click="resetDateAgeAndProgramWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary"
-                                                        @click="submitDateAgeAndProgramBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
-                                    <v-col cols="5">
+                                    <v-col cols="4">
                                         <v-row>
                                             <v-select :label="$t(
-                                                'container.beneficiary_management.dashboard.select_program'
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " :items="programs"
-                                                v-model="age_and_program_wise_beneficiary.program_id"
+                                                " :items="financial_years"
+                                                v-model="year_wise_allotment_amount.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
+                                            )
+                                                " :items="programs" v-model="year_wise_allotment_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetAgeAndProgramWiseBeneficiaries($event)"
-                                                clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="year_wise_allotment_amount.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -533,58 +461,43 @@
                                             <span>
                                                 {{
                                                     $t(
-                                                        "container.beneficiary_management.dashboard.number_of_ben_program_shifted"
+                                                        "container.budget_management.program_wise_budget_amount"
                                                     )
                                                 }}
                                             </span>
                                         </label>
                                     </v-col>
-                                    <v-col cols="6">
-                                        <v-row class="mr-1">
-                                            <v-menu ref="menu6" v-model="menu6" :close-on-content-click="false"
-                                                transition="scale-transition" offset-y min-width="auto">
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-text-field v-model="dateRangeTextShiftedBen"
-                                                        :value="formattedDates" :append-icon="menu6 ? 'mdi-calendar' : 'mdi-calendar'
-                                                            " :label="$t(
-                                                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                                                            )
-                                                                " readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                </template>
-                                                <v-date-picker v-model="shifted_dates"
-                                                    :range="[shifted_dates[0], shifted_dates[1]]" no-title scrollable>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn text color="primary"
-                                                        @click="resetDateShiftedWiseBeneficiary">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn text color="primary" @click="submitDateShiftedBeneficiary">
-                                                        OK
-                                                    </v-btn>
-                                                </v-date-picker>
-                                            </v-menu>
-                                        </v-row>
-                                    </v-col>
                                 </v-row>
-                                <v-row class="ml-1">
-                                    <v-col cols="6">
+                                <v-row class="ml-1 mr-1">
+                                    <v-col cols="4">
                                         <v-row>
-                                            <v-autocomplete class="mr-5" :items="programs" :label="$t(
-                                                'container.beneficiary_management.dashboard.to_program_name'
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_financial_year'
                                             )
-                                                " dense :item-text="getItemText" item-value="id"
-                                                v-model="shifted_beneficiary.to_program_id"
-                                                @input="GetShiftedBeneficiaries($event)" clearable></v-autocomplete>
+                                                " :items="financial_years"
+                                                v-model="program_wise_budget_amount.financial_year_id"
+                                                item-text="financial_year" item-value="id"
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
-                                    <v-col cols="6">
-                                        <v-row>
-                                            <v-autocomplete class="mr-5" :items="programs" :label="$t(
-                                                'container.beneficiary_management.dashboard.from_program_name'
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_program'
                                             )
-                                                " dense :item-text="getItemText" item-value="id"
-                                                v-model="shifted_beneficiary.from_program_id"
-                                                @input="GetShiftedBeneficiaries($event)" clearable></v-autocomplete>
+                                                " :items="programs" v-model="program_wise_budget_amount.program_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
+                                        </v-row>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <v-row class="ml-1">
+                                            <v-select :label="$t(
+                                                'container.budget_management.select_location'
+                                            )
+                                                " :items="divisions" v-model="program_wise_budget_amount.location_id"
+                                                :item-text="getItemText" item-value="id"
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -603,6 +516,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Chart from "chart.js/auto";
@@ -612,10 +526,11 @@ extend("required", required);
 import Spinner from "@/components/Common/Spinner.vue";
 export default {
     name: "Dashboard",
-    title: "CTM - Beneficiary Dashboard",
+    title: "CTM - Budget & Allotment Dashboard",
     data() {
         return {
             programs: [],
+            financial_years: [],
             beneficiaries: [],
             isLoadingProgramLocation: false,
             isLoadingGender: false,
@@ -629,8 +544,10 @@ export default {
             program_location_wise_datas: [],
             program_location_wise_percentage: [],
             program_location_chart: null,
-            program_location_Wise_beneficiary: {
+            total_budget: {
                 program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             dates: [],
             menu: false,
@@ -641,8 +558,10 @@ export default {
             gender_wise_ben_datas: [],
             gender_wise_ben_percentage: [],
             gender_wise_chart: null,
-            gender_Wise_beneficiary: {
+            total_allotment: {
                 program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             gender_wise_dates: [],
             menu2: false,
@@ -650,8 +569,10 @@ export default {
             //for Year Wise Number of Waiting list of Beneficiary chart
             year_wise_waiting_ben: [],
             year_wise_waiting_chart: null,
-            waiting_beneficiary: {
+            yearly_total_beneficiary: {
                 program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             wiaiting_wise_dates: [],
             menu3: false,
@@ -659,8 +580,10 @@ export default {
             //for Program Wise Beneficiary chart
             program_wise_ben: [],
             program_wise_ben_chart: null,
-            program_wise_beneficiary: {
+            year_wise_budget_amount: {
                 program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             program_wise_dates: [],
             menu4: false,
@@ -668,8 +591,10 @@ export default {
             //for Age & Program Wise Beneficiary chart
             age_and_program_wise_ben: [],
             age_and_program_wise_ben_chart: null,
-            age_and_program_wise_beneficiary: {
+            year_wise_allotment_amount: {
                 program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             age_and_program_wise_dates: [],
             menu5: false,
@@ -677,9 +602,10 @@ export default {
             //for Shifted Beneficiary chart
             shifted_ben: [],
             shifted_ben_chart: null,
-            shifted_beneficiary: {
-                from_program_id: null,
-                to_program_id: null,
+            program_wise_budget_amount: {
+                program_id: null,
+                financial_year_id: null,
+                location_id: null
             },
             shifted_dates: [],
             menu6: false,
@@ -691,6 +617,10 @@ export default {
         Spinner,
     },
     computed: {
+        ...mapState({
+            divisions: (state) => state.Division.divisions,
+            userData: (state) => state.userData,
+        }),
         drawer: {
             get() {
                 return this.$store.state.Drawer;
@@ -724,6 +654,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions({
+            GetAllDivisions: "Division/GetAllDivisions",
+        }),
         async GetAllProgram() {
             try {
                 await this.$axios
@@ -748,6 +681,19 @@ export default {
             } catch (e) {
                 console.log(e);
             }
+        },
+        async GetFinancial_Year() {
+            await this.$axios
+                .get("/admin/financial-year/list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data"
+                    }
+                })
+                .then(result => {
+                    this.financial_years = result.data.data;
+                    // this.active_year = this.financial_years.find((item) => item.status === 1)
+                });
         },
         async GetTotalBeneficiaries() {
             try {
@@ -774,10 +720,10 @@ export default {
                 console.log(e);
             }
         },
-        async GetLocationWiseBeneficiaries() {
+        async GetTotalBudget() {
             this.isLoadingProgramLocation = true;
             const queryParams = {
-                program_id: this.program_location_Wise_beneficiary.program_id,
+                program_id: this.total_budget.program_id,
                 from_date: this.dates[0],
                 to_date: this.dates[1],
             };
@@ -812,17 +758,17 @@ export default {
             if (this.dates.length < 2) {
                 return;
             }
-            this.GetLocationWiseBeneficiaries();
+            this.GetTotalBudget();
         },
         resetDateProgramAndLocationWiseBeneficiary() {
             this.dates = [];
             this.menu = false;
-            this.GetLocationWiseBeneficiaries();
+            this.GetTotalBudget();
         },
-        async GetGenderWiseBeneficiaries() {
+        async GetTotalAllotment() {
             this.isLoadingGender = true;
             const queryParams = {
-                program_id: this.gender_Wise_beneficiary.program_id,
+                program_id: this.total_allotment.program_id,
                 from_date: this.gender_wise_dates[0],
                 to_date: this.gender_wise_dates[1],
             };
@@ -856,17 +802,17 @@ export default {
             if (this.gender_wise_dates.length < 2) {
                 return;
             }
-            this.GetGenderWiseBeneficiaries();
+            this.GetTotalAllotment();
         },
         resetDateGenderWiseBeneficiary() {
             this.gender_wise_dates = [];
             this.menu2 = false;
-            this.GetGenderWiseBeneficiaries();
+            this.GetTotalAllotment();
         },
-        async GetWaitingBeneficiaries() {
+        async GetYearlyTotalAmount() {
             this.isLoadingWaiting = true;
             const queryParams = {
-                program_id: this.waiting_beneficiary.program_id,
+                program_id: this.yearly_total_beneficiary.program_id,
                 from_date: this.wiaiting_wise_dates[0],
                 to_date: this.wiaiting_wise_dates[1],
             };
@@ -890,17 +836,17 @@ export default {
             if (this.wiaiting_wise_dates.length < 2) {
                 return;
             }
-            this.GetWaitingBeneficiaries();
+            this.GetYearlyTotalAmount();
         },
         resetDateWaitingWiseBeneficiary() {
             this.wiaiting_wise_dates = [];
             this.menu3 = false;
-            this.GetWaitingBeneficiaries();
+            this.GetYearlyTotalAmount();
         },
-        async GetProgramWiseBeneficiaries() {
+        async GetYearWiseBudgetAmount() {
             this.isLoadingProgram = true;
             const queryParams = {
-                program_id: this.program_wise_beneficiary.program_id,
+                program_id: this.year_wise_budget_amount.program_id,
                 from_date: this.program_wise_dates[0],
                 to_date: this.program_wise_dates[1],
             };
@@ -923,17 +869,17 @@ export default {
             if (this.program_wise_dates.length < 2) {
                 return;
             }
-            this.GetProgramWiseBeneficiaries();
+            this.GetYearWiseBudgetAmount();
         },
         resetDateProgramWiseBeneficiary() {
             this.program_wise_dates = [];
             this.menu4 = false;
-            this.GetProgramWiseBeneficiaries();
+            this.GetYearWiseBudgetAmount();
         },
-        async GetAgeAndProgramWiseBeneficiaries() {
+        async GetYearWiseAllotmentAmount() {
             this.isLoadingAgeProgram = true;
             const queryParams = {
-                program_id: this.age_and_program_wise_beneficiary.program_id,
+                program_id: this.year_wise_allotment_amount.program_id,
                 from_date: this.age_and_program_wise_dates[0],
                 to_date: this.age_and_program_wise_dates[1],
             };
@@ -956,20 +902,20 @@ export default {
             if (this.age_and_program_wise_dates.length < 2) {
                 return;
             }
-            this.GetAgeAndProgramWiseBeneficiaries();
+            this.GetYearWiseAllotmentAmount();
         },
         resetDateAgeAndProgramWiseBeneficiary() {
             this.age_and_program_wise_dates = [];
             this.menu5 = false;
-            this.GetAgeAndProgramWiseBeneficiaries();
+            this.GetYearWiseAllotmentAmount();
         },
-        async GetShiftedBeneficiaries() {
+        async GetProgramWiseBudgetAmount() {
             this.isLoadingShifted = true;
             const queryParams = {
-                to_program_id: this.shifted_beneficiary.to_program_id,
-                from_program_id: this.shifted_beneficiary.from_program_id,
-                from_date: this.shifted_dates[0],
-                to_date: this.shifted_dates[1],
+                to_program_id: this.program_wise_budget_amount.program_id,
+                // from_program_id: this.shifted_beneficiary.from_program_id,
+                // from_date: this.shifted_dates[0],
+                // to_date: this.shifted_dates[1],
             };
             await this.$axios
                 .get("/admin/beneficiary-dashboard/getYearWiseProgramShifting", {
@@ -992,12 +938,12 @@ export default {
             if (this.shifted_dates.length < 2) {
                 return;
             }
-            this.GetShiftedBeneficiaries();
+            this.GetProgramWiseBudgetAmount();
         },
         resetDateShiftedWiseBeneficiary() {
             this.shifted_dates = [];
             this.menu6 = false;
-            this.GetShiftedBeneficiaries();
+            this.GetProgramWiseBudgetAmount();
         },
         customDateRangeRule(value) {
             alert(value);
@@ -1598,31 +1544,34 @@ export default {
         "$i18n.locale": {
             handler(newLocale, oldLocale) {
                 if (newLocale != oldLocale) {
-                    this.GetLocationWiseBeneficiaries();
-                    this.GetGenderWiseBeneficiaries();
-                    this.GetWaitingBeneficiaries();
-                    this.GetProgramWiseBeneficiaries();
-                    this.GetAgeAndProgramWiseBeneficiaries();
-                    this.GetShiftedBeneficiaries();
+                    this.GetTotalBudget();
+                    this.GetTotalAllotment();
+                    this.GetYearlyTotalAmount();
+                    this.GetYearWiseBudgetAmount();
+                    this.GetYearWiseAllotmentAmount();
+                    this.GetProgramWiseBudgetAmount();
                 }
             },
             // immediate: true, // Call the handler immediately to initialize the levels
         },
     },
+
     created() { },
     beforeMount() {
         // this.updateHeaderTitle();
     },
     mounted() {
         this.drawer = false;
-        this.GetLocationWiseBeneficiaries();
-        this.GetGenderWiseBeneficiaries();
+        this.GetTotalBudget();
+        this.GetTotalAllotment();
         this.GetTotalBeneficiaries();
         this.GetAllProgram();
-        this.GetWaitingBeneficiaries();
-        this.GetProgramWiseBeneficiaries();
-        this.GetAgeAndProgramWiseBeneficiaries();
-        this.GetShiftedBeneficiaries();
+        this.GetFinancial_Year();
+        this.GetAllDivisions();
+        this.GetYearlyTotalAmount();
+        this.GetYearWiseBudgetAmount();
+        this.GetYearWiseAllotmentAmount();
+        this.GetProgramWiseBudgetAmount();
     },
 };
 </script>
