@@ -1050,7 +1050,10 @@
       "year_wise_allotment_amount": "Year Wise Allotment Amount",
       "program_wise_budget_amount": "Program Wise Budget Amount",
       "program_wise_allotment_amount": "Program Wise Allotment Amount",
-      "area_wise_budget_allotment_amount": "Area Wise Budget\n & Allotment Amount"
+      "area_wise_budget_allotment_amount": "Area Wise Budget & Allotment Amount",
+      "select_program": "Select Program",
+      "select_financial_year": "Select Financial Year",
+      "select_location": "Seelect Location"
     },
     "payroll_management": {
       "view": "View",

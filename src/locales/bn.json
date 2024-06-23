@@ -1051,7 +1051,10 @@
       "year_wise_allotment_amount": "বাৎসরিক বরাদ্দের পরিমাণ",
       "program_wise_budget_amount": "প্রোগ্রাম অনুযায়ী বাজেটের পরিমাণ",
       "program_wise_allotment_amount": "প্রোগ্রাম অনুযায়ী বরাদ্দের পরিমাণ",
-      "area_wise_budget_allotment_amount": "এলাকাভিত্তিক বাজেট ও বরাদ্দের পরিমাণ"
+      "area_wise_budget_allotment_amount": "এলাকাভিত্তিক বাজেট ও বরাদ্দের পরিমাণ",
+      "select_program": "প্রোগ্রাম নির্বাচন করুন",
+      "select_financial_year": "আর্থিক বছর নির্বাচন করুন",
+      "select_location": "অবস্থান নির্বাচন করুন"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",
