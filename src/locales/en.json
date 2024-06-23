@@ -1266,6 +1266,19 @@
       }
     },
     "training_management": {
+      "dashboard": {
+        "training_status": {
+          "title": "Training Status",
+          "location": "Location",
+          "module": "Module"
+        },
+        "month_wise_no_participants": {
+          "title": "Month-wise No of Participants",
+          "day": "Day",
+          "month": "Month",
+          "year": "Year"
+        }
+      },
       "trainer_info": {
         "ID": "ID",
         "trainer_type": "Trainer Type",

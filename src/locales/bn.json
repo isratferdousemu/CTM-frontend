@@ -1245,6 +1245,19 @@
       }
     },
     "training_management": {
+      "dashboard": {
+        "training_status": {
+          "title": "প্রশিক্ষণের অবস্থা",
+          "location": "অবস্থান",
+          "module": "মডিউল"
+        },
+        "month_wise_no_participants": {
+          "title": "মাসভিত্তিক অংশগ্রহণকারীদের সংখ্যা",
+          "day": "দিন",
+          "month": "মাস",
+          "year": "বছর"
+        }
+      },
       "trainer_info": {
         "ID": "আইডি",
         "trainer_type": "প্রশিক্ষকের ধরন",
