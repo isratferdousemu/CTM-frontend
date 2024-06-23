@@ -44,7 +44,7 @@
                         prepend-icon="mdi-account-multiple-plus"
                         v-can="'bireport-create'"
                     >
-                      {{ $t("container.list.add_new") }}
+                       {{ $t("container.power_bi_report.index.add") }}
                     </v-btn>
                   </v-col>
                 </v-row>
