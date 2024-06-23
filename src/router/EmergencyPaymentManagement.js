@@ -33,6 +33,31 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/EmergencyAllotment/Edit.vue"),
   },
+  //   Manage Emergency Beneficiary
+  {
+    path: "/emergency-payment/manage-emergency-beneficiary",
+    name: "Manage Emergency beneficiary",
+    meta: {
+      requiresAuth: true,
+      permission: "manage-emergency-beneficiary-view",
+    },
+    component: () =>
+        import(
+            "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Includes/ManageBeneficiary.vue"
+            ),
+  },
+  {
+    path: "/emergency-payment/manage-emergency-beneficiary/create",
+    name: "Existing Emergency beneficiary",
+    meta: {
+      requiresAuth: true,
+      permission: "manage-emergency-beneficiary-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Includes/ExistingEmergency.vue"
+      ),
+  },
   // Emergency Beneficiary routes
   {
     path: "/emergency-payment/emergency-beneficiary",
@@ -70,6 +95,29 @@ const EmergencyPaymentManagementRoutes = [
         "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Edit.vue"
       ),
   },
+  // Emergency Payroll routes
+  {
+    path: "/emergency-payment/emergency-payroll/create",
+    name: "Emergency Payroll Create",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payroll-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyPayroll/Create.vue"
+        ),
+  },
+  {
+    path: '/emergency-payment/emergency-payroll/approval',
+    name: 'Emergency Payroll Approval',
+    meta: {
+      requiresAuth: true,
+      permission: 'emergency-payroll-approval',
+    },
+    component: () =>
+      import('../pages/EmergencyPaymentManagement/EmergencyPayrollApproval/Index.vue'),
+  },
   // Payment cycle routers:
   {
     path: "/emergency-payment/payment-cycle",
@@ -101,7 +149,9 @@ const EmergencyPaymentManagementRoutes = [
       permission: "emergency-supplementary-payroll-show",
     },
     component: () =>
-      import("../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"),
+      import(
+        "../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"
+      ),
   },
   {
     path: "/emergency-payment/cycle/view/:id",
