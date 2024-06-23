@@ -3,13 +3,8 @@ import store from "@/store";
 const ApiService = {
   init() {
     const token = store.getters.GetToken;
-
     axios.defaults.baseURL = process.env.VUE_APP_BASE_API_URL_BACKEND;
-
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-    // axios.defaults.headers.common["Authorization"] =
-    //   "Bearer " + store.getters.GetToken;
   },
   // GET Request
   get(resource, params) {
@@ -20,6 +15,9 @@ const ApiService = {
     return await axios
       .post(`${resource}`, params)
       .then((res) => {
+        return res;
+      })
+      .catch((errors) => {
         if (res.data.message) {
           
           // Toast.fire({
@@ -40,14 +38,9 @@ const ApiService = {
     return await axios
       .put(`${resource}`, params)
       .then((res) => {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: res.data.message,
-        // });
         return res;
       })
       .catch((errors) => {
-        // this.ErrorResponse(errors);
         return errors.response;
       });
   },
@@ -74,9 +67,10 @@ const ApiService = {
         return res.data;
       })
       .catch((error) => {
-        return error.response.data;
+        return error.response;
       });
   },
+
   // Handling Error Response
   ErrorResponse(res) {
     let message = "";

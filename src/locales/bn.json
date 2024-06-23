@@ -97,7 +97,11 @@
       "certificate": "সনদপত্র",
       "accept": "গ্রহণ করুন",
       "decline": "প্রত্যাখ্যান করুন",
-      "accept_invitation": "প্রশিক্ষণ আমন্ত্রণ"
+      "manage_beneficiary": "সুবিধাভোগী পরিচালনা করুন",
+      "existing": "বিদ্যমান সুবিধাভোগী",
+      "add_beneficiary": "নতুন সুবিধাভোগী",
+      "accept_invitation": "প্রশিক্ষণ আমন্ত্রণ",
+      "allotment_area_wise_ben": "জরুরী বরাদ্দ এলাকা-ভিত্তিক সুবিধাভোগী"
     },
     "system_config": {
       "demo_graphic": {
@@ -1043,14 +1047,18 @@
       "upazila_city_district": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",
       "union_pouro_city": "ইউনিয়ন/থানা/পৌরসভা",
       "ward": "ওয়ার্ড",
+      "budget_allotment_dashboard": "বাজেট এবং বরাদ্দ ড্যাশবোর্ড",
       "total_budget": "মোট বাজেট",
       "total_allotment": "মোট বরাদ্দ",
       "yearly_total_ben": "বার্ষিক মোট উপকারভোগী",
       "year_wise_budget_amount": "বাৎসরিক বাজেটের পরিমাণ",
-      "year_wise_allotment_amount": "বাৎসরিকবরাদ্দের পরিমাণ",
+      "year_wise_allotment_amount": "বাৎসরিক বরাদ্দের পরিমাণ",
       "program_wise_budget_amount": "প্রোগ্রাম অনুযায়ী বাজেটের পরিমাণ",
       "program_wise_allotment_amount": "প্রোগ্রাম অনুযায়ী বরাদ্দের পরিমাণ",
-      "area_wise_budget_allotment_amount": "এলাকাভিত্তিক বাজেট ও বরাদ্দের পরিমাণ"
+      "area_wise_budget_allotment_amount": "এলাকাভিত্তিক বাজেট ও বরাদ্দের পরিমাণ",
+      "select_program": "প্রোগ্রাম নির্বাচন করুন",
+      "select_financial_year": "আর্থিক বছর নির্বাচন করুন",
+      "select_location": "অবস্থান নির্বাচন করুন"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",
@@ -1137,7 +1145,6 @@
         "amount_of_money": "বার্ষিক বরাদ্দকৃত অর্থের পরিমাণ:",
         "amount_remain_ralance": "বেতনের মধ্যে অবশিষ্ট ব্যালেন্সের পরিমাণ:",
         "total_amount_installments": "আগে পাঠানো সমস্ত কিস্তির মোট পরিমাণ:",
-
         "ben_name": "উপকারভোগীদের নাম",
         "father_name": "পিতার নাম",
         "mother_name": "মায়ের নাম",
@@ -1216,8 +1223,10 @@
         "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
-        "searchBy": "দ্বারা অনুসন্ধান করুন",
-        "summary": "সংক্ষিপ্ত বিবরণ"
+        "searchBy": "জরুরী নতুন/বিদ্যমান সুবিধাভোগী",
+        "summary": "সংক্ষিপ্ত বিবরণ",
+        "emergency_applicant": "জরুরী সুবিধাভোগী তৈরি করুন",
+        "manage": "সুবিধাভোগী পরিচালনা করুন"
       },
       "emergency_payment_cycle": {
         "filter_title": "জরুরী পেমেন্ট চক্র",
@@ -1242,6 +1251,9 @@
         "branch": "শাখা",
         "routing_no": "রাউটিং নং",
         "scheme_code": "স্কিম কোড"
+      },
+      "emergency_payroll": {
+        "payroll_create": "জরুরী বেতন তৈরি করুন"
       }
     },
     "training_management": {
