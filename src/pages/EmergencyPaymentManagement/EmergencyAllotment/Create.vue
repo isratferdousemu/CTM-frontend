@@ -1088,6 +1088,7 @@ export default {
       });
     },
     async createEmergencyAllotment() {
+      this.loading=true;
       try {
         let fd = new FormData();
         for (const [key, value] of Object.entries(this.data)) {
@@ -1112,6 +1113,7 @@ export default {
                 );
                 this.$router.push("/emergency-payment/emergency-allotment");
                 this.resetData();
+                this.loading=false;
               } else if (res?.data?.errors) {
                 this.$refs.form.setErrors(res.data.errors);
                 this.$toast.error(res.data.message);

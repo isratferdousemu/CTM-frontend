@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-<!--    <Spinner :loading="loading"/>-->
+    <!--    <Spinner :loading="loading"/>-->
     <!-- Search Panel Starts -->
     <v-expansion-panels>
       <v-expansion-panel class="mb-2">
@@ -339,13 +339,13 @@
                       <template v-slot:activator="{ on }">
                         <v-btn
                             v-can="'emergency-allotment-view'"
+                            class="mr-2"
                             color="success"
                             elevation="0"
                             fab
                             x-small
                             @click="managePayroll(item)"
                             v-on="on"
-                            class="mr-2"
                         >
                           <v-icon> mdi-cash</v-icon>
                         </v-btn>
@@ -594,11 +594,17 @@ export default {
     manageBeneficiary(item) {
       this.$router.push({
         path: `/emergency-payment/manage-emergency-beneficiary`,
+        query: {
+          item: JSON.stringify(item)
+        }
       });
     },
     managePayroll(item) {
       this.$router.push({
         path: `/emergency-payment/emergency-payroll/create`,
+        query: {
+          item: JSON.stringify(item)
+        }
       });
     },
     status(status) {
