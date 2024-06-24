@@ -1278,6 +1278,19 @@
       }
     },
     "training_management": {
+      "dashboard": {
+        "training_status": {
+          "title": "Training Status",
+          "location": "Location",
+          "module": "Module"
+        },
+        "month_wise_no_participants": {
+          "title": "Month-wise No of Participants",
+          "day": "Day",
+          "month": "Month",
+          "year": "Year"
+        }
+      },
       "trainer_info": {
         "ID": "ID",
         "trainer_type": "Trainer Type",
@@ -1513,7 +1526,7 @@
     "power_bi_report": {
       "index": {
         "title": "Power BI Report",
-        "add": "Add Power BI Report ",
+        "add": "+ Add New Report ",
         "update": "Update Power BI Report ",
         "title_en": "Title English",
         "title_bn": "Title Bangla",

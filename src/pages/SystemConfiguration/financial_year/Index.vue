@@ -68,9 +68,10 @@
                                                         {{ item.status }}
                                                     </template> -->
                       <template v-slot:item.status="{ item }">
-                        <span v-if="item?.status == '0'"> {{ language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive ' }} </span>
+                        <span v-if="item?.status == '0'"> {{ language === 'bn' ? 'নিষ্ক্রিয় অর্থবছর' : 'Inactive Fiscal Year' }} </span>
 
-                        <span v-if="item?.status == '1'"> {{ language === 'bn' ? 'সক্রিয়' : 'Active ' }} </span>
+                        <span v-if="item?.status == '1'"> {{ language === 'bn' ? 'সক্রিয় অর্থবছর' : 'Active Fiscal Year' }} </span>
+                        <span v-if="item?.status == '2'"> {{ language === 'bn' ? 'আসন্ন বাজেট অর্থবছর' : 'Upcoming Budget Year' }} </span>
                       </template>
 
                       <template v-slot:footer="item">
