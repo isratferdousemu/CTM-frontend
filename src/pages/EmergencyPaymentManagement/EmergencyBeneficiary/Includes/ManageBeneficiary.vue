@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-<!--    <Spinner :loading="loadingloading"/>-->
+    <!--    <Spinner :loading="loadingloading"/>-->
     <!--Search Panel -->
     <v-card
         color="white" elevation="1" outlined rounded="md" theme="light"
@@ -31,7 +31,8 @@
                   vid="emergency_payment_name"
               >
                 <v-autocomplete
-                    v-model="data.emergency_payment_name"
+                    v-model="data.allotment_id"
+                    :disabled="isEdit"
                     :error="!!errors[0]"
                     :error-messages="
                               errors[0]
@@ -334,6 +335,7 @@ export default {
     return {
       data: {
         program_id: null,
+        allotment_id: null,
         division_id: null,
         district_id: null,
         location_type: null,
@@ -398,7 +400,8 @@ export default {
       newBeneficiariesCount: 0,
       existingBeneficiariesCount: 0,
       totalCount: 0,
-      selectedBeneficiariesCount: 0
+      selectedBeneficiariesCount: 0,
+      isEdit: false
     };
   },
   computed: {
@@ -538,8 +541,16 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
+    if (this.$route.query.item) {
+      let item = JSON.parse(this.$route.query.item);
+      this.data.allotment_id = item.id;
+      this.isEdit = true;
+      this.getPaymentName();
+      console.log(item, 'manage')
+    } else {
+      this.getPaymentName();
+    }
     this.getListData();
-    this.getPaymentName();
 
   },
   methods: {
@@ -549,7 +560,10 @@ export default {
     getNewBeneficiary() {
       this.$router.push({
         path: `/emergency-payment/manage-emergency-beneficiary/create`,
-        query: { flag: 'New' }
+        query: {
+          flag: 'New',
+          allotment_id: JSON.stringify(this.data.allotment_id)
+        }
       });
     },
     getExistingBeneficiary() {
@@ -1086,6 +1100,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         emergency_payment_name: this.data.emergency_payment_name,
+        allotment_id: this.data.allotment_id,
         started_period: this.data.starting_period,
 
       };
