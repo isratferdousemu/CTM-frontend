@@ -1496,6 +1496,10 @@
     "activity_log": {
       "table": {
         "title": "Activity Log Lists",
+        "old_value": "Old Data",
+        "new_value": "New Data",
+        "old": "Old",
+        "new": "New",
         "log_view": "Activity Log View",
         "name": "Log Name",
         "action_type": "Action",
