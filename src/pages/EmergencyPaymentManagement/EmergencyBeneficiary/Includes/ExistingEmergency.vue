@@ -1347,6 +1347,7 @@ export default {
         ApiService.get(`/admin/emergency/get-allotment-wise-program/${allotment_id}`)
             .then((res) => {
               this.allotments = res.data;
+              console.log(this.allotments,'one')
 
             })
             .catch((error) => console.log(error));
@@ -1357,6 +1358,7 @@ export default {
       ApiService.get(`/admin/emergency/get-all-allotment-programs`)
           .then((res) => {
             this.allotments = res.data;
+            console.log(res.data,'All')
           })
           .catch((error) => console.log(error));
     }
