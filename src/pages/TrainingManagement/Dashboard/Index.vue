@@ -4,17 +4,20 @@
       <v-col
           v-for="item in cards"
           :key="item.id"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
           class="justify-center"
-          cols="12" sm="6" md="4" lg="3"
       >
         <v-card class="elevation-10 card-container">
           <a href="#" target="_blank" class="flex-column align-center">
             <v-card-text class="text-center">
               <div class="d-flex align-center justify-center black--text">
                 <div class="location-icon-container">
-                  <v-icon class="mdi mdi-map-marker"></v-icon>
+                  <v-icon :class="item.icon"></v-icon>
                 </div>
-                <span class="ml-1 font-weight-bold">{{ item.title }}</span>
+                <span class="ml-1 font-weight-bold">{{ getCardTitle(item) }}</span>
               </div>
               <div class="mt-1 font-weight-bold text-center black--text">
                 {{ $i18n.locale === 'en' ? item.value : $helpers.englishToBangla(item.value) }}
@@ -25,43 +28,43 @@
       </v-col>
     </v-row>
 
-    <v-row class="mt-3">
+    <v-row>
       <v-col cols="12" md="6" lg="6">
         <v-card>
           <v-card-text>
             <V-row>
-              <Testdashboard/>
+              <HorizontalBarChartTrainingStatus/>
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
+<!--      <v-col cols="12" md="6" lg="6">-->
+<!--        <v-card height="100%">-->
+<!--          <v-card-text>-->
+<!--            <V-row>-->
+<!--              <PieChartTrainingByOffice/>-->
+<!--            </V-row>-->
+<!--          </v-card-text>-->
+<!--        </v-card>-->
+<!--      </v-col>-->
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
-              <Test2dashboard/>
+              <MonthWiseNoOfParticipantsLinebarchart/>
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
-          <v-card-text>
-            <V-row>
-
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
-          <v-card-text>
-            <V-row>
-
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
+<!--      <v-col cols="12" md="6" lg="6">-->
+<!--        <v-card height="100%">-->
+<!--          <v-card-text>-->
+<!--            <V-row>-->
+<!--              <HorizontalBarChartTopTraining/>-->
+<!--            </V-row>-->
+<!--          </v-card-text>-->
+<!--        </v-card>-->
+<!--      </v-col>-->
     </v-row>
 
     <v-row class="mt-3">
@@ -69,7 +72,7 @@
         <v-card height="100%">
           <v-card-text>
             <V-row>
-
+              <PerticipantsbyTrainingModeDoughnutchart/>
             </V-row>
           </v-card-text>
         </v-card>
@@ -79,7 +82,21 @@
         <v-card height="100%">
           <v-card-text>
             <V-row>
+             <ParticipantsbyTrainingModeTable/>
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
 
+    </v-row>
+
+    <v-row class="mt-3">
+
+      <v-col cols="12" md="6" lg="6">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <TopTrainerTable/>
             </V-row>
           </v-card-text>
         </v-card>
@@ -92,35 +109,57 @@
 
 <script>
 import Spinner from "@/components/Common/Spinner.vue";
-import Testdashboard from "@/pages/TrainingManagement/Dashboard/Testdashboard.vue";
-import Test2dashboard from "@/pages/TrainingManagement/Dashboard/Test2dashboard.vue";
+import HorizontalBarChartTrainingStatus
+  from "@/pages/TrainingManagement/Dashboard/horizontal-bar-chart-training-status.vue";
+import PieChartTrainingByOffice from "@/pages/TrainingManagement/Dashboard/pie-chart-training-by-office.vue";
+import MonthWiseNoOfParticipantsLinebarchart
+  from "@/pages/TrainingManagement/Dashboard/month-wise-no-of-participants-linebarchart.vue";
+import HorizontalBarChartTopTraining from "@/pages/TrainingManagement/Dashboard/horizontal-bar-chart-top-training.vue";
+import PerticipantsbyTrainingModeDoughnutchart
+  from "@/pages/TrainingManagement/Dashboard/perticipantsby-training-mode-doughnutchart.vue";
+import ParticipantsbyTrainingModeTable
+  from "@/pages/TrainingManagement/Dashboard/participantsby-training-mode-table.vue";
+import TopTrainerTable from "@/pages/TrainingManagement/Dashboard/top-trainer-table.vue";
 
 export default {
   name: "Training Dashboard",
   data() {
     return {
-      cards: [
-        { id: 1, title: 'Total Course', value: 11 },
-        { id: 2, title: 'Total Participants', value: 2555 },
-        { id: 3, title: 'Training Completion', value: '59%' },
-        { id: 4, title: 'Active Batches', value: 9 },
-        { id: 5, title: 'Total No of Trainers', value: 50 },
-        { id: 6, title: 'Active Trainers', value: 16 },
-        { id: 7, title: 'Enrolment Per Training (Avg.)', value: 20 },
-      ],
+      cards: [],
       isLoading: false,
     };
   },
   components: {
-    Test2dashboard,
-    Testdashboard,
+    TopTrainerTable,
+    ParticipantsbyTrainingModeTable,
+    PerticipantsbyTrainingModeDoughnutchart,
+    HorizontalBarChartTopTraining,
+    MonthWiseNoOfParticipantsLinebarchart,
+    PieChartTrainingByOffice,
+    HorizontalBarChartTrainingStatus,
     Spinner,
   },
   methods: {
+    getCardTitle(item) {
+      return this.$i18n.locale === 'en' ? item.name_en : item.name_bn;
+    },
+
+    async getAllCardValue() {
+      await this.$axios
+          .get(`/admin/training/dashboard/calculation-cards`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.cards = result.data.data
+          });
+    },
 
   },
   created() {
-
+    this.getAllCardValue()
   },
   mounted() {
     this.drawer = false;
@@ -140,7 +179,7 @@ export default {
 
 <style scoped>
 .card-container {
-  height: 60px; /* Set a fixed height */
+  height: 70px; /* Set a fixed height */
   display: flex;
   align-items: center;
   justify-content: center;

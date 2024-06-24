@@ -97,7 +97,11 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "accept_invitation": "Training Invitation"
+      "manage_beneficiary": "Manage Beneficiary",
+      "existing": "Existing Beneficiary",
+      "add_beneficiary": "New Beneficiary",
+      "accept_invitation": "Training Invitation",
+      "allotment_area_wise_ben": "Emergency Allotment Area-Wise Beneficiaries"
     },
     "system_config": {
       "demo_graphic": {
@@ -1157,7 +1161,6 @@
         "amount_of_money": "Amount of money allocated annually:",
         "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
         "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
-
         "ben_name": "Name of the Beneficiaries",
         "father_name": "Father Name",
         "mother_name": "Mother Name",
@@ -1205,15 +1208,15 @@
       }
     },
     "emergency_payment": {
-      "slNo": "Sl No",
+      "slNo": "SL",
       "list": "Emergency Allotment",
       "add_new": "Create Emergency Allotment",
       "payment_name": "Emergency Payment Name",
       "edit": "Edit Emergency Allotment",
       "program_name": "Program Name",
-      "no_of_new_benificiary": "No of new benificiary",
-      "no_of_existing_benificiary": "No of existing benificiary",
-      "per_person_amount": "Per person amount",
+      "no_of_new_benificiary": "No Of New Beneficiary",
+      "no_of_existing_benificiary": "No Of Existing Beneficiary",
+      "per_person_amount": "Per Person Amount",
       "payment_cycle": "Payment Cycle",
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
@@ -1232,17 +1235,19 @@
         "payment_name": "Emergency Allotment",
         "edit": "Edit Emergency Beneficiary",
         "program_name": "Program Name",
-        "no_of_new_benificiary": "Beneficiary from new",
-        "no_of_existing_benificiary": "Beneficiary from existing",
-        "per_person_amount": "Per person amount",
+        "no_of_new_benificiary": "Beneficiary From New",
+        "no_of_existing_benificiary": "Beneficiary From Existing",
+        "per_person_amount": "Per Person Amount",
         "payment_cycle": "Payment Cycle",
         "date": "Date",
         "closing_period": "Closing Period",
         "search": "Search Emergency Beneficiary",
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
-        "searchBy": "Search By",
-        "summary": "Summary"
+        "searchBy": "Emergency New/Existing Beneficiary",
+        "summary": "Summary",
+        "emergency_applicant": "Create Emergency Beneficiary",
+        "manage": "Manage Beneficiary"
       },
       "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",
@@ -1267,9 +1272,25 @@
         "branch": "Branch",
         "routing_no": "Routing No",
         "scheme_code": "Scheme Code"
+      },
+      "emergency_payroll": {
+        "payroll_create": "Emergency Payroll Create"
       }
     },
     "training_management": {
+      "dashboard": {
+        "training_status": {
+          "title": "Training Status",
+          "location": "Location",
+          "module": "Module"
+        },
+        "month_wise_no_participants": {
+          "title": "Month-wise No of Participants",
+          "day": "Day",
+          "month": "Month",
+          "year": "Year"
+        }
+      },
       "trainer_info": {
         "ID": "ID",
         "trainer_type": "Trainer Type",
@@ -1330,7 +1351,7 @@
       },
       "training_program": {
         "list": "Program List",
-        "view": "Program Details",
+        "view": "Training Program Details",
         "add": "Add New Program",
         "edit": "Edit Program",
         "program_name": "Program Name",
@@ -1475,6 +1496,10 @@
     "activity_log": {
       "table": {
         "title": "Activity Log Lists",
+        "old_value": "Old Data",
+        "new_value": "New Data",
+        "old": "Old",
+        "new": "New",
         "log_view": "Activity Log View",
         "name": "Log Name",
         "action_type": "Action",
@@ -1505,7 +1530,7 @@
     "power_bi_report": {
       "index": {
         "title": "Power BI Report",
-        "add": "Add Power BI Report ",
+        "add": "+ Add New Report ",
         "update": "Update Power BI Report ",
         "title_en": "Title English",
         "title_bn": "Title Bangla",
