@@ -9,7 +9,7 @@
             <v-icon color="white"> $expand</v-icon>
           </template>
           <h3 class="white--text text-uppercase">
-            {{ $t("container.emergency_payment.emergency_beneficiary.list") }}
+            {{ $t("container.emergency_payment.emergency_beneficiary.search") }}
           </h3>
         </v-expansion-panel-header>
         <v-expansion-panel-content class="elevation-0 transparent mt-5">
