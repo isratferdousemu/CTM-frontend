@@ -90,7 +90,7 @@
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="users" vid="users" rules="required"
+                                                <ValidationProvider name="users" vid="users" rules=""
                                                     v-slot="{ errors }">
                                                     <v-autocomplete multiple dense v-model="data.users"
                                                         :label="$t('container.training_management.training_registration.participant')"
