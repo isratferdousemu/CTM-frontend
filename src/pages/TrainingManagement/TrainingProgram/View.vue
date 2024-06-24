@@ -128,7 +128,7 @@ export default {
                 
 
                         this.edited_on_days = updatedData;
-                    }, 1500);
+                    }, 2000);
                     // Replace time slot IDs with time values
                   
                  

@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center" justify="center">
       <v-col cols="12">
-<!--        <Spinner :loading="loading"/>-->
+        <!--        <Spinner :loading="loading"/>-->
         <v-card class="ma-0 pa-0" justify="center" outlined>
           <v-card-title class="component-title">
             <div class="clearfix">
@@ -42,7 +42,7 @@
                         >*</span
                         >
                         <v-autocomplete
-                            v-model="data.allotment_id"
+                            v-model="data.program_id"
                             :error="!!errors[0]"
                             :error-messages="
                         errors[0]
@@ -804,7 +804,7 @@ export default {
   data() {
     return {
       data: {
-        allotment_id: null,
+        program_id: null,
         emergency_payment_name: null,
         division_id: null,
         district_id: null,
@@ -878,7 +878,8 @@ export default {
       selectedBeneficiaries: [],
       beneficiaries: [],
       allotments: [],
-      isExisting: null
+      isExisting: null,
+      isEdit: null
     };
   },
   computed: {
@@ -985,7 +986,15 @@ export default {
   mounted() {
     this.getLocationType();
     this.GetAllDivisions();
-    this.getAllotmentWiseProgram();
+    if (this.$route.query.allotment_id) {
+      let allotment_id = JSON.parse(this.$route.query.allotment_id);
+      this.data.allotment_id = allotment_id;
+      this.isEdit = true;
+      this.getAllotmentWiseProgram(allotment_id);
+      console.log(allotment_id, 'existing')
+    } else {
+      this.getAllAllotmentPrograms();
+    }
   },
   methods: {
     onPageSetup() {
@@ -1333,14 +1342,28 @@ export default {
       this.data = {};
       this.selectedBeneficiaries = [];
     },
-    getAllotmentWiseProgram() {
-      ApiService.get("/admin/emergency/get-allotment-wise-program")
+    getAllotmentWiseProgram(allotment_id) {
+      if (allotment_id != null) {
+        ApiService.get(`/admin/emergency/get-allotment-wise-program/${allotment_id}`)
+            .then((res) => {
+              this.allotments = res.data;
+              console.log(this.allotments,'one')
+
+            })
+            .catch((error) => console.log(error));
+      }
+
+    },
+    getAllAllotmentPrograms() {
+      ApiService.get(`/admin/emergency/get-all-allotment-programs`)
           .then((res) => {
             this.allotments = res.data;
+            console.log(res.data,'All')
           })
           .catch((error) => console.log(error));
     }
   },
+
   watch: {
     "$i18n.locale": "updateHeaderTitle",
     '$route.query.flag'(newFlag) {

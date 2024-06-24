@@ -49,16 +49,16 @@
                             : 'Please select the program name'
                           : ''
                       "
-                                :hide-details="!errors[0]"
-                                :item-text="getItemText"
-                                :items="programs"
-                                :label="$t('container.system_config.demo_graphic.committee.program_name')"
-                                class="no-arrow-icon"
-                                clearable
-                                item-value="id"
-                                outlined
-                                required
-                                @input="onChangeProgramName($event)">
+                                    :hide-details="!errors[0]"
+                                    :item-text="getItemText"
+                                    :items="programs"
+                                    :label="$t('container.system_config.demo_graphic.committee.program_name')"
+                                    class="no-arrow-icon"
+                                    clearable
+                                    item-value="id"
+                                    outlined
+                                    required
+                                    @input="onChangeProgramName($event)">
                                 </v-autocomplete>
                               </ValidationProvider>
                             </v-col>
@@ -1039,7 +1039,8 @@ export default {
         }
       ],
       programs: [],
-      district_pouros: []
+      district_pouros: [],
+      isEdit: false
     };
 
   },
@@ -1295,7 +1296,15 @@ export default {
   },
   mounted() {
     this.GetAllDivisions();
-    this.getAllotmentWiseProgram();
+    if (this.$route.query.item) {
+      let item = JSON.parse(this.$route.query.item);
+      this.data.allotment_id = item.id;
+      this.isEdit = true;
+      this.getAllotmentWiseProgram(this.data.allotment_id);
+      console.log(item, 'manage')
+    }else{
+      this.getAllAllotmentPrograms();
+    }
     this.GetFinancial_Year();
     this.GetActiveInstallment();
     this.GetUserPermission();
@@ -1309,10 +1318,28 @@ export default {
           .dispatch("getLookupByType", 1)
           .then((res) => (this.locationType = res));
     },
-    getAllotmentWiseProgram() {
-      ApiService.get("/admin/emergency/get-allotment-wise-program")
+    // getAllotmentWiseProgram() {
+    //   ApiService.get("/admin/emergency/get-allotment-wise-program")
+    //       .then((res) => {
+    //         this.programs = res.data;
+    //       })
+    //       .catch((error) => console.log(error));
+    // },
+    getAllotmentWiseProgram(allotment_id) {
+      if (allotment_id != null) {
+        ApiService.get(`/admin/emergency/get-allotment-wise-program/${allotment_id}`)
+            .then((res) => {
+              this.programs = res.data;
+              console.log(this.allotments, 'one')
+            })
+            .catch((error) => console.log(error));
+      }
+    },
+    getAllAllotmentPrograms() {
+      ApiService.get(`/admin/emergency/get-all-allotment-programs`)
           .then((res) => {
             this.programs = res.data;
+            console.log(res.data,'All')
           })
           .catch((error) => console.log(error));
     },

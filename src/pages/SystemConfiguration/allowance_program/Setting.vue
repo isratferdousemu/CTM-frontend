@@ -680,16 +680,42 @@ export default {
                                                                 </td>
                                                                 <td
                                                                     style="display: flex; align-items: center; justify-content: space-between">
-                                                                    <v-btn fab dark x-small color="primary"
+                                                                    <!-- <v-btn fab dark x-small color="primary"
                                                                         @click="addRow(aa.id)">
                                                                         <v-icon>mdi-plus</v-icon>
-                                                                    </v-btn>
+                                                                    </v-btn> -->
+                                                                    <template>
+                                                                        <v-tooltip bottom>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <v-btn fab dark x-small color="primary"
+                                                                                    v-bind="attrs" v-on="on"
+                                                                                    @click="addRow(aa.id)">
+                                                                                    <v-icon>mdi-plus</v-icon>
+                                                                                </v-btn>
+                                                                            </template>
+                                                                            <span>{{ language == 'en' ? 'Add' :
+                    'যোগ করুন' }}</span>
+                                                                        </v-tooltip>
+                                                                    </template>
 
-                                                                    <v-btn fab dark x-small color="red"
+                                                                    <!-- <v-btn fab dark x-small color="red"
                                                                         @click="deletedRow(aa.id)"
                                                                         v-show="updateAllowanceAmount.length > 1">
                                                                         <v-icon>mdi-minus</v-icon>
-                                                                    </v-btn>
+                                                                    </v-btn> -->
+                                                                    <template>
+                                                                        <v-tooltip bottom>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <v-btn fab dark x-small color="red"
+                                                                                    v-bind="attrs" v-on="on"
+                                                                                    @click="deletedRow(aa.id)"
+                                                                                    v-show="updateAllowanceAmount.length > 1">
+                                                                                    <v-icon>mdi-minus</v-icon>
+                                                                                </v-btn>
+                                                                            </template>
+                                                                            <span>অপসারণ করুন</span>
+                                                                        </v-tooltip>
+                                                                    </template>
                                                                 </td>
                                                             </tr>
 

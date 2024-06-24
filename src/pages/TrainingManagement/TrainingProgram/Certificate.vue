@@ -5,48 +5,49 @@
         <v-row>
           <Spinner :loading="isLoading" />
           <v-col cols="12">
-            <v-card
-                elevation="10"
-                color="white"
-                rounded="md"
-                theme="light"
-                class="mb-8"
-            >
-              <v-card-title
-                  class="justify-center text-center"
-                  tag="div"
-                  style="background-color: #1C3B68; color: white; font-size: 17px; padding: 1px !important;"
-              >
-                <h4 class="text-uppercase mt-0">
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
+              <v-card-title class="justify-center text-center" tag="div"
+                style="background-color: #1C3B68; color: white; font-size: 17px; padding: 1px !important;">
+                <h4 class="text-uppercase">
                   {{ $t('container.training_management.training_program.certificate') }}
                 </h4>
               </v-card-title>
               <v-card-text>
                 <v-row justify="end" align="center" class="mt-1">
+                  <!-- <router-link to="/your-target-route">
+                    <v-btn    v-on="on" color="gray" class="mr-2  mb-1"
+                      elevation="0">
+                      {{ $t("container.list.back") }}
+                    </v-btn>
+                  </router-link> -->
+
                   <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                      <v-btn fab x-small v-on="on" color="green"
-                             class=" mr-2 white--text mb-1" elevation="0"
-                             @click="downloadCertificate"
-                      >
+                      <v-btn fab x-small v-on="on" color="green" class=" mr-2 white--text mb-1" elevation="0"
+                        @click="downloadCertificate">
                         <v-icon> mdi-file-download-outline </v-icon>
                       </v-btn>
                     </template>
                     <span>{{ $t("container.list.PDF") }}</span>
                   </v-tooltip>
 
+
+
                 </v-row>
                 <v-row class="mt-5" justify="center">
                   <v-col cols="12" md="12">
                     <div class="certificate" ref="certificate">
                       <v-card class="card">
-                        <h1 class="text-center great-vibes" style="position: absolute; top: 325px; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        <h1 class="text-center great-vibes"
+                          style="position: absolute; top: 325px; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
                           {{ this.certificateInfo.user_name }}
                         </h1>
-                        <h4 class="text-center" style="position: absolute; top: 418px; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        <h4 class="text-center"
+                          style="position: absolute; top: 418px; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
                           {{ this.certificateInfo.program_name }}
                         </h4>
-                        <h4 class="text-center" style="position: absolute; top: 500px; left: 26%; transform: translate(-50%, -50%); z-index: 1;">
+                        <h4 class="text-center"
+                          style="position: absolute; top: 500px; left: 26%; transform: translate(-50%, -50%); z-index: 1;">
                           {{ this.certificateInfo.passing_date }}
                         </h4>
                       </v-card>
