@@ -17,7 +17,7 @@
                   tag="div"
                   style="background-color: #1C3B68; color: white; font-size: 17px; padding: 1px !important;"
               >
-                <h4 class="text-uppercase mt-3">
+                <h4 class="text-uppercase mt-0">
                   {{ $t('container.training_management.training_program.certificate') }}
                 </h4>
               </v-card-title>
