@@ -816,7 +816,7 @@ export default {
                                                     v-model="data.union_id" outlined :label="$t(
                                         'container.system_config.demo_graphic.ward.union'
                                     )
-                                        " :items="unions" item-text="name_en" item-value="id"></v-select>
+                                        " :items="unions" :item-text="getItemText" item-value="id"></v-select>
 
                                             </v-col>
                                             <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
@@ -888,7 +888,7 @@ export default {
                                                 $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn color="success" type="submit" class="custom-btn mr-2"
-                                                :disabled="invalid" >
+                                                :disabled="invalid">
                                                 {{ $t("container.list.submit") }}
                                             </v-btn>
                                         </v-row>
