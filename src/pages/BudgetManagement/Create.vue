@@ -67,7 +67,9 @@
                             <v-col cols="12" sm="6" lg="6">
                               <ValidationProvider name="financialYear" vid="financial_year" rules="required"
                                 v-slot="{ errors }">
-                                <v-text-field v-model="active_year.financial_year" disabled outlined>
+                                <v-text-field v-model="active_year.financial_year" 
+                                :label="$t('container.budget_management.financial_year')" 
+                                disabled outlined>
                                 </v-text-field>
                               </ValidationProvider>
 
@@ -230,6 +232,7 @@ export default {
       district: [],
       allowances: [],
       financial_years: [],
+      budget_year: '',
       active_year: '',
       calculationType: [],
       locationWiseBudget: null,
@@ -274,6 +277,7 @@ export default {
           })
           .then(result => {
             this.financial_years = result.data.data;
+            this.budget_year = this.financial_years.find((item) => item.status === 2)
             this.active_year = this.financial_years.find((item) => item.status === 1)
             console.log('active_year', this.active_year)
           });
