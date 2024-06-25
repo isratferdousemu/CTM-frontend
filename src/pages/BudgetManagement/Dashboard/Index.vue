@@ -7,7 +7,7 @@
         </v-card-title>
         <!-------start header Card component ---->
         <v-row align="center" justify="center" dense>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
                 <v-card class="mx-auto" max-width="600">
                     <v-card-title>
                         <v-icon color='indigo' class="mr-8" size="32">
@@ -24,7 +24,7 @@
                         beneficiaries.totalInactiveBeneficiaries }}</h1>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
                 <v-card class="mx-auto" max-width="600">
                     <v-card-title>
                         <v-icon color='indigo' class="mr-8" size="32">
@@ -41,7 +41,7 @@
                         beneficiaries.totalInactiveBeneficiaries }}</h1>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
                 <v-card class="mx-auto" max-width="600">
                     <v-card-title>
                         <v-icon color='indigo' class="mr-8" size="32">
@@ -75,8 +75,6 @@
                         beneficiaries.totalInactiveBeneficiaries }}</h1>
                 </v-card>
             </v-col>
-        </v-row>
-        <v-row align="center" justify="center" dense>
             <v-col cols="12" md="3">
                 <v-card class="mx-auto" max-width="600">
                     <v-card-title>
@@ -94,58 +92,8 @@
                         beneficiaries.totalInactiveBeneficiaries }}</h1>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="3">
-                <v-card class="mx-auto" max-width="600">
-                    <v-card-title>
-                        <v-icon color='indigo' class="mr-8" size="32">
-                            mdi-account-multiple-plus
-                        </v-icon>
-                        <v-row align="start">
-                            <div class="text-caption black--text text-uppercase">
-                                {{ $t("container.budget_management.program_wise_budget_amount") }}
-                            </div>
-                        </v-row>
-                    </v-card-title>
-                    <h1 align="center">{{ language === 'bn' ?
-                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
-                        beneficiaries.totalInactiveBeneficiaries }}</h1>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="3">
-                <v-card class="mx-auto" max-width="600">
-                    <v-card-title>
-                        <v-icon color='indigo' class="mr-8" size="32">
-                            mdi-account-multiple-plus
-                        </v-icon>
-                        <v-row align="start">
-                            <div class="text-caption black--text text-uppercase">
-                                {{ $t("container.budget_management.program_wise_allotment_amount") }}
-                            </div>
-                        </v-row>
-                    </v-card-title>
-                    <h1 align="center">{{ language === 'bn' ?
-                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
-                        beneficiaries.totalInactiveBeneficiaries }}</h1>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="3">
-                <v-card class="mx-auto" max-width="600">
-                    <v-card-title>
-                        <v-icon color='indigo' class="mr-4" size="25">
-                            mdi-account-multiple-plus
-                        </v-icon>
-                        <v-row align="start">
-                            <div class="text-caption black--text text-uppercase">
-                                {{ $t("container.budget_management.area_wise_budget_allotment_amount") }}
-                            </div>
-                        </v-row>
-                    </v-card-title>
-                    <h1 align="center">{{ language === 'bn' ?
-                        $helpers.englishToBangla(beneficiaries.totalInactiveBeneficiaries) :
-                        beneficiaries.totalInactiveBeneficiaries }}</h1>
-                </v-card>
-            </v-col>
         </v-row>
+
         <!-------end header Card component ---->
 
         <!-- first row chart start -->
