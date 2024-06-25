@@ -18,7 +18,7 @@
                     }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="elevation-0 transparent mt-10">
+                <v-expansion-panel-content class="elevation-0 transparent mt-10 white--text">
                   <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="onSearch($event)">
                       <v-row>
@@ -260,6 +260,17 @@
                         }}
                       </template>
 
+                      <template v-slot:item.description="{ item }">
+                        <div style="width:150px">
+                           {{ item.description}}
+                        </div>
+                      </template>
+                      <template v-slot:item.created_at="{ item }">
+                        <div style="width:150px">
+                          {{ item.created_at}}
+                        </div>
+                      </template>
+
                       <template v-slot:item.subject="{ item }">
 
                       </template>
@@ -284,11 +295,11 @@
 
                       <template v-slot:item.properties.device="{ item }">
 
-                        <span>
+                        <div style="width:100px">
                           {{
                             item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : ""
                           }}
-                        </span>
+                        </div>
                       </template>
                       <template v-slot:item.properties.ip="{ item }">
 
@@ -298,6 +309,145 @@
                           }}
                         </span>
                       </template>
+
+                      <template v-slot:item.properties.previousvalue="{ item }">
+                        <div>
+                          <div style="width: 100%" v-if="item?.properties?.changes?.previous">
+            <v-expansion-panels>
+              <v-expansion-panel>
+                <v-expansion-panel-header style="font-size:13px;padding:0px;margin-left:15px">
+                  {{ $t("container.activity_log.table.old")}}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-container>
+                    <!-- Header Row -->
+                    <v-row>
+                      <v-col
+                          cols="6"
+                          class="text-center"
+                          style="background-color: #1C3B68; color: white; font-size: 15px;"
+                      >
+                        Key
+                      </v-col>
+                      <v-col
+                          v-if="item.properties.changes.previous"
+                          cols="6"
+                          class="text-center"
+                          style="background-color: #1C3B68; color: white; font-size: 15px;"
+                      >
+                        Value
+                      </v-col>
+                    </v-row>
+
+                    <!-- Data Rows -->
+                    <v-row v-for="(value, key) in item.properties.changes.previous" :key="key">
+                      <v-col cols="6" class="font-weight-bold">{{ key }}</v-col>
+                      <v-col v-if="item.properties.changes.previous" cols="6">
+                        {{ item.properties.changes.previous[key] }}
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
+                        </div>
+                      </template>
+
+                      <template v-slot:item.properties.newvalue="{ item }">
+          <div style="width:100%" v-if="item?.properties?.changes?.new">
+            <v-expansion-panels>
+              <v-expansion-panel>
+                <v-expansion-panel-header style="font-size:13px;padding:0px;margin-left:15px">
+                  {{ $t("container.activity_log.table.new") }}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-container>
+                    <!-- Header Row -->
+                    <v-row>
+                      <v-col
+                          cols="6"
+                          class="text-center"
+                          style="background-color: #1C3B68; color: white; font-size: 15px;"
+                      >
+                        Key
+                      </v-col>
+                      <v-col
+                          cols="6"
+                          class="text-center"
+                          style="background-color: #1C3B68; color: white; font-size: 15px;"
+                      >
+                        New Value
+                      </v-col>
+                    </v-row>
+
+                    <!-- Data Rows -->
+                    <v-row v-for="(value, key) in item.properties.changes.new" :key="key">
+                      <v-col cols="6" class="font-weight-bold">{{ key }}</v-col>
+                      <v-col cols="6">{{ item.properties.changes.new[key] }}</v-col>
+                    </v-row>
+                  </v-container>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
+                      </template>
+
+<!--                      <template v-slot:item.properties="{ item }">-->
+
+
+
+<!--                                  <span-->
+<!--                                      v-if="item?.properties?.changes?.previous || item?.properties?.changes?.new"-->
+<!--                                  >-->
+<!--                                    <v-expansion-panels>-->
+<!--                                      <v-expansion-panel>-->
+<!--                                        <v-expansion-panel-header>-->
+<!--                                          Change Information-->
+<!--                                        </v-expansion-panel-header>-->
+<!--                                        <v-expansion-panel-content>-->
+<!--                                          <v-container>-->
+<!--                                            <v-row>-->
+<!--                                              <v-col-->
+<!--                                                  cols="4"-->
+<!--                                                  style="text-align:center; background-color: #1C3B68; color: white; font-size: 15px;"-->
+<!--                                              >-->
+<!--                                                Key-->
+<!--                                              </v-col>-->
+<!--                                              <v-col-->
+<!--                                                  v-if="item.properties.changes.previous"-->
+<!--                                                  cols="4"-->
+<!--                                                  style="text-align:center; background-color: #1C3B68; color: white; font-size: 15px;"-->
+<!--                                              >-->
+<!--                                                Previous Value-->
+<!--                                              </v-col>-->
+<!--                                              <v-col-->
+<!--                                                  cols="4"-->
+<!--                                                  style="text-align:center; background-color: #1C3B68; color: white; font-size: 15px;"-->
+<!--                                              >-->
+<!--                                                New Value-->
+<!--                                              </v-col>-->
+<!--                                            </v-row>-->
+
+<!--                                            <v-row v-for="(value, key) in item.properties.changes.new" :key="key">-->
+<!--                                              <v-col cols="4" class="font-weight-bold">{{ key }}</v-col>-->
+<!--                                              <v-col-->
+<!--                                                  v-if="item.properties.changes.previous"-->
+<!--                                                  cols="4"-->
+<!--                                              >-->
+<!--                                                {{ item.properties.changes.previous[key] }}-->
+<!--                                              </v-col>-->
+<!--                                              <v-col cols="4">{{ item.properties.changes.new[key] }}</v-col>-->
+<!--                                            </v-row>-->
+<!--                                          </v-container>-->
+<!--                                        </v-expansion-panel-content>-->
+<!--                                      </v-expansion-panel>-->
+<!--                                    </v-expansion-panels>-->
+<!--                                  </span>-->
+
+<!--                                                &lt;!&ndash;-    {{ // JSON.stringify(item.properties.change) }} &ndash;&gt;-->
+<!--                      </template>-->
+
 
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -450,7 +600,6 @@ export default {
           value: "id",
           align: "start",
           sortable: false,
-          width: "1%" // Specify the width for this column
         },
         {
           text: this.$t("container.activity_log.table.action_type"),
@@ -460,40 +609,41 @@ export default {
         {
           text: this.$t("container.activity_log.table.description"),
           value: "description",
-          width: "20%"
         },
 
         {
           text: this.$t("container.activity_log.table.user_name"),
           value: "causer.user_name",
-          width: "10%"
         },
         {
           text: this.$t("container.activity_log.table.user_email"),
           value: "causer.email",
-          width: "15%"
         },
         {
           text: this.$t("container.activity_log.table.device"),
           value: "properties.device",
-          width: "15%" // Specify the width for this column
         },
         {
           text: this.$t("container.activity_log.table.source_ip"),
           value: "properties.ip",
-          width: "10%" // Specify the width for this column
         },
         {
           text: this.$t("container.activity_log.table.create"),
           value: "created_at",
-          width: "14%" // Specify the width for this column
+        },
+        {
+          text: this.$t("container.activity_log.table.old_value"),
+          value: "properties.previousvalue",
+        },
+        {
+          text: this.$t("container.activity_log.table.new_value"),
+          value: "properties.newvalue",
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
           align: "center",
           sortable: false,
-          width: "1%"
         }
       ];
     },
@@ -991,5 +1141,8 @@ export default {
 <style>
 .highlight-column {
   background-color: #e0eaf1;
+}
+.v-expansion-panel-header__icon i {
+  color: white !important;
 }
 </style>

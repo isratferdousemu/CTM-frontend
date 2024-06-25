@@ -15,7 +15,7 @@
             <v-card-text class="text-center">
               <div class="d-flex align-center justify-center black--text">
                 <div class="location-icon-container">
-                  <v-icon class="mdi mdi-card-multiple"></v-icon>
+                  <v-icon :class="item.icon"></v-icon>
                 </div>
                 <span class="ml-1 font-weight-bold">{{ getCardTitle(item) }}</span>
               </div>
@@ -125,15 +125,7 @@ export default {
   name: "Training Dashboard",
   data() {
     return {
-      cards: [
-        { id: 1, name_en: 'Total Course', name_bn: 'মোট কোর্স', value: 11 },
-        { id: 2, name_en: 'Total Participants', name_bn: 'মোট অংশগ্রহণকারী', value: 2555 },
-        { id: 3, name_en: 'Training Completion', name_bn: 'প্রশিক্ষণ সম্পন্নতা', value: '59%' },
-        { id: 4, name_en: 'Active Batches', name_bn: 'সক্রিয় ব্যাচ', value: 9 },
-        { id: 5, name_en: 'Total No of Trainers', name_bn: 'মোট প্রশিক্ষকের সংখ্যা', value: 50 },
-        { id: 6, name_en: 'Active Trainers', name_bn: 'সক্রিয় প্রশিক্ষক', value: 16 },
-        { id: 7, name_en: 'Enrolment Per Training (Avg.)', name_bn: 'প্রতি প্রশিক্ষণে নিবন্ধন (গড়)', value: 20 },
-      ],
+      cards: [],
       isLoading: false,
     };
   },
@@ -151,9 +143,23 @@ export default {
     getCardTitle(item) {
       return this.$i18n.locale === 'en' ? item.name_en : item.name_bn;
     },
+
+    async getAllCardValue() {
+      await this.$axios
+          .get(`/admin/training/dashboard/calculation-cards`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.cards = result.data.data
+          });
+    },
+
   },
   created() {
-
+    this.getAllCardValue()
   },
   mounted() {
     this.drawer = false;

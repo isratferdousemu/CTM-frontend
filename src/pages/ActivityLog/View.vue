@@ -50,7 +50,7 @@
                 <template v-slot:default>
                   <tbody>
                   <tr v-if=" activity_log_details.log_name">
-                    <th class="text-left">
+                    <th style="width:20%" class="text-left first-table-td">
                       Subject
                     </th>
                     <td class="text-left">
@@ -184,8 +184,8 @@
                     <tbody>
                     <tr v-for="(value, key) in activity_log_details.causer" :key="key">
                       <template v-if="value != null">
-                        <th>{{ key }}</th>
-                        <td>{{ value }}</td>
+                        <th style="width:20%;">{{ key }}</th>
+                        <td >{{ value }}</td>
                       </template>
                     </tr>
                     </tbody>
@@ -222,7 +222,7 @@
                     <tbody>
                     <tr v-for="(value, key) in activity_log_details.properties.userInfo" :key="key">
                       <template v-if="value != null">
-                        <th>{{ key }}</th>
+                        <th style="width:20%;">{{ key }}</th>
                         <td>{{ value }}</td>
                       </template>
                     </tr>
@@ -230,8 +230,13 @@
                   </template>
                 </v-simple-table>
               </template>
-
             </v-card>
+            <router-link to="/system-audit/activity-logs">
+              <v-btn color="primary lighten-2 text-right">
+                Back
+              </v-btn>
+            </router-link>
+
 
           </v-col>
         </v-row>
@@ -342,6 +347,9 @@ export default {
 
   #printHeadingAddress {
     display: block;
+  }
+  .first-table-td {
+    width: 20% !important;
   }
 }
 </style>
