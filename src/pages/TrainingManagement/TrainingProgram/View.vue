@@ -251,13 +251,18 @@ export default {
                                     <b>{{ $t('container.training_management.training_program.exam_link') }}</b>:
                                 </v-col>
                                 <v-col cols="10" style="font-size:13px;">
-                                    <b>:</b> <span class="ml-2">{{ data?.question_link }}</span>
+                                    <b>:</b>
+                                    <a :href="data?.question_link" target="_blank" class="ml-2">
+                                        {{ data?.question_link }}</a>
+
                                 </v-col>
                                 <v-col cols="2" style="font-size:13px;">
                                     <b>{{ $t('container.training_management.training_program.rating_link') }}</b>:
                                 </v-col>
                                 <v-col cols="10" style="font-size:13px;">
-                                    <b>:</b> <span class="ml-2">{{ data?.trainer_ratings_link }}</span>
+                                    <b>:</b>
+                                    <a :href="data?.question_link" target="_blank" class="ml-2">
+                                        {{ data?.trainer_ratings_link }} </a>
                                 </v-col>
                             </template>
 
