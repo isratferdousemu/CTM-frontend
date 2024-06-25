@@ -202,20 +202,20 @@ export default {
                     </v-card-title>
                     <v-row class="my-custom-row ma-5">
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.program_name') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ data?.program_name }}</span>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.training_circular') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.training_circular') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2"> {{ data?.training_circular?.circular_name
                                 }}</span>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
+                            <b>{{ $t('container.training_management.training_circular.training_type') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">
@@ -224,7 +224,7 @@ export default {
                                 data?.training_circular?.training_type.value_en }}</span>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.trainer') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.trainer') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <v-chip v-for="(item, index) in data.trainers" :key="index" class="ml-2 mt-2">
@@ -233,7 +233,7 @@ export default {
                         </v-col>
 
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_circular.module') }}</b>:
+                            <b>{{ $t('container.training_management.training_circular.module') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b>
@@ -245,7 +245,7 @@ export default {
                         </v-col>
 
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_circular.description') }}</b>:
+                            <b>{{ $t('container.training_management.training_circular.description') }}</b>
                         </v-col>
                         <v-col cols="10" class="d-flex align-items-start">
                             <b>:</b>
@@ -253,33 +253,38 @@ export default {
                             <div v-html="data?.description" class="ml-3"></div>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
+                            <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                 $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
+                            <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                 $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.exam_link') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.exam_link') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
-                            <b>:</b> <span class="ml-2">{{ data?.question_link }}</span>
+                            <b>:</b>
+                            <a :href="data?.question_link" target="_blank" class="ml-2">
+                                {{ data?.question_link }}</a>
+
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.rating_link') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.rating_link') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
-                            <b>:</b> <span class="ml-2">{{ data?.trainer_ratings_link }}</span>
+                            <b>:</b>
+                            <a :href="data?.question_link" target="_blank" class="ml-2">
+                                {{ data?.trainer_ratings_link }} </a>
                         </v-col>
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.list.status') }}</b>:
+                            <b>{{ $t('container.list.status') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">
@@ -290,7 +295,7 @@ export default {
                         </v-col>
 
                         <v-col cols="2" style="font-size:13px;">
-                            <b>{{ $t('container.training_management.training_program.exam_status') }}</b>:
+                            <b>{{ $t('container.training_management.training_program.exam_status') }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2" v-if="data?.exam_status == 0">
@@ -305,7 +310,7 @@ export default {
                         <v-col cols="2" style="font-size:13px;">
                             <b>{{
                                 $t('container.training_management.training_program.trainer_rating_status')
-                                }}</b>:
+                                }}</b>
                         </v-col>
                         <v-col cols="10" style="font-size:13px;">
                             <b>:</b> <span class="ml-2" v-if="data?.rating_status == 0">

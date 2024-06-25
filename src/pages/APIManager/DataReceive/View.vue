@@ -79,7 +79,7 @@ export default {
     computed: {
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
+                // { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
                 { text: this.$t('container.api_manager.api_generate.api_name'), value: "name", width: "20%" },
                 { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "45%" },
                 { text: this.$t('container.api_manager.url_generate.url'), sortable: false, value: "api_url", width: "20%" },
@@ -254,6 +254,27 @@ export default {
                                     :items="data?.api_list" hide-default-footer
                                     class="elevation-0 transparent row-pointer mt-5 mx-5">
                                     <!-- Your data table content here -->
+                                    <template v-slot:item.api_url="{ item }">
+                                        <div style="width:300px;">
+                                            {{ item?.purpose?.url }}
+
+                                        </div>
+
+                                    </template>
+                                    <!-- <template v-slot:item.selected_columns="{ item }">
+                                        <div style="width:200px;">
+                                            {{ item?.selected_columns }}
+
+                                        </div>
+
+                                    </template>
+                                    <template v-slot:item.name="{ item }">
+                                        <div style="width:100px;">
+                                            {{ item?.name }}
+
+                                        </div>
+
+                                    </template> -->
                                 </v-data-table>
 
                             </v-col>
