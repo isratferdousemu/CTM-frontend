@@ -123,7 +123,7 @@
                                             )
                                                 " :items="financial_years" v-model="total_budget.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetTotalBudget($event)" clearable></v-select>
+                                                @change="GetTotalBudget($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -133,7 +133,7 @@
                                             )
                                                 " :items="programs" v-model="total_budget.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetTotalBudget($event)" clearable></v-select>
+                                                @change="GetTotalBudget($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -143,7 +143,7 @@
                                             )
                                                 " :items="divisions" v-model="total_budget.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetTotalBudget($event)" clearable></v-select>
+                                                @change="GetTotalBudget($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -180,7 +180,7 @@
                                             )
                                                 " :items="financial_years" v-model="total_allotment.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetTotalAllotment($event)" clearable></v-select>
+                                                @change="GetTotalAllotment($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -190,7 +190,7 @@
                                             )
                                                 " :items="programs" v-model="total_allotment.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetTotalAllotment($event)" clearable></v-select>
+                                                @change="GetTotalAllotment($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -200,7 +200,7 @@
                                             )
                                                 " :items="divisions" v-model="total_allotment.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetTotalAllotment($event)" clearable></v-select>
+                                                @change="GetTotalAllotment($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -243,7 +243,7 @@
                                                 " :items="financial_years"
                                                 v-model="yearly_total_beneficiary.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
+                                                @change="GetYearlyTotalAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -253,7 +253,7 @@
                                             )
                                                 " :items="programs" v-model="yearly_total_beneficiary.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
+                                                @change="GetYearlyTotalAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -263,12 +263,12 @@
                                             )
                                                 " :items="divisions" v-model="yearly_total_beneficiary.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearlyTotalAmount($event)" clearable></v-select>
+                                                @change="GetYearlyTotalAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <canvas id="program_location_wise_chart"></canvas>
+                                    <canvas id="total_number_of_application_received_info"></canvas>
                                 </v-row>
                             </v-col>
                         </V-row>
@@ -302,7 +302,7 @@
                                                 " :items="financial_years"
                                                 v-model="year_wise_budget_amount.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseBudgetAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -312,7 +312,7 @@
                                             )
                                                 " :items="programs" v-model="year_wise_budget_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseBudgetAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -322,7 +322,7 @@
                                             )
                                                 " :items="divisions" v-model="year_wise_budget_amount.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseBudgetAmount($event)" clearable multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -366,7 +366,8 @@
                                                 " :items="financial_years"
                                                 v-model="year_wise_allotment_amount.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -376,7 +377,8 @@
                                             )
                                                 " :items="programs" v-model="year_wise_allotment_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -386,7 +388,8 @@
                                             )
                                                 " :items="divisions" v-model="year_wise_allotment_amount.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -425,7 +428,8 @@
                                                 " :items="financial_years"
                                                 v-model="program_wise_budget_amount.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -435,7 +439,8 @@
                                             )
                                                 " :items="programs" v-model="program_wise_budget_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -445,7 +450,8 @@
                                             )
                                                 " :items="divisions" v-model="program_wise_budget_amount.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetProgramWiseBudgetAmount($event)" clearable></v-select>
+                                                @change="GetProgramWiseBudgetAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
@@ -489,7 +495,8 @@
                                                 " :items="financial_years"
                                                 v-model="year_wise_allotment_amount.financial_year_id"
                                                 item-text="financial_year" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -499,7 +506,8 @@
                                             )
                                                 " :items="programs" v-model="year_wise_allotment_amount.program_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                     <v-col cols="4">
@@ -509,12 +517,14 @@
                                             )
                                                 " :items="divisions" v-model="year_wise_allotment_amount.location_id"
                                                 :item-text="getItemText" item-value="id"
-                                                @change="GetYearWiseAllotmentAmount($event)" clearable></v-select>
+                                                @change="GetYearWiseAllotmentAmount($event)" clearable
+                                                multiple></v-select>
                                         </v-row>
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <canvas id="total_number_of_application_received_info"></canvas>
+                                    <canvas id="program_location_wise_chart"></canvas>
+                                    <!-- <canvas id="total_number_of_application_received_info"></canvas> -->
                                 </v-row>
                             </v-col>
                         </V-row>
