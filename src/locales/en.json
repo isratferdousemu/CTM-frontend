@@ -1351,7 +1351,7 @@
       },
       "training_program": {
         "list": "Program List",
-        "view": "Training Program Details",
+        "view": "Program Details",
         "add": "Add New Program",
         "edit": "Edit Program",
         "program_name": "Program Name",
